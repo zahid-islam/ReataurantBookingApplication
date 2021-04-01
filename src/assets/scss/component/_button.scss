@@ -1,0 +1,45 @@
+/* ------------ custom button -----  */
+@import "../variable.scss";
+
+/* Global desing */
+.pf-btn-primary {
+  background: $blush;
+  border: 1px solid $blush;
+  color: $white;
+  border-radius: 0px;
+  font-style: $f-s-normal;
+  font-weight: $f-w-bold;
+  font-size: $f-s-rem-18 !important;
+  line-height: 21px;
+
+  &:hover {
+    color: $white;
+  }
+}
+
+.btn.pf-btn-primary.focus,
+.btn.pf-btn-primary:focus {
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(184, 66, 62, 0.30);
+  ;
+}
+
+.prefeex-add-btn {
+  width: 217px;
+  height: 56px;
+  box-sizing: border-box;
+}
+
+.prefeex-add-btn img {
+  margin-right: 10px;
+}
+
+.prefeex-add-btn span {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 21px;
+  color: $blush;
+
+}

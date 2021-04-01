@@ -1,0 +1,60 @@
+<!-- Customer details section -->
+<div class="row customer-header">
+  <div class="col-md-2 text-center">
+    <img style="width:120px;height:120px"
+    [hidden]="isImgLoading" (load)="onLoad()"
+      [src]="customerDetails.photo? customerDetails.photo : '/assets/images/user/user-placeholder.png'"
+      class="object-fit-cover rounded-circle" width="82" height="82">
+
+      <div *ngIf="isImgLoading" class="spinner-border text-danger" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+  </div>
+  <div class="col-md-3">
+    <h5 class="customer-name">
+      {{customerDetails.firstName}} {{customerDetails.lastName}}
+    </h5>
+    <h4 class="customer-phone">{{customerDetails.mobile}}</h4>
+  </div>
+</div>
+
+<div class="row ">
+  <div class="col-md-10 offset-md-2">
+    <div class="btn-group customer-tag" role="group" aria-label="Basic example">
+    </div>
+  </div>
+</div>
+
+<div class=" customer-address">
+  <div class="row">
+
+    <div class="col-md-2">
+      <p class="customer-addr-label">Address</p>
+    </div>
+    <div class="col-md-5">
+      <p class="customer-addr-details">{{customerDetails.address}}</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2">
+      <p class="customer-addr-label">Age:</p>
+    </div>
+    <div class="col-md-3">
+      <p class="customer-addr-details">{{age}}</p>
+    </div>
+    <div class="col-md-2">
+      <p class="customer-addr-label">Nationality:</p>
+    </div>
+    <div class="col-md-5">
+      <p class="customer-addr-details">{{customerDetails.country}}</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2">
+      <p class="customer-addr-label">Birth date:</p>
+    </div>
+    <div class="col-md-3">
+      <p class="customer-addr-details">{{customerDetails.dob | date: 'dd/MM/yyyy'}}</p>
+    </div>
+  </div>
+</div>

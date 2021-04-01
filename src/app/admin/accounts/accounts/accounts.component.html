@@ -1,0 +1,24 @@
+<header class="mb-5">
+  <div class="row">
+    <div class="col-12 col-sm-12 col-md-7 col-lg-7 col-xl-7">
+      <ul class="nav account-nav">
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/admin/accounts/receivable']" routerLinkActive="active">Receivable</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/admin/accounts/received']" routerLinkActive="active">Received</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/admin/accounts/payble']" routerLinkActive="active">Payable</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/admin/accounts/paid']" routerLinkActive="active">Paid</a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-12 col-sm-12 col-md-5 col-lg-5 col-xl-5">
+
+    </div>
+  </div>
+</header>
+<router-outlet></router-outlet>

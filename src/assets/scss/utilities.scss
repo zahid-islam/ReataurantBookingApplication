@@ -1,0 +1,75 @@
+/*  ---------------  uitlity class ------------- */
+@import "./variable.scss";
+
+/************* Custom grid ****************/
+
+.col-5 {
+  flex: 0 0 20.000000%;
+  max-width: 20.000000%;
+  position: relative;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+/************* Class height ****************/
+.height-75 {
+  height: $height-75 !important;
+}
+
+.height-46 {
+  height: $height-45 !important;
+}
+
+/************* Class height ****************/
+.height-96 {
+  width: $width-96 !important;
+}
+
+/**************** line-height ******************/
+.line-height-1 {
+  line-height: 1;
+}
+/***************** padding *****************/
+
+.p-t-26 {
+  padding-top: 26;
+}
+
+.object-fit-fill {
+  object-fit: fill;
+}
+
+.object-fit-contain {
+  object-fit: contain;
+}
+
+.object-fit-cover {
+  object-fit: cover;
+}
+
+.object-fit-scale-down {
+  object-fit: scale-down;
+}
+
+.object-fit-none {
+  object-fit: none;
+}
+
+/** Utilities */
+
+.cursor {
+  cursor: pointer;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+/** ************* TEXT Color *************/
+.text-blush {
+  color: $blush !important;
+}
+
+.text-danger {
+  color: $blush!important;
+}

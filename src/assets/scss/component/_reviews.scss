@@ -1,0 +1,38 @@
+@import "../variable.scss";
+
+.pf-reviews {
+  .media {
+    figure {
+      img {}
+
+      figcaption {
+        font-style: $f-s-normal;
+        font-weight: $f-w-normal;
+        font-size: $f-s-rem-16;
+        line-height: $f-s-rem-18;
+        color: $pf-chips-t;
+        margin-top: 10px;
+        margin-left: 10px;
+      }
+    }
+
+    .rating {
+
+      .reviewed-date {
+        font-style: $f-s-normal;
+        font-weight: $f-w-300;
+        font-size: $f-s-rem-12;
+        line-height: $f-s-rem-14;
+        color: $reviews-text;
+      }
+    }
+
+    .review-details {
+      font-style: $f-s-normal;
+      font-weight: $f-w-300;
+      font-size: $f-s-rem-16;
+      line-height: $f-s-rem-18;
+      color: $reviews-text;
+    }
+  }
+}

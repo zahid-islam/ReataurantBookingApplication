@@ -1,0 +1,123 @@
+<!-- Create Banks -->
+<div class="row">
+  <div class="col-12">
+    <div class="prefeex-add-btn text-center mt-4" style="margin-bottom: 34px">
+      <a (click)="createTagModalOpen()" style="cursor: pointer" class="text-decoration-none">
+        <img src="/assets/images/icon/plus-icon.svg" alt="add-icon">
+        <span> Create Category </span>
+      </a>
+    </div>
+  </div>
+</div>
+<!-- Tag pagination section -->
+<div class="row pf-pagination-container" [addOrRemoveClassToFixedTableHeader]="'250'">
+  <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 pr-0">
+    <h5 class="total-data mb-0 mt-2">Total: {{totalCount}} </h5>
+  </div>
+  <div class="col-12 col-sm-8 col-md-8 col-lg-8 col-xl-8 pl-0">
+    <p-paginator styleClass="prefeex-pagination" [rows]="itemPerPage" (onPageChange)="paginate($event)"
+      [totalRecords]="totalCount" pageLinkSize="5" [rowsPerPageOptions]="[10, 50, 100]"></p-paginator>
+  </div>
+</div>
+<!-- Tag pagination section -->
+<!-- Tag data view section -->
+<div class="row">
+  <div class="col-12">
+    <p-table styleClass="prefeex-data-table" [value]="allTags" tableStyleClass="table  prefeex-thead-blush">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Image</th>
+          <th>Name</th>
+          <th style="width: 190px">Status</th>
+          <th>Action</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-tags>
+        <tr>
+          <td>
+            <img [src]="tags.image ? tags.image : '/assets/images/food-menu/food-item-dummy.png'"
+              style=" width:20px;height:20px " class="object-fit-cover rounded-circle" [alt]="tags.name">
+          </td>
+          <td>{{tags.name}}</td>
+          <td style="width: 190px">
+            <select (change)="statusChangesAction(tags.tagStatus.id, tags)" [(ngModel)]="tags.tagStatus.id">
+              <option *ngFor="let status of allTagStatus" [ngValue]="status.id">
+                {{status.name}}
+              </option>
+            </select>
+          </td>
+          <td>
+            <a role="button" class="btn create-user mr-3" style="cursor: pointer"
+              (click)="updateParticularTag(tags.id)"> Edit </a>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+<!-- content-loader -->
+<app-content-loader *ngIf="isLoading" [theadcount]="4" [rowlength]="4"></app-content-loader>
+<!-- content-loader -->
+
+
+<!-- Modal for Create tag  -->
+
+<div class="modal fade bd-example-modal-lg" #CreateTagsModal tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content pf-modal-withdraw">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          Category
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form #tagsForm="ngForm" class="prefeex-form prefeex-horizontal-form form-gray-dark"
+        (ngSubmit)="tagsForm.valid && createOrUpdateNewTag(tagsForm)">
+        <div class="modal-body row">
+          <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+            <div class="form-group row">
+              <label for="tag" class="col-12 col-sm-3 col-md-3 col-lg-3 col-xl-4 col-form-label">
+                Category Name
+              </label>
+              <div class="col-12 col-sm-9 col-md-9 col-lg-9 col-xl-8">
+                <input type="text" class="form-control" name="name" [(ngModel)]="tagsModel.name" #name="ngModel"
+                  placeholder="New" required>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+            <div class="form-group row">
+              <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                <div class="full-contain-img">
+                  <img style="width:100%;height:232px"
+                    [src]="imgURL ? imgURL : tagsModel.image ? tagsModel.image : '/assets/images/noimage.png'"
+                    class="object-fit-cover">
+                  <button type="button" class="full-img-pickbtn btn bg-transparent p-0 border-0"
+                    (click)="photo.click()">
+                    <img style="width:38px;height:34px" src="/assets/images/icon/camera.svg" alt="">
+                  </button>
+                  <input type="file" name="photo" #photo (change)="fileProcess(photo)">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button [disabled]="!tagsForm.valid" type="submit"
+            class="btn btn-prefeex-primary text-center rounded-0 btn-big-padding">
+            <span [hidden]="isApiSubmit"> Save </span>
+            <span [hidden]="!isApiSubmit">
+              <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+              <!-- Inprogress... -->
+            </span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal for Create tag  -->

@@ -1,0 +1,36 @@
+<section class="display-box" [hidden]="isLoading">
+  <div class="row mt-5">
+    <div class="col-12 col-sm-12 col-md-6 col-lg-6 offset-lg-3 col-xl-5 offset-xl-3">
+      <h4 class="text-center">SMS Gateway Balance</h4>
+      <div class="card mt-5">
+        <div class="card-body">
+
+          <div class="d-flex justify-content-around">
+            <div>
+              <img style="width:52px;height:45px" src="/assets/images/icon/accounts/receivable/receivable_amount.svg"
+                class="object-fit-cover mt-2">
+            </div>
+            <div>
+              <h4 class="title-name mb-3">
+                Last Update:
+                {{smsGatewayBalance.updatedAt | date:'MMM d, y h:mm a'}}
+              </h4>
+              <h5 class="amount-number mt-1 mb-0">
+                Balance:
+                {{smsGatewayBalance.balance | currency:'৳ '}}
+              </h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="row mt-5" [hidden]="!isLoading">
+  <div class="col-12">
+    <div class="d-flex justify-content-center">
+      <app-spin-loader></app-spin-loader>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,36 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* use the font */
+html,
+body {
+  font-family: "Roboto", sans-serif;
+  font-size: 14px;
+}
+
+@import "./assets/scss/utilities.scss";
+@import "./assets/scss/component/admin-structure";
+@import "./assets/scss/component/admin-top-navbar";
+@import "./assets/scss/component/admin-sidebar-left";
+@import "./assets/scss/component/pagination";
+@import "./assets/scss/component/button";
+@import "./assets/scss//component/dialog";
+@import "./assets/scss/component/breadcrumb";
+@import "./assets/scss/component/image-uploader";
+@import "./assets/scss/component/dynamic-loader";
+@import "./assets/scss/component/reviews";
+@import "./assets/scss/component/tab";
+
+@import "./assets/scss/pages/business-admin";
+@import "./assets/scss/pages/customer-details";
+@import "./assets/scss/pages/restaurant";
+@import "./assets/scss/pages/orders";
+@import "./assets/scss/pages/payment";
+@import "./assets/scss/pages/sign-in";
+@import "./assets/scss/pages/layout";
+@import "./assets/scss/pages/marketing-notification";
+
+@import "./assets/scss/form.scss";
+@import "./assets/scss/table.scss";
+@import "./assets/scss/mediaqueries.scss";
+
+

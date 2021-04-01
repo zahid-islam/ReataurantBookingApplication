@@ -1,0 +1,78 @@
+<form #addOnsForm="ngForm" class="prefeex-form prefeex-horizontal-form form-gray-dark">
+  <div class="form-group row">
+    <label for="" class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2 col-form-label pf-required-icon"> Type </label>
+    <div class="col-12 col-sm-5 col-md-5 col-lg-5 col-xl-5">
+      <p-dropdown [disabled]="addonsId" styleClass="w-100 prefeex-ui-dropdown" [options]="addonTypes"
+        (onChange)="changeAddonType($event.value)" [(ngModel)]="addonType" name="addontype" #addontype="ngModel"
+        optionLabel="name" placeholder="Choose Category">
+      </p-dropdown>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="" class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2 col-form-label pf-required-icon"> Title </label>
+    <div class="col-12 col-sm-5 col-md-5 col-lg-5 col-xl-5">
+      <input [(ngModel)]="addonsModel.name" name="title" #title="ngModel" type="text" class="form-control"
+        placeholder="Title" required>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="" class="col-12 col-sm-2  col-md-2 col-lg-2 col-xl-2 col-form-label">
+      Addons List
+    </label>
+    <div class="col-12 col-sm-5 col-md-5 col-lg-5 col-xl-5" *ngIf="addonsModel.options?.length">
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor="let addon of addonsModel.options; let i=index">
+          <div class="d-flex justify-content-between">
+            <span>Name: {{addon.name}}</span>
+            <span>Price: {{addon.price}}</span>
+            <button type="button" class="btn" (click)="deleteAddons(addon)">
+              <img width="15px" height="15px;" src="/assets/images/icon/action-delete.svg" alt="" srcset="">
+            </button>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="col-12 col-sm-5 col-md-5 col-lg-5 col-xl-5" *ngIf="!addonsModel.options?.length">
+      <ul class="list-group">
+        <li class="list-group-item">
+          &nbsp;
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="" class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2 col-form-label pf-required-icon"> Name </label>
+    <div class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2">
+      <div class="input-group">
+        <input type="text" name="name" #name="ngModel" [(ngModel)]="addons.name" class="form-control"
+          placeholder="Name">
+      </div>
+    </div>
+    <label for="" class="col-12 col-sm-2 col-md-1 col-lg-1 col-xl-1 col-form-label pf-required-icon"> Price </label>
+    <div class="col-12 col-sm-2  col-md-2 col-lg-2 col-xl-2">
+      <div class="input-group">
+        <input type="number" name="price" #price="ngModel" [(ngModel)]="addons.price" class="form-control"
+          placeholder="Price">
+      </div>
+    </div>
+    <div class="col-12 col-sm-1 col-md-1 col-lg-1 col-xl-1">
+      <button type="button" class="btn btn-prefeex-primary" (click)="addAddons()">+</button>
+    </div>
+  </div>
+
+  <div class="form-group row" *ngIf="!isSubmitDisabled">
+    <div class="col-12 col-sm-7 col-md-7 col-lg-7 col-xl-7 text-right">
+      <button [disabled]="!addOnsForm.valid || !addonsModel.options.length || !addonsModel.type" type="button"
+        (click)="submitAddons()" class="btn btn-prefeex-primary text-center rounded-0 ">
+
+        <span [hidden]="isApiSubmit"> Submit </span>
+        <span [hidden]="!isApiSubmit">
+          <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+        </span>
+      </button>
+    </div>
+  </div>
+</form>

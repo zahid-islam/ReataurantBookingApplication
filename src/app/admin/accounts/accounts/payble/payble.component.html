@@ -1,0 +1,424 @@
+<section class="display-box">
+  <div class="row">
+    <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex justify-content-around">
+            <div>
+              <img style="width:36px;height:45px" src="/assets/images/icon/accounts/payble/withdraw_request.svg"
+                class="object-fit-cover mt-2">
+            </div>
+            <div>
+              <h4 class="title-name mb-3">
+                Withdraw Request
+              </h4>
+              <h5 class="amount-number mt-1 mb-0">
+                <a [routerLink]="['/admin/accounts/payble/withdraw-request']"
+                  routerLinkActive="active">{{accountPayableData.withdrawRequestCount}}</a>
+              </h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex justify-content-around">
+            <div>
+              <img style="width:37px;height:45px" src="/assets/images/icon/accounts/payble/total_B2B_amount.svg"
+                class="object-fit-cover mt-2">
+            </div>
+            <div>
+              <h4 class="title-name mb-3">
+                Total B2B Amount
+              </h4>
+              <h5 class="amount-number mt-1 mb-0">
+                {{accountPayableData.otherB2BAmountRequestable | currency:'৳ '}}
+              </h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex justify-content-around">
+            <div>
+              <img style="width:37px;height:45px" src="/assets/images/icon/accounts/payble/total_prefeex_amount.svg"
+                class="object-fit-cover mt-2">
+            </div>
+            <div>
+              <h4 class="title-name mb-3">
+                Total Prefeex Amount
+              </h4>
+              <h5 class="amount-number mt-1 mb-0">
+                {{accountPayableData.prefeexAmountRequestable | currency:'৳ '}}
+              </h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Receivable Search and filter section -->
+<div class="row mb-4">
+  <div class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-1 pr-0 bg-white">
+    <button *ngIf="totalCount > 0" class="btn pf-btn-primary" (click)="convert()"> PDF </button>
+  </div>
+  <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 pr-0 bg-white">
+    <div class="form-row">
+      <div class="col-12">
+        <div class="input-group auto-complete">
+          <p-autoComplete size="30" [(ngModel)]="selectedBusiness" field="name" [suggestions]="searchResultForBusiness"
+            (completeMethod)="search($event)" (onSelect)="setBusinessId($event)" placeholder="Select Business">
+          </p-autoComplete>
+
+          <div class="input-group-append">
+            <button (click)="resetPayable()" class="btn btn-outline-secondary rounded-0" type="submit">
+              <i class="fa fa-refresh" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 pl-0 bg-white">
+    <!-- Search by Reservation ID  -->
+    <form class="single-input-search">
+      <div class="form-row">
+        <div class="col-12">
+          <div class="input-group">
+            <input name="searchOrderRefId" [(ngModel)]="accountPaybleSearch.searchOrderRefId"
+              (ngModelChange)="invokeOnChnagingSearchData()" type="text" class="form-control rounded-0"
+              placeholder="Reservation ID" aria-label="Recipient's Reservation ID with two button addons"
+              aria-describedby="reservation-id">
+            <div class="input-group-append">
+              <button (click)="paybleSearchForm()" class="btn btn-outline-secondary rounded-0" type="submit">
+                <span [hidden]="isApiSubmit"> <i class="fa fa-search" aria-hidden="true"></i> </span>
+                <span [hidden]="!isApiSubmit">
+                  <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                </span>
+              </button>
+              <button (click)="clearSearchingForm()" class="btn btn-outline-secondary rounded-0" type="button">
+                <i class="fa fa-refresh" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-3 pr-0 bg-white">
+    <button *ngIf="accountPayables.length" (click)="getBankAndCreateWithdrawMoneyrequest()" class="btn pf-btn-primary">
+      Pay to Prefeex
+    </button>
+  </div>
+</div>
+<!-- Receivable Search and filter section -->
+
+<!-- Receivable pagination section -->
+<div class="row pf-pagination-container" [addOrRemoveClassToFixedTableHeader]="'500'">
+  <div class="col-12 col-sm-3 col-md-3 col-lg-3 col-xl-3 pr-0">
+    <h5 class="total-data mb-0 mt-2">Total: {{totalCount}}</h5>
+  </div>
+
+  <div class="col-12 col-sm-6 col-md-9 col-lg-9 col-xl-9 pl-0">
+    <p-paginator styleClass="prefeex-pagination" [rows]="itemPerPage" (onPageChange)="paginate($event)"
+      [totalRecords]="totalCount" #paginator pageLinkSize="5" [rowsPerPageOptions]="[10, 50, 100]"></p-paginator>
+  </div>
+</div>
+<!-- Receivable pagination section -->
+
+<!-- Payble data grid section -->
+<div class="row">
+  <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+    <p-table [value]="paybleAll" styleClass="prefeex-data-table"
+      tableStyleClass="table  prefeex-thead-blush">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>
+            Date
+            <i style="cursor: pointer;" *ngIf="!payableSorting.createdAt" (click)="sortColumnWise('createdAt')"
+              class="fa fa-sort-alpha-asc" aria-hidden="false"></i>
+            <i style="cursor: pointer;" *ngIf="payableSorting.createdAt" (click)="sortColumnWise('createdAt')"
+              class="fa fa-sort-alpha-desc" aria-hidden="false"></i>
+          </th>
+          <th style="width: 110px;">Reservation ID</th>
+          <th>For B2B</th>
+          <th>Received Amount</th>
+          <th>Percentage</th>
+          <th>Amount</th>
+          <th style="width: 50px;">Details</th>
+          <th>Action</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-payable>
+        <tr>
+          <td>{{payable.order.scheduledAt | date:'MMM d, y h:mm a'}}</td>
+          <td class="td-bold" style="width: 110px;">{{payable.order.refId}}</td>
+          <td>
+            {{payable.business?.name}}
+          </td>
+          <td class="td-bold"> {{payable.accountReceived.amount | currency:'৳ '}}</td>
+          <td class="td-bold">{{payable.sharedPercentage}} %</td>
+          <td class="td-bold td-rad">{{payable.amount | currency:'৳ '}}</td>
+          <td style="width: 50px;">
+            <div class="btn-group" role="group" aria-label="payable view detaisl">
+              <button type="button" class="btn btn-view" (click)="particularPayableDetails(payable.order.refId)">
+                <i class="fa fa-eye" aria-hidden="true"></i>
+              </button>
+            </div>
+          </td>
+          <td>
+
+            <div class="custom-control custom-checkbox" *ngIf="payable?.business?.id === 1">
+              <input class="custom-control-input" style="width: 20px; height: 20px;" type="checkbox"
+              [id]="payable.id" [(ngModel)]="payable.isPrefeexchecked"
+              (change)="setSinglePayableToPrefeexChecked($event, payable.id)">
+              <label class="custom-control-label" [for]="payable.id" style=" line-height: 20px;">
+              </label>
+            </div>
+            <button *ngIf="payable.business  == null && payable.toCustomerId"
+              (click)="payToCustomerByAccountPayableId(payable.id)" class="btn pf-refund-btn">
+              Pay to Customer
+            </button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+<!-- Payble data grid section -->
+
+<!-- content-loader -->
+<app-content-loader *ngIf="isLoading" [theadcount]="4" [rowlength]="4"></app-content-loader>
+<!-- content-loader -->
+
+<!-- Payble view details Modal -->
+<div class="modal fade bd-example-modal-xl" #payableDetailsModal tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content pf-modal-withdraw">
+      <!-- Header -->
+      <div class="modal-header">
+        <h5 class="modal-title">
+          Payment Details
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body payble-modal">
+        <!--Common header section -->
+        <header>
+          <div class="row mb-4">
+            <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+              <h5 class="text-truncate mt-1">
+                <span class="label mr-2">Payment for: </span>
+                <span class="label-result">{{viewDetails.receivable.business?.name}}</span>
+              </h5>
+            </div>
+            <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+              <h5 class="text-truncate mt-1">
+                <span class="label mr-2">Invoice Date:</span>
+                <span class="label-result">{{viewDetails.order.createdAt | date:'MMM d, y h:mm a'}}</span>
+              </h5>
+            </div>
+            <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-right">
+              <img  src="/assets/images/icon/accounts/payble/payment-details.svg"
+                class="object-fit-cover">
+            </div>
+          </div>
+          <div class="row mb-4 pt-2 pb-2 ml-0 mr-0" style="background: #F7F7F7;">
+            <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+              <h5 class="text-truncate mb-2">
+                <span class="label mr-2">Client ID:</span>
+                <span class="label-result">{{viewDetails.order.creatorId}}</span>
+              </h5>
+            </div>
+            <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+              <h5 class=" text-truncate mb-2">
+                <span class="label  mr-2">Reservation ID:</span>
+                <span class="label-result">{{viewDetails.order.refId}}</span>
+              </h5>
+            </div>
+            <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+              <h5 class="text-truncate mb-2">
+                <span class="label mr-2 mb-2">Payment Gateway: </span>
+                <span class="label-result"> {{viewDetails.receivable.paymentMethod?.name}}</span>
+              </h5>
+            </div>
+            <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+              <h5 class="text-truncate mb-2">
+                <span class="label mr-2 mb-2"> Transaction ID </span>
+                <span class="label-result"> {{viewDetails.receivable.pgTransactionId}}</span>
+              </h5>
+            </div>
+          </div>
+        </header>
+
+        <!--Common Payable Divider-->
+        <section class="divider">
+          <div class="row invoice-details mb-4">
+            <div class="col-12 col-sm-6 col-md-12 col-lg-12 col-xl-12">
+              <h5 class="text-truncate received text-center">
+                <span class="label  mr-2">Payment:</span>
+                <span class="label-result">{{viewDetails.received.createdAt | date:'MMM d, y h:mm a'}}</span>
+              </h5>
+            </div>
+          </div>
+        </section>
+
+        <div *ngIf="viewDetails.refund != null" class="mb-4">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Hours</th>
+                <th scope="col">Applied</th>
+                <th scope="col">B2C %</th>
+                <th scope="col"> B2B %</th>
+                <th scope="col"> Prefeex %</th>
+                <th scope="col"> No Refund</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  {{viewDetails.refund.refundPolicyBreakdown?.appliedMillis / (1000 * 3600) }}h
+                </td>
+                <td>
+                  <span *ngIf="viewDetails.refund.refundPolicyBreakdown?.isAppliedBeforeMillis"> Before </span>
+                  <span *ngIf="!viewDetails.refund.refundPolicyBreakdown?.isAppliedBeforeMillis"> After </span>
+                </td>
+                <td> {{viewDetails.refund.refundPolicyBreakdown?.b2cPercentage }}</td>
+                <td> {{viewDetails.refund.refundPolicyBreakdown?.b2bPercentage }}</td>
+                <td> {{viewDetails.refund.refundPolicyBreakdown?.prefeexPercentage }}</td>
+                <td>
+                  <span *ngIf="viewDetails.refund.refundPolicyBreakdown?.isNoRefund"> Yes </span>
+                  <span *ngIf="!viewDetails.refund.refundPolicyBreakdown?.isNoRefund"> No </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <hr>
+        </div>
+
+        <section class="row invoice-details">
+          <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+            <h6 class="text-center">Invoice Details</h6>
+            <div class="d-flex justify-content-between mb-2">
+              <span class="name">Invoice Amount:</span>
+              <span class="amount">{{viewDetails?.order.totalInvoicePrice | currency:'৳ '}}</span>
+            </div>
+            <div *ngIf="checkValueIsNumberAndPositive(viewDetails?.orderPromotion?.discountAmount)"
+              class="d-flex justify-content-between mb-2">
+              <span class="name">Discount Amount:</span>
+              <span class="amount">{{viewDetails?.orderPromotion?.discountAmount | currency:'৳ -'}}</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+              <span class="name">SSL Fee: </span>
+              <span class="amount">
+                {{viewDetails.sslFee | currency:'৳ -'}}
+              </span>
+            </div>
+            <p class="divider"></p>
+            <div class="d-flex justify-content-between mb-2">
+              <span class="amount">Received Amount:</span>
+              <span class="amount">{{viewDetails.receivable.amount | currency:'৳ '}}</span>
+            </div>
+            <div *ngIf="checkValueIsNumberAndPositive(viewDetails?.order.vatAmount)"
+              class="d-flex justify-content-between mb-2">
+              <span class="amount">Vat Amount:</span>
+              <span class="amount">{{viewDetails?.order.vatAmount | currency:'৳ '}}</span>
+            </div>
+            <div *ngIf="checkValueIsNumberAndPositive(viewDetails?.order.serviceChargeAmount)"
+              class="d-flex justify-content-between mb-2">
+              <span class="amount">Service Charge Amount:</span>
+              <span class="amount">{{viewDetails?.order.serviceChargeAmount | currency:'৳ '}}</span>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+            <h6 class="text-center">Breakdown Details</h6>
+            <div class="d-flex justify-content-between mb-2">
+              <span class="name">Received Amount:</span>
+              <span class="amount">{{viewDetails.receivable.amount | currency:'৳ '}}</span>
+            </div>
+            <div *ngIf="checkValueIsNumberAndPositive(viewDetails?.orderPromotion?.discountAmount)"
+              class="d-flex justify-content-between mb-2">
+              <span class="name">Discount Amount:</span>
+              <span class="amount">{{viewDetails.orderPromotion.discountAmount | currency:'৳ '}}</span>
+            </div>
+            <p class="divider"></p>
+            <div *ngIf="checkValueIsNumberAndPositive(viewDetails?.orderPromotion?.discountAmount)"
+              class="d-flex justify-content-between mb-2">
+              <span class="name">Total Amount:</span>
+              <span class="amount">{{viewDetails.netAmount | currency:'৳ '}}</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+              <span class="name">Prefeex Amount:</span>
+              <span class="sub-name">As an agreement {{prefeexIndex.sharedPercentage}}%</span>
+              <span class="amount">{{prefeexIndex.amount | currency:'৳ '}}</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+              <span class="name">B2B Amount:</span>
+              <span class="sub-name">As an agreement {{b2bIndex.sharedPercentage}}%</span>
+              <span class="amount">{{b2bIndex?.amount | currency:'৳ '}}</span>
+            </div>
+            <div *ngIf="checkValueIsNumberAndPositive(customerIndex?.amount)"
+              class="d-flex justify-content-between mb-2">
+              <span class="name">B2C Amount:</span>
+              <span class="sub-name">As an agreement {{customerIndex.sharedPercentage}}%</span>
+              <span class="amount">{{customerIndex?.amount | currency:'৳ '}}</span>
+            </div>
+            <p class="divider"></p>
+            <div class="d-flex justify-content-between mb-2">
+              <span class="amount">Net Amount:</span>
+              <span class="amount">{{viewDetails.netAmount | currency:'৳ '}}</span>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Payble view details Modal -->
+
+
+<!-- Pay to B2C Modal -->
+<div class="modal fade" role="dialog" #payToB2CModal>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content pf-modal-withdraw">
+      <div class="modal-header">
+        <h5 class="modal-title">Receive</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="modal-form-normal" #payToCustomerForm="ngForm"
+          (ngSubmit)="payToCustomerForm.valid && requestForCustomerAmount(payToCustomerForm)">
+          <div class="form-group">
+            <label for="comment">Comment</label>
+            <textarea class="form-control" name="comment" [(ngModel)]="payToCustomer.comment" id="comment"
+              placeholder="Comment" rows="3"></textarea>
+          </div>
+          <div class="form-group text-center">
+            <button type="submit" class="btn pf-btn-primary rounded-0 pr-5 pl-5">
+              <span [hidden]="isPayToB2CApiSubmit"> Submit </span>
+              <span [hidden]="!isPayToB2CApiSubmit">
+                <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                <!-- Inprogress... -->
+              </span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Pay to B2C Modal -->

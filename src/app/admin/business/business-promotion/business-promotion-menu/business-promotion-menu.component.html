@@ -1,0 +1,91 @@
+<!-- Search customer -->
+<div class="row">
+  <div class="col-12">
+    <form #searchMenuForm="ngForm" (ngSubmit)="searchCustomer(searchMenuForm.value)" class="pf-search-component">
+      <div class="form-row">
+        <div class="form-group col-12 col-sm-8  col-md-4 col-lg-4 col-xl-4">
+          <label for="name" class="col-form-label">Menu Name</label>
+          <input type="text" name="name" [(ngModel)]="menuSearch.name" #name="ngModel" class="form-control"
+            placeholder="Menu Name">
+        </div>
+        <div
+          class="form-group col-12 col-sm-4  col-md-6 col-lg-6 col-xl-6  mt-sm-2 pt-sm-4 mt-lg-2   mt-md-2 pt-md-4 mt-lg-2 pt-lg-4 mt-xl-2 pt-xl-4">
+          <button type="button" (click)="resetSearch(searchMenuForm)" class="btn pf-btn-primary">Reset</button>
+          <button type="submit" class="btn pf-btn-primary">
+            <span [hidden]="isApiSubmit"> Search </span>
+            <span [hidden]="!isApiSubmit">
+              <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+            </span>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- Search Customer -->
+<section>
+  <div style="min-height: 35px;" class="d-flex justify-content-end  mb-4">
+    <p style="font-style: normal; font-weight: normal; font-size: 14px; line-height: 35px; color: #5D5D5D;"
+      class="mb-0"> {{newFoodMenuIds.length}} Menu selected</p>
+    <button type="button" (click)="updateRestaurantOffer()" [disabled]="newFoodMenuIds.length === 0"
+      class="btn pf-btn-primary ml-3">Update Promotion</button>
+  </div>
+</section>
+
+<!-- Menu pagination section -->
+<div class="row pf-pagination-container" [addOrRemoveClassToFixedTableHeader]="'350'">
+  <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 pr-0">
+    <h5 class="total-data mb-0 mt-2">
+      <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" [(ngModel)]="checkedAll"
+          (change)="setAllMenuChecked($event)" id="selectAll">
+        <label class="custom-control-label" for="selectAll" style=" line-height: 20px;">Select All</label>
+      </div>
+    </h5>
+  </div>
+  <div class="col-12 col-sm-8 col-md-8 col-lg-8 col-xl-8 pl-0">
+    <p-paginator #paginator styleClass="prefeex-pagination" [rows]="itemPerPage" (onPageChange)="paginate($event)"
+      [totalRecords]="totalCount" pageLinkSize="5" [rowsPerPageOptions]="[10, 50, 100]"></p-paginator>
+  </div>
+</div>
+<!-- Menu pagination section -->
+
+<!-- Menu data view section -->
+<div class="row">
+  <div class="col-12">
+    <p-table [value]="allFoodMenus" styleClass="prefeex-data-table markating-list-teble"
+      tableStyleClass="table prefeex-thead-blush">
+      <ng-template pTemplate="header">
+        <tr>
+          <th> Menu ID</th>
+          <th> Menu Category </th>
+          <th> Menu Name </th>
+          <th> Price </th>
+          <th> Vat Status </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-menuItem>
+        <tr>
+          <td class="td-bold text-truncate">
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" [id]="menuItem.id" [(ngModel)]="menuItem.checked"
+                (change)="setSingleMenuChecked($event, menuItem.id)">
+              <label class="custom-control-label" [for]="menuItem.id" style=" line-height: 20px;">
+                {{menuItem.id}}
+              </label>
+            </div>
+          </td>
+          <td class=" text-truncate">{{menuItem?.foodType?.name}}</td>
+          <td class=" text-truncate">{{menuItem.itemName}}</td>
+          <td class="td-rad td-bold">{{menuItem.price | currency:'৳ '}}</td>
+          <td>{{menuItem?.vatStatus?.name}}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+<!-- Menu data view section -->
+
+<!-- content-loader -->
+<app-content-loader *ngIf="isLoading" [theadcount]="8" [rowlength]="4"></app-content-loader>
+<!-- content-loader -->

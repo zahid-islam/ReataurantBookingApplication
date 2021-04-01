@@ -1,0 +1,230 @@
+<!-- Create Business -->
+<div class="row" [appHideIfUnauthorized]="'create'" [actionRoot]="'business'">
+  <div class="col-12">
+    <div class="prefeex-add-btn text-center" style="margin-bottom: 34px">
+      <a class="text-decoration-none" [routerLink]="['/admin/sales/create-business-form']">
+        <img src="/assets/images/icon/plus-icon.svg" alt="">
+        <span>Create Business</span>
+      </a>
+    </div>
+  </div>
+</div>
+<!-- Create Business -->
+
+<!-- Search Business -->
+<div class="row">
+  <div class="col-12">
+    <form #businessSearchForm="ngForm" class="pf-search-component">
+      <div class="form-row" style="margin-bottom: 30px;">
+        <div class="form-group col-md-4">
+          <label for="">Business Name</label>
+          <input type="text" name="name" [(ngModel)]="businessSearchModel.name" #name="ngModel" class="form-control"
+            placeholder="Business Name" (ngModelChange)="invokeOnChnagingSearchData()">
+        </div>
+        <div class="form-group col-md-4">
+          <label for="">Email</label>
+          <input type="email" name="email" [(ngModel)]="businessSearchModel.email" #email="ngModel" class="form-control"
+            placeholder="Email" (ngModelChange)="invokeOnChnagingSearchData()">
+        </div>
+        <div class="form-group col-md-4">
+          <label for="">Mobile</label>
+          <input type="tel" name="phone" [(ngModel)]="businessSearchModel.phone" #phone="ngModel" class="form-control"
+            placeholder="Mobile" (ngModelChange)="invokeOnChnagingSearchData()">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-12 text-center">
+          <button type="button" (click)="clearSearchingForm(businessSearchForm)"
+            class="btn pf-btn-primary">Reset</button>
+          <button type="submit" class="btn pf-btn-primary" (click)="searchBusiness()">
+            <span [hidden]="isApiSubmit"> Search </span>
+            <span [hidden]="!isApiSubmit">
+              <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+            </span>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- Create Business -->
+
+<!-- business pagination section -->
+<div class="row pf-pagination-container" [addOrRemoveClassToFixedTableHeader]="'250'">
+  <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 pr-0">
+    <h5 class="total-data mb-0 mt-2">Total: {{totalCount}}</h5>
+  </div>
+  <div class="col-12 col-sm-8 col-md-8 col-lg-8 col-xl-8 pl-0">
+    <p-paginator #paginator styleClass="prefeex-pagination" [rows]="itemPerPage" (onPageChange)="paginate($event)"
+      [totalRecords]="totalCount" pageLinkSize="5" [rowsPerPageOptions]="[10, 50, 100]"></p-paginator>
+  </div>
+</div>
+<!-- business pagination section -->
+
+<!-- business data view section -->
+<div class="row">
+  <div class="col-12">
+    <p-table styleClass="prefeex-data-table" [value]="allBusinesses" tableStyleClass="table prefeex-thead-blush">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Business Name</th>
+          <th>Business Type</th>
+          <th>Location</th>
+          <th>Address</th>
+          <th>
+            <select class="status-filter" (change)="filterBusinessOnStatusChange(statusForFilter)"
+              [(ngModel)]="statusForFilter" placeholder="Select status">
+              <option selected [ngValue]="0"> All </option>
+              <option *ngFor="let stat of businessStatuses" [ngValue]="stat.id">
+                {{stat.name}}
+              </option>
+            </select>
+          </th>
+          <th style="width: 200px;" *ngIf="internalUser.userType.name === 'SALES_MANAGER'">Assignee</th>
+          <th *ngIf="internalUser.userType.name === 'SALES_MANAGER'">Assign</th>
+          <th style="width: 60px">User</th>
+          <th style="width: 100px">Bank Info</th>
+          <th style="width: 60px">Edit</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-business>
+        <tr>
+          <td class="td-bold text-truncate">
+            <a [title]="business.name" [routerLink]="['/admin/business/manage-business/'+ business.id]">
+              {{business.name}}
+            </a>
+          </td>
+          <td>
+            <span class="text-status">
+              {{business.businessType.name}}
+            </span>
+          </td>
+          <td>{{business.location}}</td>
+          <td class=" text-truncate">{{business.address}}</td>
+          <td>
+            <select [appHideIfUnauthorized]="'status'" [actionRoot]="'business'"
+              (change)="statusChangesAction(business.businessStatus.id, business)"
+              [(ngModel)]="business.businessStatus.id">
+              <option *ngFor="let stat of businessStatuses" [ngValue]="stat.id">
+                {{stat.name}}
+              </option>
+            </select>
+          </td>
+          <td *ngIf="internalUser.userType.name === 'SALES_MANAGER'">
+            <span class=" assignee-email w-100" *ngFor="let item of business.assignedSalesUsers">
+              {{item.email}}
+            </span>
+          </td>
+
+          <td *ngIf="internalUser.userType.name === 'SALES_MANAGER'">
+            <button (click)="showSalesUserIntoModal(business)" type="button" class="btn create-user">
+              Assign
+            </button>
+          </td>
+          <td>
+            <a role="button" [appHideIfUnauthorized]="'user'" [actionRoot]="'business'" class="btn  create-user"
+              [routerLink]="['/admin/sales/business-user/'+ business.id]">Users</a>
+          </td>
+          <td>
+            <a role="button" [appHideIfUnauthorized]="'bank'" [actionRoot]="'business'" class="btn create-user"
+              [routerLink]="['/admin/sales/payment-method/'+ business.id]">Bank Info</a>
+          </td>
+          <td>
+            <a role="button" [appHideIfUnauthorized]="'edit'" [actionRoot]="'business'" class="btn create-user"
+              [routerLink]="['/admin/sales/create-business-form/'+ business.id]">
+              Edit
+            </a>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+<!-- business data view section -->
+<!-- content-loader -->
+<app-content-loader *ngIf="isLoading" [theadcount]="9" [rowlength]="4"></app-content-loader>
+<!-- content-loader -->
+
+
+<!-- Assign Sales user Modal -->
+<div class="modal fade bd-example-modal-md" tabindex="-1" role="dialog" #AssignSalesUserModal>
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content pf-modal-withdraw">
+      <div class="modal-header">
+        <h5 class="modal-title">Business Assign To Particular Sales User</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Checked User count section  -->
+        <section>
+          <div style="min-height: 35px;" class="d-flex justify-content-end  mb-4">
+            <p style="font-style: normal; font-weight: normal; font-size: 14px; line-height: 35px; color: #5D5D5D;"
+              class="mb-0">{{businessSalesUser.salesUserIds.length}} User Selected
+            </p>
+            <button type="button" [disabled]="businessSalesUser.salesUserIds.length === 0"
+              class="btn pf-btn-primary ml-3" (click)="assignToSalesUsers()">
+              <span [hidden]="isApiSubmitForSalesUser"> Submit </span>
+              <span [hidden]="!isApiSubmitForSalesUser">
+                <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+              </span>
+            </button>
+          </div>
+        </section>
+
+        <!-- Sales user pagination section -->
+        <div class="row pf-pagination-container">
+          <div class="col-12 col-sm-4 col-md-2 col-lg-2 col-xl-2 pr-0">
+            <h5 class="total-data mb-0 mt-2">Total: {{salesUserTotalCount}}</h5>
+          </div>
+          <div class="col-12 col-sm-8 col-md-10 col-lg-10 col-xl-10 pl-0">
+            <p-paginator #paginator styleClass="prefeex-pagination" [rows]="itemPerPage"
+              (onPageChange)="paginateSalesUser($event)" [totalRecords]="salesUserTotalCount" pageLinkSize="5"
+              [rowsPerPageOptions]="[10, 50, 100]"></p-paginator>
+          </div>
+        </div>
+        <!-- Sales user pagination section -->
+
+        <!-- Sales user data view section -->
+        <div class="row">
+          <div class="col-12 ">
+            <p-table [value]="salesUsers" styleClass="prefeex-data-table markating-list-teble"
+              tableStyleClass="table prefeex-thead-blush ">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th> Email </th>
+                  <th> User Name </th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-salesUser>
+                <tr>
+                  <td class="td-bold">
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" [id]="salesUser.id"
+                        [(ngModel)]="salesUser.checked" (change)="setSingleSalesUserChecked($event, salesUser.id)">
+                      <label class="custom-control-label" [for]="salesUser.id" style=" line-height: 20px;">
+                        {{salesUser.email}}
+                      </label>
+                    </div>
+                  </td>
+                  <td>
+                    {{salesUser.firstName}}
+                    {{salesUser.lastName}}
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+        <!-- Sales user data view section -->
+
+        <!-- content-loader -->
+        <app-content-loader *ngIf="isLoadingSalesUser" [theadcount]="4" [rowlength]="4"></app-content-loader>
+        <!-- content-loader -->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Assign Sales user Modal -->

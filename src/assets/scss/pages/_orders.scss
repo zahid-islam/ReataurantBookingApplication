@@ -1,0 +1,393 @@
+@import "../variable.scss";
+
+.order-details-header {
+  height: 120px;
+  padding: 10px 15px;
+
+  .profile-img {
+    width: 100px;
+    height: 110px;
+    overflow: hidden;
+    float: left;
+    margin-right: 15px;
+  }
+
+  .name {
+    font-style: $f-s-normal;
+    font-weight: $f-w-bold;
+    font-size: $f-s-rem-24;
+    line-height: 28px;
+    color: $pf-chips-t;
+  }
+
+  .sub {
+    font-style: $f-s-normal;
+    font-weight: $f-w-300;
+    font-size: $f-s-rem-14;
+    line-height: 16px;
+    color: $t-text-color;
+    margin-bottom: 8px;
+  }
+
+  .phone {
+    font-style: $f-s-normal;
+    font-weight: $f-w-bold;
+    font-size: $f-s-rem-21;
+    line-height: 25px;
+    color: $blush;
+    .each-phone {
+      border: 1px solid #e1acb3;
+      padding: 0px 4px;
+      border-radius: 20px;
+      margin-right: 4px;
+    }
+  }
+}
+
+/** ---------- Tickent details page ---------------  */
+.order-details-callcenter {
+  padding: 10px;
+  background-color: #ededed;
+  border-radius: 0px;
+
+  .profile-con {
+    background-color: $white;
+    padding: 10px;
+    margin-bottom: 14px;
+    min-height: 84px;
+
+    .profile-img {
+      width: 60px;
+      height: 60px;
+      overflow: hidden;
+      margin: 0 8px 0 0;
+    }
+
+    .name {
+      font-style: $f-s-normal;
+      font-weight: $f-w-bold;
+      font-size: $f-s-rem-18;
+      line-height: 18px;
+      color: $pf-chips-t;
+    }
+
+    .sub {
+      font-style: $f-s-normal;
+      font-weight: $f-w-300;
+      font-size: $f-s-rem-16;
+      line-height: 19px;
+      color: $t-text-color;
+      margin-bottom: 8px;
+      .each-email {
+        padding: 0px 4px;
+      }
+    }
+
+    .phone {
+      font-style: $f-s-normal;
+      font-weight: $f-w-bold;
+      font-size: $f-s-rem-16;
+      line-height: 19px;
+      color: $blush;
+      .each-phone {
+        border-bottom: 1px solid #e1acb3;
+        padding: 0px 4px;
+        margin-right: 4px;
+      }
+    }
+  }
+
+  .profile-info {
+    margin-bottom: 14px;
+
+    p {
+      font-style: $f-s-normal;
+      font-weight: $f-w-normal;
+      font-size: $f-s-rem-16;
+      line-height: 16px;
+      color: $t-gray-dark;
+    }
+  }
+
+  .order-details-table {
+    td,
+    th {
+      border-top: 0px;
+    }
+
+    thead tr th,
+    tbody tr td,
+    tfoot tr td {
+      font-style: $f-s-normal;
+      font-weight: $f-w-bold;
+      font-size: $f-s-rem-16;
+      line-height: 16px;
+    }
+
+    tbody tr td,
+    thead tr th {
+      color: $pf-chips-t;
+    }
+
+    thead tr th:last-child,
+    tbody tr td:last-child,
+    tfoot tr td:last-child {
+      text-align: right;
+    }
+
+    tfoot tr {
+      background-color: #d6d6d6;
+
+      td {
+        font-style: normal;
+        font-weight: bold;
+        font-size: 18px;
+        line-height: 21px;
+        color: #5c5c5c;
+      }
+    }
+
+    thead tr th {
+      border-top: 0px;
+      border-bottom: 1px solid #a3a3a3;
+    }
+  }
+
+  .order-approved-decline {
+    margin-top: 10px;
+
+    .btn-primary {
+      background: $blush;
+      border: 1px solid $blush;
+      font-style: $f-s-normal;
+      font-weight: $f-w-normal;
+      font-size: $f-s-rem-16;
+      line-height: 16px;
+      color: $white;
+      border-radius: 0px;
+    }
+
+    .approved-decline {
+      background: $blush;
+      color: $white;
+      border-radius: 0px;
+      height: 30px;
+      padding: 5px 5px;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 1.125rem !important;
+      line-height: 21px;
+    }
+  }
+}
+
+.customer-care-info {
+  .customer-care-table {
+    background-color: #fafafa;
+
+    thead tr th {
+      background-color: #d6d6d6;
+      color: #5d5d5d;
+    }
+
+    tbody tr td {
+      font-style: $f-s-normal;
+      font-weight: $f-w-normal;
+      font-size: $f-s-rem-16;
+      line-height: 16px;
+
+      .approved-text,
+      .wating-for-text,
+      .time-text {
+        padding: 5px;
+      }
+
+      .approved-text {
+        background: #ddeae4;
+      }
+
+      .wating-for-text {
+        background: #f2ebce;
+      }
+
+      .time-text {
+        background: #eae0da;
+      }
+    }
+
+    thead tr th {
+      font-style: $f-s-normal;
+      font-weight: $f-w-normal;
+      font-size: $f-s-rem-18;
+      line-height: 21px;
+    }
+
+    thead tr th:last-child,
+    tbody tr td:last-child {
+      text-align: right;
+    }
+
+    tbody tr td,
+    thead tr td {
+      color: #5d5d5d;
+    }
+  }
+}
+
+.leave-message {
+  padding: 10px 10px;
+  background: #e4e4e4;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
+
+  .executive-comment {
+    font-style: $f-s-normal;
+    font-weight: $f-w-bold;
+    font-size: $f-s-rem-18;
+    line-height: 18px;
+    color: $pf-chips-t;
+  }
+
+  .input-group {
+    .form-control:focus {
+      color: #495057;
+      background-color: #fff;
+      border-color: #b8423e;
+      outline: 0;
+      box-shadow: 0 0 0 0.2rem rgba(184, 66, 62, 0.3);
+    }
+
+    input {
+      border-radius: 0px;
+      height: 40px;
+    }
+  }
+
+  .input-group-append {
+    .btn.focus,
+    .btn:focus {
+      outline: 0;
+      box-shadow: 0 0 0 0.2rem rgba(184, 66, 62, 0.3);
+    }
+
+    .btn {
+      height: 40px;
+      width: 52px;
+      background: #d6d6d6;
+      border-radius: 0px;
+
+      .leave-message-icon {
+        position: relative;
+      }
+    }
+  }
+}
+
+.tickent-details-header {
+  background-color: $ticket-header;
+  padding: 15px 10px 13px 10px;
+
+  .label-name,
+  .label-value {
+    font-style: $f-s-normal;
+    font-weight: $f-w-normal;
+    font-size: $f-s-rem-18;
+    line-height: 21px;
+  }
+
+  .label-value {
+    font-weight: $f-w-bold;
+  }
+
+  .label-name {
+    color: $blush;
+  }
+
+  .label-value {
+    color: $pf-chips-t;
+  }
+
+  .ticket-time {
+    height: 30px;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 21px;
+    color: $blush;
+  }
+
+  .ticket-status {
+    height: 30px;
+    background-color: #a7a9ac;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 21px;
+    color: #ffffff;
+    padding-left: 5px;
+  }
+}
+
+/** ------------------- Ticket list Dashboard ------------------*/
+.support-dashboard {
+  .card {
+    background: #fafafa;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.24), 0px 0px 2px rgba(0, 0, 0, 0.12);
+    border-radius: 2px;
+    height: 102px;
+
+    .card-body {
+      height: 81px;
+    }
+  }
+  .title {
+    height: 21px;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 21px;
+    color: #ffffff;
+  }
+  .count {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 42px;
+    line-height: 49px;
+    text-align: center;
+    color: #787878;
+  }
+}
+.PENDING {
+  background-color: #e47634;
+}
+.B2B_INPROGRESS {
+  background-color: #138974;
+}
+.B2C_INPROGRESS {
+  background-color: #34696f;
+}
+.B2C_PENDING {
+  background: #bf4d6b;
+}
+.WAITING_FOR_RESOLVED {
+  background: #cd6426;
+}
+.WAITING_FOR_B2B {
+  background: #449ed0;
+}
+.WAITING_FOR_B2C {
+  background: #449ed0;
+}
+.SUPPORT_CONVERSATION_IN_PROGRESS {
+  background: #6737a4;
+}
+.SUPPORT_CONVERSATION_CUSTOMER_SUPPORT_PENDING {
+  background: #421281;
+}
+.REFUND_AND_CANCELATION {
+  background: #1f3c63;
+}
+.RESOLVED {
+  background-color: #ccc;
+}

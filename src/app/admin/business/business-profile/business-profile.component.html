@@ -1,0 +1,186 @@
+<!-- Business info details section -->
+<!-- Business header section -->
+<header class="restaurant-header">
+  <div class="row">
+    <div class="col-12 col-sm-11 col-md-11 col-lg-11 col-lx-11">
+      <div class="restaurant-profile-img">
+        <img style="width:100px;height:100px" [hidden]="isBusinessMainImgLoading" (load)="onLoadMainImage()"
+          [src]="businessProfile.primaryPhoto ? businessProfile.primaryPhoto :'/assets/images/food-menu/food-item-dummy.png'"
+          class="object-fit-cover rounded-circle">
+        <div *ngIf="isBusinessMainImgLoading" class="spinner-border text-danger" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+      <div class="d-flex flex-row text-truncate">
+        <div class=" pr-3">
+          <h2 class="restaurant-title text-white pull-left mb-0">
+            <span class="restaurant-name"> {{businessProfile.name}} </span>
+          </h2>
+        </div>
+        <div class="mt-3">
+          <button *ngFor="let item of businessProfile?.tags" type="button" class="btn btn-outline-light mr-2">
+            {{item.name}}
+          </button>
+        </div>
+      </div>
+      <p class="restaurant-address mb-1 full-width text-white text-truncate">
+        {{businessProfile.address}}
+      </p>
+      <p class="mb-0"
+        style="font-style: normal; font-weight: normal; font-size: 13px;  line-height: 15px; color: #FFFFFF;">
+        <i class="fa fa-star" aria-hidden="true"></i>
+        {{businessProfile.rating}} ({{businessProfile.ratingCount}} Reviews)
+      </p>
+    </div>
+    <div class="col-12 col-sm-1 col-md-1 col-lg-1 col-lx-1" [appHideIfUnauthorized]="'setting'"
+      [actionRoot]="'businessProfile'">
+      <div class="edit-setting w-100 text-right">
+        <a href="#" [routerLink]="['/admin/business/manage-business/'+ businesId +'/profile-setting']" title="Profile">
+          <img src="/assets/images/icon/edit-setting.svg" class="pr-2" alt="edit-setting">
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+<!-- Business header section -->
+
+<!-- Business description and Image gallery section -->
+<section class="restaurant-dis-gallery">
+  <div class="row">
+    <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-lx-6">
+      <div class="restaurant-facility-list" *ngIf="businessProfile.facilities?.length > 0">
+        <button type="button " *ngFor="let facilitie of businessProfile.facilities" class="btn restaurant-facility-btn">
+          {{facilitie.name }}
+        </button>
+      </div>
+      <div class="restaurant-description">
+        <h6 class="restaurant-about">About</h6>
+        <p> {{businessProfile.details}}</p>
+        <p class="restaurant-capacity font-weight-bold"> Capacity: {{businessProfile.capacity}} Persons</p>
+      </div>
+    </div>
+    <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-lx-6">
+
+      <div id="carouselExampleControls" *ngIf="businessProfile.photos?.length > 0" class="carousel slide mt-3"
+        data-ride="carousel">
+        <div class="carousel-inner text-center">
+          <div [ngClass]="{'active': isfirst}" class="carousel-item" style="height:400px;"
+            *ngFor="let img of businessProfile.photos; index as i;first as isfirst">
+            <img style="height:400px; width: auto; " [hidden]="isImgLoading" (load)="onLoad()" [src]="img.photo"
+              class="object-fit-contain" alt="Restaurant">
+          </div>
+        </div>
+        <a [hidden]="!(businessProfile.photos?.length > 1)" class="carousel-control-prev"
+          href="#carouselExampleControls" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <a [hidden]="!(businessProfile.photos?.length > 1)" class="carousel-control-next"
+          href="#carouselExampleControls" role="button" data-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+        </a>
+      </div>
+      <div *ngIf="isImgLoading" class="spinner-border text-danger" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+<!-- Business description and Image gallery section -->
+
+<div class=" customer-address">
+  <div class="row">
+    <div class="col-md-8">
+      <div class="row">
+        <div class="col-md-4">
+          <p class="customer-addr-label">Phone:</p>
+        </div>
+        <div class="col-md-8">
+          <p class="customer-addr-details">
+
+            <span class="mr-3" *ngFor="let item of businessProfile.phones.slice(0, 2)">
+              {{item.phone}}
+            </span>
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <p class="customer-addr-label">Email:</p>
+        </div>
+        <div class="col-md-8">
+          <p class="customer-addr-details">
+            <span class="mr-3"  *ngFor="let item of businessProfile.emails.slice(0, 2)">
+              {{item.email}}
+            </span>
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <p class="customer-addr-label">Location:</p>
+        </div>
+        <div class="col-md-8">
+          <p class="customer-addr-details">
+            {{businessProfile.location}}
+          </p>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="col-md-4">
+      <div class="row">
+        <div class="col-md-4">
+          <p class="customer-addr-label">Total Hit:</p>
+        </div>
+        <div class="col-md-8">
+          <p class="customer-addr-details">15629</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <p class="customer-addr-label">Rejected:</p>
+        </div>
+        <div class="col-md-8">
+          <p class="customer-addr-details">134</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <p class="customer-addr-label">Successful</p>
+        </div>
+        <div class="col-md-8">
+          <p class="customer-addr-details">22881</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="row">
+        <div class="col-md-5">
+          <p class="customer-addr-label">Last Payment:</p>
+        </div>
+        <div class="col-md-7">
+          <p class="customer-addr-details">11256</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-5">
+          <p class="customer-addr-label">Due Payment:</p>
+        </div>
+        <div class="col-md-7">
+          <p class="customer-addr-details">3500</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-5">
+          <p class="customer-addr-label">Total Paymet:</p>
+        </div>
+        <div class="col-md-7">
+          <p class="customer-addr-details">1200500</p>
+        </div>
+      </div>
+    </div> -->
+  </div>
+</div>
+<!-- Business info details section -->

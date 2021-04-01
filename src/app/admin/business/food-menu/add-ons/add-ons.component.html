@@ -1,0 +1,54 @@
+<!-- Create Addons -->
+<div class="row">
+  <div class="col-12">
+    <div class="prefeex-add-btn text-center" style="margin-bottom: 34px">
+      <a class="text-decoration-none"
+
+      [routerLink]="['/admin/business/manage-business/'+businessId+'/food-menu/'+menuId+'/create']">
+        <img width="65px" height="56px" src="/assets/images/icon/create-menu-icon.png" alt="add-icon">
+        <span> Add Addons </span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Create Addons -->
+
+<!-- Addons data view section -->
+<div class="row" [addOrRemoveClassToFixedTableHeader]="'240'">
+  <div class="col-12">
+    <p-table [value]="addonsGridLists" styleClass="prefeex-data-table" tableStyleClass="table prefeex-thead-blush">
+      <ng-template pTemplate="header">
+        <tr>
+          <th> Name </th>
+          <th style="width: 150px"> Status </th>
+          <th> Action </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-addonsItem>
+        <tr>
+          <td class="td-bold">{{addonsItem.name}}</td>
+          <td style="width: 150px">
+            <select (change)="updateOnStatusChanges(addonsItem.addonStatus.id, addonsItem)"
+              [(ngModel)]="addonsItem.addonStatus.id">
+              <option *ngFor="let status of addOnsStatuses" [ngValue]="status.id">
+                {{status.name}}
+              </option>
+            </select>
+          </td>
+          <td>
+            <a role="button"
+            [routerLink]="['/admin/business/manage-business/'+businessId+'/food-menu/'+menuId+'/create/'+addonsItem.id]" class="btn create-user">
+              Edit
+            </a>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+<!-- Addons data view section -->
+
+<!-- content-loader -->
+<app-content-loader *ngIf="isLoading" [theadcount]="3" [rowlength]="4"></app-content-loader>
+<!-- content-loader -->

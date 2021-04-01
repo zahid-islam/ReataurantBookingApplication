@@ -1,0 +1,145 @@
+<!-- Create App Versioning -->
+<div class="row">
+  <div class="col-12">
+    <div class="prefeex-add-btn mt-4" style="margin-bottom: 34px; width: auto;">
+      <a (click)="popupAppVersioningCreateModal()" style="cursor: pointer" class="text-decoration-none">
+        <img src="/assets/images/icon/plus-icon.svg" alt="add-icon">
+        <span> Create App Version </span>
+      </a>
+    </div>
+  </div>
+</div>
+<!-- App Versioning pagination section -->
+<div class="row pf-pagination-container" [addOrRemoveClassToFixedTableHeader]="'300'">
+  <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 pr-0">
+    <h5 class="total-data mb-0 mt-2">Total: {{totalCount}} </h5>
+  </div>
+  <div class="col-12 col-sm-8 col-md-8 col-lg-8 col-xl-8 pl-0">
+    <p-paginator styleClass="prefeex-pagination" [rows]="itemPerPage" (onPageChange)="paginate($event)"
+      [totalRecords]="totalCount" pageLinkSize="5" [rowsPerPageOptions]="[10, 50, 100]"></p-paginator>
+  </div>
+</div>
+<!-- App Versioning pagination section -->
+<!-- App Versioning data view section -->
+<div class="row">
+  <div class="col-12">
+    <p-table styleClass="prefeex-data-table" [value]="appVersionings" tableStyleClass="table  prefeex-thead-blush">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Placed At</th>
+          <th>Version</th>
+          <th>Build Number</th>
+          <th style="width: 150px">
+            <select class="status-filter" (change)="filterAppVersioningOnClientPlatformChange(clientPlatformForFilter)"
+              [(ngModel)]="clientPlatformForFilter" placeholder="Select status">
+              <option *ngFor="let platform of ['All', 'B2C_ANDROID', 'B2C_IOS']" [ngValue]="platform">
+                {{platform}}
+              </option>
+            </select>
+          </th>
+          <th>Creator</th>
+          <th style="width: 150px">
+            <select class="status-filter" (change)="filterAppVersioningOnStatusChange(statusForFilter)"
+              [(ngModel)]="statusForFilter" placeholder="Select status">
+              <option selected [ngValue]="0"> All </option>
+              <option *ngFor="let stat of appVersioningStatuses" [ngValue]="stat.id">
+                {{stat.name}}
+              </option>
+            </select>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-appversion>
+        <tr>
+          <td>{{appversion.createdAt | date:'MMM d, yy h:mm a'}} </td>
+          <td>{{appversion.semver}} </td>
+          <td>{{appversion.buildNumber}}</td>
+          <td>{{appversion.clientPlatform}}</td>
+          <td>{{appversion.creator.email}}</td>
+          <td style="width: 150px">
+            <select (change)="updateAppVersioningStatus(appversion.appVersioningStatus.id, appversion)"
+              [(ngModel)]="appversion.appVersioningStatus.id">
+              <option *ngFor="let status of appVersioningStatuses" [ngValue]="status.id">
+                {{status.name}}
+              </option>
+            </select>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+<!-- content-loader -->
+<app-content-loader *ngIf="isLoading" [theadcount]="4" [rowlength]="4"></app-content-loader>
+<!-- content-loader -->
+
+
+<!-- Modal for Create App Versioning  -->
+<div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" #CreateAppsVersionModal>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content pf-modal-withdraw">
+      <div class="modal-header">
+        <h5 class="modal-title"> Create App Version</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="modal-form-normal" #appVersionForm="ngForm"
+          (ngSubmit)="appVersionForm.valid && createAppVersioning(appVersionForm)">
+          <div class="form-row">
+            <div class="form-group col-6">
+              <label for="semver">Semantic Version</label>
+              <input type="text" class="form-control" id="semver" name="semver" [(ngModel)]="appVersionModel.semver"
+                placeholder="Semantic Version" required>
+            </div>
+            <div class="form-group col-6">
+              <label for="buildNumber">Build Number</label>
+              <input type="text" pattern="\d*" maxlength="4" class="form-control" id="buildNumber"  name="buildNumber"
+                [(ngModel)]="appVersionModel.buildNumber" placeholder="Build Number" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-6">
+              <label for="clientPlatform">Client Platform</label>
+              <select class="form-control" [(ngModel)]="appVersionModel.clientPlatform" name="clientPlatform"
+                placeholder="Select one category" required>
+                <option [ngValue]="undefined" disabled selected> Select Client Platform </option>
+                <option *ngFor="let platform of ['B2C_ANDROID', 'B2C_IOS']" [ngValue]="platform">
+                  {{platform}}
+                </option>
+              </select>
+            </div>
+            <div class="form-group col-6">
+              <label for="forced" class=" mr-4 w-100">Forced</label>
+              <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" id="forcedYes" value="forcedYesVal" [ngModel]='appVersionModel.forced' name="forced"
+                  class="custom-control-input" required>
+                <label class="custom-control-label" for="forcedYes">Yes</label>
+              </div>
+              <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" id="forcedNo" value="forcedNoVal" [ngModel]='appVersionModel.forced' name="forced"
+                  class="custom-control-input" required>
+                <label class="custom-control-label" for="forcedNo">No</label>
+              </div>
+            </div>
+          </div>
+          <div class="form-group text-center">
+            <button type="reset" [disabled]="!appVersionForm.valid" class="btn pf-btn-primary rounded-0 mr-4"> Reset
+            </button>
+            <button [disabled]="!appVersionForm.valid" type="submit"
+              class="btn pf-btn-primary text-center rounded-0 btn-big-padding">
+              <span [hidden]="isApiSubmit"> Save </span>
+              <span [hidden]="!isApiSubmit">
+                <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+              </span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal for Create App Versioning  -->

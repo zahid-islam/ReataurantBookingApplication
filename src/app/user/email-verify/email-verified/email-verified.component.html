@@ -1,0 +1,24 @@
+<header class=" w-100 text-right pr-5">
+  <img class="object-fit-contain " style="width: 320px; height: 105px; "
+    src="/assets/images/icon/forgot-password/prefeex-brand-log.svg" alt="prefeex-brand-log">
+</header>
+<div class="d-flex justify-content-center">
+  <app-spin-loader *ngIf="isLoading"></app-spin-loader>
+</div>
+<div class="d-flex justify-content-center">
+  <div class="col-12 col-sm-12 col-md-4 col-lg-3 col-xl-3 text-center forget-password" *ngIf="isVerifiedEmail">
+    <img class="object-fit-contain mb-4 pb-2 mt-4" style="width: 73px; height: 73px;"
+      src="/assets/images/icon/verify-email-success.svg" alt="">
+    <h2 class="title-success mb-5 pb-1 mt-5"> Your Email has been Verified </h2>
+    <a  [routerLink]="['/user/sign-in']" routerLinkActive="router-link-active"
+      class="btn pf-btn-primary btn-block text-white">Ok</a>
+  </div>
+  <div class="col-12 col-sm-12 col-md-4 col-lg-3 col-xl-3 text-center forget-password" *ngIf="isUnverified">
+    <img class="object-fit-contain mb-4 pb-2 mt-4" style="width: 73px; height: 73px;"
+      src="/assets/images/icon/unverified-email.svg" alt="">
+    <h2 class="title-success mb-5 pb-1 mt-5" style="font-style: normal; font-weight: bold; font-size: 14px; line-height: 16px;text-align: center;
+        color: #B8423E;"> Sorry, we could not verify your email, please try again </h2>
+    <a [routerLink]="['/user/sign-in']" routerLinkActive="router-link-active"
+      class="btn pf-btn-primary btn-block text-white">Go to sign-in page</a>
+  </div>
+</div>

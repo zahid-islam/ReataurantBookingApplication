@@ -1,0 +1,114 @@
+<!-- Create Business Classifications -->
+<div class="row">
+  <div class="col-12">
+    <div class="prefeex-add-btn mt-4" style="margin-bottom: 34px; width: auto;">
+      <a (click)="popupBusinessClassCreateModal()" style="cursor: pointer" class="text-decoration-none">
+        <img src="/assets/images/icon/plus-icon.svg" alt="add-icon">
+        <span> Create Business Class </span>
+      </a>
+    </div>
+  </div>
+</div>
+
+
+<!-- Business Classifications pagination section -->
+<div class="row pf-pagination-container" [addOrRemoveClassToFixedTableHeader]="'300'">
+  <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 pr-0">
+    <h5 class="total-data mb-0 mt-2">Total: {{totalCount}} </h5>
+  </div>
+  <div class="col-12 col-sm-8 col-md-8 col-lg-8 col-xl-8 pl-0">
+    <p-paginator styleClass="prefeex-pagination" [rows]="itemPerPage" (onPageChange)="paginate($event)"
+      [totalRecords]="totalCount" pageLinkSize="5" [rowsPerPageOptions]="[10, 50, 100]"></p-paginator>
+  </div>
+</div>
+<!-- Business Classifications pagination section -->
+<!-- Business Classifications data view section -->
+<div class="row">
+  <div class="col-12">
+    <p-table styleClass="prefeex-data-table" [value]="businessClassifications"
+      tableStyleClass="table  prefeex-thead-blush">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Creator</th>
+          <th style="width: 150px">
+            <select class="status-filter" (change)="filterBusinessClassificationsOnStatusChange(statusForFilter)"
+              [(ngModel)]="statusForFilter" placeholder="Select status">
+              <option selected [ngValue]="0"> All </option>
+              <option *ngFor="let stat of businessClassificationsStatuses" [ngValue]="stat.id">
+                {{stat.name}}
+              </option>
+            </select>
+          </th>
+          <th>
+            Action
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-classifications>
+        <tr>
+          <td>{{classifications.id}} </td>
+          <td>{{classifications.name}} </td>
+          <td>{{classifications.creator.email}}</td>
+          <td> {{classifications.classificationStatus.name}} </td>
+          <td>
+            <button type="button" class="btn create-user mr-3" (click)="popupBusinessClassUpdateModal(classifications)">
+              Edit
+            </button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+<!-- content-loader -->
+<app-content-loader *ngIf="isLoading" [theadcount]="4" [rowlength]="4"></app-content-loader>
+<!-- content-loader -->
+
+<!-- Modal for pay to Money -->
+
+<div class="modal fade" #BusinessClassificationsModal tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content pf-modal-withdraw">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          Business Class
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form #classificationForm="ngForm" class="prefeex-form prefeex-horizontal-form form-gray-dark"
+        (ngSubmit)="classificationForm.valid && submitBusinessClassification(classificationForm)">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="Name"> Name </label>
+            <input type="text" class="form-control" name="name" [(ngModel)]="businessClassificationsModel.name"
+              placeholder="Name" required>
+          </div>
+          <div class="form-group">
+            <label for="status"> Status</label>
+            <select class="form-control" name="status" [(ngModel)]="businessClassificationsModel.status"
+              placeholder="Select bank" required>
+              <option [ngValue]="undefined" disabled selected> Select Status </option>
+              <option *ngFor="let item of businessClassificationsStatuses" [ngValue]="item.name">
+                {{item.name}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button [disabled]="!classificationForm.valid" type="submit"
+            class="btn btn-prefeex-primary text-center rounded-0 btn-big-padding">
+            <span [hidden]="isApiSubmit"> Submit </span>
+            <span [hidden]="!isApiSubmit">
+              <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+            </span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

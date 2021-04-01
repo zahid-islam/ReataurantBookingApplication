@@ -1,0 +1,278 @@
+.sky-desing {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  overflow-y: hidden;
+
+  .center-image img {
+    position: absolute;
+    left: 30%;
+    top: 35%;
+  }
+
+  .bottom-image img {
+    position: absolute;
+    left: 0;
+    bottom: 0px;
+  }
+
+}
+
+.signin-form {
+  background-color: #ebf3fa;
+  margin-top: 140px;
+  border-top-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+
+  .title {
+    margin-top: 31px;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 36px;
+    line-height: 42px;
+    color: #f16553;
+  }
+
+  .forget-pass {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    color: #f16553
+  }
+}
+
+.user-footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+
+  .wrap {
+    background-color: #f16553;
+    height: 45px;
+  }
+
+  .copyright {
+    line-height: 45px;
+    font-size: 14px;
+    color: #fff;
+  }
+}
+
+#background-wrap {
+  bottom: 0;
+  left: 0;
+  padding-top: 0px;
+  position: static;
+  right: 0;
+  top: 0;
+  z-index: -1;
+}
+
+/*-----------------Forget Password --------*/
+.forget-password {
+  .title {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 24px;
+    line-height: 28px;
+    text-align: center;
+    color: #4E4641;
+  }
+
+  .title-success {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 21px;
+    text-align: center;
+    color: #48B83E;
+  }
+
+  .sub-title {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 20px;
+    text-align: center;
+    color: #8C8E90;
+  }
+
+  .forget-form {
+    .btn-next {
+      margin-top: 36px;
+      padding-left: 35px;
+      padding-right: 35px;
+    }
+
+    .btn-update {
+      margin-top: 46px;
+    }
+
+    .input-group {
+      .input-group-append {
+        .btn {
+          border-radius: 0px;
+          background-color: #f7f7f7;
+          border-top: 1px solid #ced4da;
+          border-right: 1px solid #ced4da;
+          border-bottom: 1px solid #ced4da;
+          border-left: 0px;
+        }
+      }
+    }
+
+    .input-bg-gray-light {
+      background-color: #F7F7F7;
+    }
+
+
+  }
+}
+
+/*-----------------Forget Password --------*/
+@-webkit-keyframes animateCloud {
+  0% {
+    margin-right: -1000px;
+  }
+
+  100% {
+    margin-right: 100%;
+  }
+}
+
+@-moz-keyframes animateCloud {
+  0% {
+    margin-right: -1000px;
+  }
+
+  100% {
+    margin-right: 100%;
+  }
+}
+
+@keyframes animateCloud {
+  0% {
+    margin-right: -1000px;
+  }
+
+  100% {
+    margin-right: 100%;
+  }
+}
+
+
+
+.x1 {
+  -webkit-animation: animateCloud 35s linear infinite;
+  -moz-animation: animateCloud 35s linear infinite;
+  animation: animateCloud 35s linear infinite;
+
+  -webkit-transform: scale(0.65);
+  -moz-transform: scale(0.65);
+  transform: scale(0.65);
+}
+
+.x2 {
+  -webkit-animation: animateCloud 20s linear infinite;
+  -moz-animation: animateCloud 20s linear infinite;
+  animation: animateCloud 20s linear infinite;
+
+  -webkit-transform: scale(0.3);
+  -moz-transform: scale(0.3);
+  transform: scale(0.3);
+}
+
+.x3 {
+  -webkit-animation: animateCloud 30s linear infinite;
+  -moz-animation: animateCloud 30s linear infinite;
+  animation: animateCloud 30s linear infinite;
+
+  -webkit-transform: scale(0.5);
+  -moz-transform: scale(0.5);
+  transform: scale(0.5);
+}
+
+.x4 {
+  -webkit-animation: animateCloud 18s linear infinite;
+  -moz-animation: animateCloud 18s linear infinite;
+  animation: animateCloud 18s linear infinite;
+
+  -webkit-transform: scale(0.4);
+  -moz-transform: scale(0.4);
+  transform: scale(0.4);
+}
+
+.x5 {
+  -webkit-animation: animateCloud 25s linear infinite;
+  -moz-animation: animateCloud 25s linear infinite;
+  animation: animateCloud 25s linear infinite;
+
+  -webkit-transform: scale(0.55);
+  -moz-transform: scale(0.55);
+  transform: scale(0.55);
+}
+
+
+
+.cloud {
+
+  height: 70px;
+  position: relative;
+  width: 350px;
+}
+
+
+
+@media (max-width: 767.98px) {}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) and (max-width: 991.98px) {}
+
+// Large devices (desktops, less than 1200px)
+@media (max-width: 1199.98px) {
+  .signin-form {
+    background-color: transparent;
+    margin-top: 0px;
+    border-top-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+
+
+
+    .pt-4,
+    .pb-5,
+    .mb-3 {
+      padding: 0px !important;
+      margin: 0px !important;
+    }
+
+    .title {
+      margin-top: 0px;
+    }
+
+
+    .mobile-design {
+      background-color: #ebf3fa;
+      margin-top: 0px;
+      padding: 15px;
+      border-top-left-radius: 15px;
+      border-bottom-right-radius: 15px;
+    }
+
+    .center-image img {
+      height: 42px;
+      margin-top: 10px;
+      margin-bottom: 15px;
+      ;
+    }
+
+    .bottom-image img {
+      position: fixed;
+      left: 0;
+      bottom: 20px;
+      z-index: 0;
+    }
+  }
+}

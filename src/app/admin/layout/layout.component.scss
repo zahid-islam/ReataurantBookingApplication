@@ -1,0 +1,136 @@
+svg {
+  width: 100%;
+  height: 900px;
+  border: 1px solid black;
+}
+
+.header {
+  background-color: #f0f5e1;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+
+.draggable {
+  cursor: move;
+}
+
+.nopadding {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+h1 {
+  color: #80b944;
+  padding-top: 20px;
+}
+
+.shape {
+  margin: 5px 1px 5px 10px;
+}
+
+.toolbar {
+  // background-color: whitesmoke;
+  margin: 0;
+}
+
+.color-text {
+  font-weight: bolder;
+  color: white;
+}
+
+.panel-body:target {
+  height: auto;
+}
+
+.panel-body select {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  outline: 0;
+  background-color: #eee;
+}
+
+.panel-heading .accordion-toggle:after {
+  content: url(/assets/images/icon/menu-arrow-right.svg);
+  width: 7px;
+  height: 11px;
+  float: right;
+  margin: 0 5px;
+}
+
+.panel-heading .accordion-toggle.collapsed:after {
+  float: right !important;
+  content: url(/assets/images/icon/menu-arrow-down.svg);
+  width: 7px;
+  height: 11px;
+}
+
+.panel-title {
+  background-color: #f16553;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 16px;
+  padding: 5px;
+  margin-bottom: 5px;
+}
+
+.panel-title:hover {
+  background-color: #f16553;
+}
+
+.panel-title a {
+  text-decoration: none;
+  color: white;
+}
+
+.panel-title > a:hover,
+.panel-title > a:active,
+.panel-title > a:focus {
+  text-decoration: none;
+}
+
+.user-menu {
+  background-color: #fafafa;
+  padding: 4pt;
+  font-size: 10pt;
+  z-index: 1000;
+  box-shadow: 0 0 12pt rgba(0, 0, 0, 0.25);
+  border-radius: 4pt;
+  padding: 0.5em 0 0.5em 0;
+  animation: fadeIn 0.1s ease-out;
+  opacity: 1;
+  display: block;
+}
+
+.user-menu hr {
+  border: none;
+  border-bottom: 1px solid #eee;
+}
+
+.user-menu div {
+  cursor: pointer;
+  display: block;
+  text-decoration: none;
+  color: #333;
+  padding: 0.5em 2em 0.5em 0.75em;
+  max-width: 18em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-menu div:hover {
+  background-color: #333;
+  color: #fff;
+}
+
+.user-menu div::before {
+  content: "";
+  display: inline-block;
+  margin-right: 0.75em;
+  width: 0.5em;
+  height: 1em;
+  display: inline-block;
+}

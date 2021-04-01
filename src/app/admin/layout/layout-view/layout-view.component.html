@@ -1,0 +1,48 @@
+<div class="row" *ngIf="hasFloor" id="mainContainer">
+  <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+    <div class="card layout-view rounded-0">
+      <div class="card-body text-center">
+        <div class="d-flex justify-content-between  header-panal mb-4">
+          <div class="d-flex justify-content-between left-box">
+            <button (click)="getPreviousFloor()" [disabled]="isPreviousFloor" type="button" class="btn left-arrow">
+              <span>&#60;</span>
+            </button>
+            <p class="mb-0 floor-text"> {{selectedFloor.floorName}} </p>
+            <button (click)="getNextFloor()" [disabled]="isNextFloor" type="button" class="btn right-arrow">
+              <span>&#62;</span>
+            </button>
+          </div>
+          <a [routerLink]="['/admin/business/manage-business/'+businessId+'/layout/layout-list']"
+            routerLinkActive="router-link-active">
+            <img class="object-fit-contain " style="width: 24px; height: 24px;"
+              src="/assets/images/icon/layout-setting.svg" alt="">
+          </a>
+        </div>
+        <div [hidden]="isLoading">
+          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+            (click)="getTableReservation($event)">
+          </svg>
+        </div>
+        <app-spin-loader [hidden]="!isLoading"></app-spin-loader>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row d-flex justify-content-center text-center" *ngIf="showEmptyLayout">
+  <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 ">
+    <div class="card text-center rounded-0 border-0">
+      <img src="/assets/images/layout-empty.png" class="card-img-top" alt="layout">
+      <div class="card-body rounded-0 border-0">
+        <p class="card-text">You have no floor plan yet, create your floor plan</p>
+        <a (click)="goToFloorCreatePage('edit')" style="cursor: pointer;" class="btn pf-btn-primary">Create Floor</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="contextmenu">
+  <app-contextmenu [xCoordinate]="contextmenuX" [yCoordinate]="contextmenuY" [context]="contextmenu"
+    (upcomingReservation)='getUpcomingReservation($event)' (historyReservation)='getHistoryReservation($event)'>
+  </app-contextmenu>
+</div>

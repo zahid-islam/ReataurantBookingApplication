@@ -1,0 +1,211 @@
+<section class="display-box">
+  <div class="row">
+    <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex justify-content-around">
+            <div>
+              <img style="width:47px;height:45px" src="/assets/images/icon/accounts/paid/total_paid.svg"
+                class="object-fit-cover mt-2">
+            </div>
+            <div>
+              <h4 class="title-name mb-3">
+                Paid To Prefeex
+              </h4>
+              <h5 class="amount-number mt-1 mb-0">
+                {{paidSummary.paidToPrefeex | currency:'৳ '}}
+              </h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex justify-content-around">
+            <div>
+              <img style="width:74px;height:45px" src="/assets/images/icon/accounts/paid/total_paid_amount.svg"
+                class="object-fit-cover mt-2">
+            </div>
+            <div>
+              <h4 class="title-name mb-3">
+                Paid To Other B2B
+              </h4>
+              <h5 class="amount-number mt-1 mb-0">
+                {{paidSummary.paidToOtherB2B | currency:'৳ '}}
+              </h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- paginator section -->
+<div class="row pf-pagination-container" [addOrRemoveClassToFixedTableHeader]="'500'">
+  <div class="col-12 col-sm-1 col-md-1 col-lg-1 col-xl-1 pr-0">
+    <h5 class="total-data mb-0 mt-2">Total: {{totalCount}}</h5>
+  </div>
+
+  <div class="col-12 col-sm-7 col-md-7 col-lg-7 col-xl-5 pr-0 bg-white">
+    <form #paidDateRangeForm="ngForm">
+      <div class="form-group row mb-0">
+        <label class="col-12 col-sm-2  col-md-2 col-lg-2 col-xl-2 col-form-label" for="fromDate">From</label>
+        <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+           <input class="form-control" type="date" name="fromDate" [max]="getToday()"
+            [(ngModel)]="paidDateRangeModel.fromDate" (change)="getAllAccountPaidPaginatedly()">
+        </div>
+        <label class="col-12 col-sm-2  col-md-2 col-lg-2 col-xl-2 col-form-label" for="toDate">To</label>
+        <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+          <input class="form-control" type="date" name="toDate" [max]="getToday()"
+            [(ngModel)]="paidDateRangeModel.toDate" (change)="getAllAccountPaidPaginatedly()">
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="col-12 col-sm-1 col-md-1 col-lg-1 col-xl-1 pr-0 bg-white">
+    <button *ngIf="totalCount > 0" class="btn pf-btn-primary" (click)="convert()"> PDF  </button>
+  </div>
+  <div class="col-12 col-sm-3 col-md-3 col-lg-3 col-xl-5 pl-0">
+    <p-paginator styleClass="prefeex-pagination" [rows]="itemPerPage" (onPageChange)="paginate($event)"
+      [totalRecords]="totalCount" pageLinkSize="5" [rowsPerPageOptions]="[10, 50, 100]"></p-paginator>
+  </div>
+</div>
+<!-- paginator section -->
+<!-- Paid data grid section -->
+<div class="row">
+  <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+    <p-table [value]="accountPaidAll" styleClass="prefeex-data-table" tableStyleClass="table  prefeex-thead-blush">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>
+            Date
+            <i style="cursor: pointer;" *ngIf="!paidSorting.createdAt" (click)="sortColumnWise('createdAt')"
+              class="fa fa-sort-alpha-asc" aria-hidden="false"></i>
+            <i style="cursor: pointer;" *ngIf="paidSorting.createdAt" (click)="sortColumnWise('createdAt')"
+              class="fa fa-sort-alpha-desc" aria-hidden="false"></i>
+          </th>
+          <th>For B2B</th>
+          <th>For B2C</th>
+          <th>Bank Transaction ID</th>
+          <th>Amount</th>
+          <th style="width: 50px;">Details</th>
+          <th>Comments</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-paid>
+        <tr>
+          <td>{{paid.createdAt | date:'MMM d, y h:mm a'}}</td>
+          <td>
+            <span *ngIf="paid.business?.name"> {{paid.business?.name}}</span>
+            <span *ngIf="!paid.business?.name"> N.A </span>
+          </td>
+          <td>
+            <span *ngIf="paid.customer?.email"> {{paid.customer?.email}}</span>
+            <span *ngIf="!paid.customer?.email"> N.A </span>
+          </td>
+          <td>
+
+            <span *ngIf="paid.bankTransactionId"> {{paid.bankTransactionId}}</span>
+            <span *ngIf="!paid.bankTransactionId"> N.A </span>
+          </td>
+          <td class="td-bold td-rad">{{paid.amount | currency:'৳ '}}</td>
+          <td style="width: 50px;">
+            <div class="btn-group" role="group" aria-label="payble view detaisl">
+              <button type="button" class="btn btn-view"
+                (click)="particularPaidDetails(paid.withdrawMoneyRequestId)">
+                <i class="fa fa-eye" aria-hidden="true"></i>
+              </button>
+            </div>
+          </td>
+          <td>{{paid.comment}}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+<!-- Paid data grid section -->
+
+<!-- content-loader -->
+<app-content-loader *ngIf="isLoading" [theadcount]="4" [rowlength]="4"></app-content-loader>
+<!-- content-loader -->
+
+<!-- Payble view details Modal -->
+<div class="modal fade bd-example-modal-xl" #paidDetailsModal tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content pf-modal-withdraw">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          Paid Details
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body payble-modal">
+        <section>
+          <div class="row pay-panal mb-4">
+            <div class="col-12 col-sm-6 col-md-5 col-lg-5 col-xl-5">
+              <div class="d-flex justify-content-between pay-panal mt-1">
+                <div>
+                  <p class="request-time mb-0 mt-2">
+                    Request Date:
+                    <span class="text-black">
+                      {{viewDetails.createdAt | date:'MMM d, y h:mm a'}}
+                    </span>
+                  </p>
+                </div>
+                <div>
+                  <p class="request-time mb-0 mt-2">
+                    Withdraw Request ID:
+                    <span class="text-black">
+                      {{viewDetails.id}}
+                    </span>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7">
+              <div class="d-flex justify-content-between">
+                <p class="col-6 mb-0 mt-2">
+                  <span class="applied-amount mr-3">Applied for amounts: </span>
+                  <span class="amounts">{{viewDetails.amount | currency:'৳ '}}</span>
+                </p>
+                <p class="col-6 mb-0 mt-2" *ngIf="viewDetails.customer?.email">
+                  <span class="applied-amount mr-3"> Customer: </span>
+                  <span class="amounts"> {{viewDetails.customer?.email}}</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <table class="table prefeex-thead-blush">
+          <thead class="thead-light">
+            <tr>
+              <th scope="col">Received Date</th>
+              <th scope="col">Reservation ID</th>
+              <th scope="col">Received Amount</th>
+              <th scope="col">Percentage</th>
+              <th scope="col">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of viewDetails.accountPayables">
+              <td>{{item.createdAt | date:'MMM d, y h:mm a'}}</td>
+              <td>{{item.order.refId}}</td>
+              <td>{{item.accountReceived.amount | currency:'৳ '}}</td>
+              <td>{{item.sharedPercentage}} %</td>
+              <td class="td-bold td-rad">{{item.amount | currency:'৳ '}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- content-loader -->
+        <app-content-loader *ngIf="isLoading" [theadcount]="4" [rowlength]="4"></app-content-loader>
+        <!-- content-loader -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Payble view details Modal -->

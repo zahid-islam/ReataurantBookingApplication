@@ -1,0 +1,279 @@
+<!-- Create Promotion code -->
+<div class="row">
+  <div class="col-4">
+    <div class="prefeex-add-btn text-center" style="margin-bottom: 34px">
+      <a class="text-decoration-none" [routerLink]="['/admin/marketing/promotion/public-promotion']">
+        <img src="/assets/images/icon/plus-icon.svg" alt="">
+        <span>Create Promo Code</span>
+      </a>
+    </div>
+  </div>
+</div>
+<!-- Create Promotion code -->
+
+<!-- Promotion pagination section -->
+<div class="row pf-pagination-container" [addOrRemoveClassToFixedTableHeader]="'190'">
+  <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 pr-0">
+    <h5 class="total-data mb-0 mt-2">Total: {{totalCount}}</h5>
+  </div>
+  <div class="col-12 col-sm-8 col-md-8 col-lg-8 col-xl-8 pl-0">
+    <p-paginator #paginator styleClass="prefeex-pagination" [rows]="itemPerPage" (onPageChange)="paginate($event)"
+      [totalRecords]="totalCount" pageLinkSize="5" [rowsPerPageOptions]="[10, 50, 100]"></p-paginator>
+  </div>
+</div>
+<!-- Promotion pagination section -->
+<!-- Promotion data view section -->
+<div class="row">
+  <div class="col-12">
+    <p-table [value]="allPromotions" styleClass="prefeex-data-table" tableStyleClass="table prefeex-thead-blush ">
+      <ng-template pTemplate="header">
+        <tr>
+          <th> Promo Code </th>
+          <th> Placed At
+            <i style="cursor: pointer;" *ngIf="!promotionSorting.createdAt" (click)="sortColumnWise('createdAt')"
+              class="fa fa-sort-alpha-asc" aria-hidden="false"></i>
+            <i style="cursor: pointer;" *ngIf="promotionSorting.createdAt" (click)="sortColumnWise('createdAt')"
+              class="fa fa-sort-alpha-desc" aria-hidden="false"></i>
+          </th>
+          <th> Active From </th>
+          <th> Expired At </th>
+
+          <th style="width: 50px;"> Type </th>
+          <th> Amount </th>
+          <th style="width: 70px;"> Method </th>
+          <th style="width: 100px;">
+            <select class="status-filter" (change)="filterPromotionOnStatusChange(statusForFilter)"
+              [(ngModel)]="statusForFilter" placeholder="Select status">
+              <option selected [ngValue]="0"> All </option>
+              <option *ngFor="let stat of promotionStatuses" [ngValue]="stat.id">
+                {{stat.name}}
+              </option>
+            </select>
+          </th>
+          <th> Action </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-promotion>
+        <tr>
+          <td class="td-bold"> {{promotion.promoCode}} </td>
+          <td class="td-bold">{{promotion.createdAt | date:'MMM d, y h:mm a'}}</td>
+          <td class="td-bold">{{promotion.activeFrom | date:'MMM d, y h:mm a'}}</td>
+          <td class="td-bold">{{promotion.expiredAt | date:'MMM d, y h:mm a'}}</td>
+          <td style="width: 100px;" class="td-bold">
+            <span class=" text-status" *ngIf="promotion.isPublic"> Public </span>
+            <span class=" text-status" *ngIf="!promotion.isPublic"> Selected </span>
+          </td>
+          <td class="td-bold td-rad">
+            <span *ngIf="promotion.isPercentage">
+              {{promotion.percentage}}%
+              <br> Upto
+              {{promotion.percentageAmountCap | currency:'৳ ' }}
+            </span>
+            <span *ngIf="!promotion.isPercentage">
+              {{promotion.flatAmount | currency:'৳ '}}
+              <br> minimum threshold amount
+              {{promotion.flatAmountMinThresholdAmount | currency:'৳ ' }}
+            </span>
+          </td>
+          <td>
+            <ng-container *ngIf="promotion.autoActive; else ManualApply">
+              <span class=" text-status"> Auto </span>
+
+            </ng-container>
+            <ng-template #ManualApply>
+
+              <span class=" text-status"> Manual </span>
+            </ng-template>
+          </td>
+          <td>
+            <select (change)="statusChangesAction(promotion.promotionStatus.id, promotion)"
+              [(ngModel)]="promotion.promotionStatus.id">
+              <option *ngFor="let status of promotionStatuses" [ngValue]="status.id">
+                {{status.name}}
+              </option>
+            </select>
+          </td>
+          <td>
+            <div class="btn-group" role="group" aria-label="Notification Action">
+              <button type="button" class="btn btn-view" (click)="getParticularPromotion(promotion.id)">
+                <i class="fa fa-eye" aria-hidden="true"></i>
+              </button>
+              <a role="button" class="btn btn-update"
+                [routerLink]="['/admin/marketing/promotion/'+ promotion.id + '/update']">
+                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+              </a>
+              <a role="button" title="Select User"
+                [routerLink]="['/admin/marketing/promotion/'+ promotion.id + '/newuser']"
+                (click)="addNewUserToPersonalPromotion(promotion.id)" class="btn btn-update"
+                *ngIf="!promotion.isPublic">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+              </a>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+<!-- Promotion data view section -->
+
+<!-- content-loader -->
+<app-content-loader *ngIf="isLoading" [theadcount]="4" [rowlength]="4"></app-content-loader>
+<!-- content-loader -->
+
+<!-- Read particular promotion  -->
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" #ReadParticularPromotion>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content pf-modal-withdraw">
+      <div class="modal-header">
+        <h5 class="modal-title">Particular Promotion Details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body promotion-code-modal">
+        <div class="row mb-2">
+          <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+            <p>
+              <span class="label">
+                Promo Code Title:
+              </span>
+              <span class="value-gray">{{viewParticularPromotion.title}}</span>
+            </p>
+          </div>
+          <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+            <p>
+              <span class="label">
+                Discount Type :
+              </span>
+              <span class="value-gray">
+                <ng-container *ngIf="viewParticularPromotion.isPercentage; else flatAmount">
+                  Percentage
+                </ng-container>
+                <ng-template #flatAmount>
+                  Flat Amount
+                </ng-template>
+              </span>
+            </p>
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+            <p>
+              <span class="label">
+                Promo Code:
+              </span>
+              <span class="value-blush">{{viewParticularPromotion.promoCode}}</span>
+            </p>
+          </div>
+          <div class="col-12 col-sm-6  col-md-6 col-lg-6 col-xl-6">
+            <p>
+              <span class="label">
+                Created Date:
+              </span>
+              <span class="value-gray-light">{{viewParticularPromotion.createdAt | date:'MMM d, y h:mm a'}}</span>
+            </p>
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div class="col-12 col-sm-6  col-md-6 col-lg-6 col-xl-6">
+            <p>
+              <span class="label">
+                Start Date:
+              </span>
+              <span class="value-gray-light">{{viewParticularPromotion.activeFrom | date:'MMM d, y h:mm a'}}</span>
+            </p>
+          </div>
+          <div class="col-12 col-sm-6  col-md-6 col-lg-6 col-xl-6">
+            <p>
+              <span class="label">
+                Expire Date:
+              </span>
+              <span class="value-gray-light">{{viewParticularPromotion.expiredAt | date:'MMM d, y h:mm a'}}</span>
+            </p>
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div class="col-12 col-sm-6  col-md-6 col-lg-6 col-xl-6">
+            <p>
+              <span class="label">
+                Promo Type:
+              </span>
+              <span class="value-gray">
+                <ng-container *ngIf="viewParticularPromotion.isPublic; else PromoType">
+                  Public
+                </ng-container>
+                <ng-template #PromoType>
+                  Selected
+                </ng-template>
+              </span>
+            </p>
+          </div>
+          <div class="col-12 col-sm-6  col-md-6 col-lg-6 col-xl-6">
+            <p>
+              <span class="label">
+                Amount:
+              </span>
+              <span class="value-blush">
+                <ng-container *ngIf="viewParticularPromotion.isPercentage; else AmountCategory">
+                  {{viewParticularPromotion.percentage}}% UpTo
+                  {{viewParticularPromotion.percentageAmountCap | currency:'৳ '}}
+                </ng-container>
+                <ng-template #AmountCategory>
+                  {{viewParticularPromotion.flatAmount | currency:'৳ '}} minimum threshold amount
+                  {{viewParticularPromotion.flatAmountMinThresholdAmount | currency:'৳ '}}
+                </ng-template>
+              </span>
+            </p>
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div class="col-12 col-sm-6  col-md-6 col-lg-6 col-xl-6">
+            <p>
+              <span class="label">
+                Number Of Usage:
+              </span>
+              <span class="value-gray">{{viewParticularPromotion.numberOfUsagePerUser}}</span>
+            </p>
+          </div>
+          <div class="col-12 col-sm-6  col-md-6 col-lg-6 col-xl-6">
+            <p>
+              <span class="label">
+                Apply Method:
+              </span>
+              <span class="value-gray">
+                <ng-container *ngIf="viewParticularPromotion.autoActive; else AutoActive">
+                  Auto Apply
+                </ng-container>
+                <ng-template #AutoActive>
+                  Manual Apply
+                </ng-template>
+              </span>
+            </p>
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <p>
+              <span class="label">
+                Description:
+              </span>
+              <span class="value-gray">{{viewParticularPromotion.description}}</span>
+            </p>
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4" *ngIf="viewParticularPromotion.personCount">
+            <p>
+              <span class="label">
+                Selected User:
+              </span>
+              <span class="value-blush">{{viewParticularPromotion.personCount}}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Read particular promotion  -->

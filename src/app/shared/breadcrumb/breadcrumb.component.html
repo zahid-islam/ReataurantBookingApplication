@@ -1,0 +1,10 @@
+<!-- breadcrumb -->
+<nav class="pf-breadcrumb" aria-label="breadcrumb " *ngIf="breadcrumbs.length > 0">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item" *ngFor="let breadcrumb of breadcrumbs" aria-current="page">
+      <a [routerLink]="breadcrumb.url" queryParamsHandling="preserve">
+        {{ breadcrumb.label }}
+      </a>
+    </li>
+  </ol>
+</nav>

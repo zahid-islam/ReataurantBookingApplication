@@ -1,0 +1,93 @@
+<!-- Create Notification -->
+<div class="row">
+  <div class="col-12">
+    <div class="prefeex-add-btn text-center" style="margin-bottom: 34px">
+      <a class="text-decoration-none" [routerLink]="['/admin/marketing/notifications/notifications-list']">
+        <img src="/assets/images/icon/plus-icon.svg" alt="">
+        <span>Create Notification</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+
+<!-- notification pagination section -->
+<div class="row pf-pagination-container" [addOrRemoveClassToFixedTableHeader]="'150'">
+  <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 pr-0">
+    <h5 class="total-data mb-0 mt-2">Total: {{totalCount}}</h5>
+  </div>
+  <div class="col-12 col-sm-8 col-md-8 col-lg-8 col-xl-8 pl-0">
+    <p-paginator #paginator styleClass="prefeex-pagination" [rows]="itemPerPage" (onPageChange)="paginate($event)"
+      [totalRecords]="totalCount" pageLinkSize="5" [rowsPerPageOptions]="[10, 50, 100]"></p-paginator>
+  </div>
+</div>
+<!-- notification pagination section -->
+
+<!-- notification data view section -->
+<div class="row">
+  <div class="col-12">
+    <p-table [value]="allNotification" styleClass="prefeex-data-table" tableStyleClass="table prefeex-thead-blush ">
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 150px;"> Notification ID </th>
+          <th> Created Date </th>
+          <th style="width: 100px;">
+            <select class="status-filter" (change)="filterNotificationOnStatusChange(statusForFilter)"
+              [(ngModel)]="statusForFilter" placeholder="Select status">
+              <option selected [ngValue]="0"> All </option>
+              <option *ngFor="let stat of notificationStatuses" [ngValue]="stat.id">
+                {{stat.name}}
+              </option>
+            </select>
+          </th>
+          <th> Sending Date </th>
+          <th> Title </th>
+          <th style="width: 70px;"> Persons </th>
+          <th> Creator </th>
+          <th> Action </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-notification>
+        <tr>
+          <td style="width: 150px;" class="td-bold">
+            {{notification.id}}
+          </td>
+          <td>{{notification.createdAt | date:'MMM d, y h:mm a'}}</td>
+          <td style="width: 100px;" class="td-bold">
+            <span class=" text-status" *ngIf="notification.publicNotificationStatus.name == 'PENDING'"> Scheduled </span>
+            <span class=" text-status" *ngIf="notification.publicNotificationStatus.name == 'SENT'"> Sent </span>
+            <span class=" text-status" *ngIf="notification.publicNotificationStatus.name == 'CANCELLED'"> Canceled </span>
+          </td>
+          <td class="td-bold" [ngClass]="{'td-scheduled ': notification.publicNotificationStatus.name == 'PENDING'}">
+            {{notification.scheduledAt | date:'MMM d, y h:mm a'}}</td>
+          <td>{{notification.title}}</td>
+          <td style="width: 70px;"> {{notification.receivingUserCount}}</td>
+          <td> {{notification.creator.email}} </td>
+          <td>
+            <div class="btn-group" role="group" aria-label="Notification Action">
+              <a role="button" class="btn btn-view"
+                [routerLink]="['/admin/marketing/notifications/details/'+ notification.id]">
+                <i class="fa fa-eye" aria-hidden="true"></i>
+              </a>
+              <a [routerLink]="['/admin/marketing/notifications/notifications-list/'+ notification.id + '/update']"
+                role="button" class="btn btn-update" *ngIf="notification.publicNotificationStatus.name == 'PENDING'">
+                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+              </a>
+              <button (click)="cancelPendingNotification(notification.id)" type="button" class="btn btn-delete"
+                *ngIf="notification.publicNotificationStatus.name == 'PENDING'">
+                <i class="fa fa-times-circle" aria-hidden="true"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+<!-- notification data view section -->
+
+<!-- content-loader -->
+<app-content-loader *ngIf="isLoading" [theadcount]="4" [rowlength]="4"></app-content-loader>
+<!-- content-loader -->
+
+<!-- notification data view section -->

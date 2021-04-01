@@ -1,0 +1,187 @@
+<!-- Create Promotion code -->
+<div class="row">
+  <div class="col-4">
+    <div class="prefeex-add-btn" style="margin-bottom: 34px; width: auto;">
+      <a class="text-decoration-none" [routerLink]="['/admin/business/manage-business/'+businesId+'/promotion-form']">
+        <img src="/assets/images/icon/plus-icon.svg" alt="">
+        <span>Create Businee Promotion</span>
+      </a>
+    </div>
+  </div>
+</div>
+<!-- Create Promotion code -->
+
+<!-- Promotion pagination section -->
+<div class="row pf-pagination-container" [addOrRemoveClassToFixedTableHeader]="'190'">
+  <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 pr-0">
+    <h5 class="total-data mb-0 mt-2">Total: {{totalCount}}</h5>
+  </div>
+  <div class="col-12 col-sm-8 col-md-8 col-lg-8 col-xl-8 pl-0">
+    <p-paginator #paginator styleClass="prefeex-pagination" [rows]="itemPerPage" (onPageChange)="paginate($event)"
+      [totalRecords]="totalCount" pageLinkSize="5" [rowsPerPageOptions]="[10, 50, 100]"></p-paginator>
+  </div>
+</div>
+<!-- Promotion pagination section -->
+<!-- Promotion data view section -->
+<div class="row">
+  <div class="col-12">
+    <p-table [value]="allRestauranOffers" styleClass="prefeex-data-table" tableStyleClass="table prefeex-thead-blush ">
+      <ng-template pTemplate="header">
+        <tr>
+          <th> Title </th>
+          <th> Placed At </th>
+          <th> Active From </th>
+          <th> Expired At </th>
+          <th> Promo </th>
+          <th style="width: 100px;"> Status </th>
+          <th style="width: 100px;"> Type </th>
+          <th> Action </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-promotion>
+        <tr>
+          <td class="td-bold"> {{promotion.title}} </td>
+          <td class="td-bold">{{promotion.createdAt | date:'MMM d, y h:mm a'}}</td>
+          <td class="td-bold">{{promotion.activeFrom | date:'MMM d, y h:mm a'}}</td>
+          <td class="td-bold">{{promotion.expiredAt | date:'MMM d, y h:mm a'}}</td>
+          <td style="width: 100px;" class="td-bold">
+            <span [ngSwitch]="promotion.restaurantOfferType.name">
+              <span *ngSwitchCase="'BOGX'"> Buy One Get: {{promotion.buyOneGetCount}}</span>
+              <span *ngSwitchCase="'FLAT'">FlatAmount: {{promotion.flatAmount| currency:'৳ '}}</span>
+              <span *ngSwitchCase="'PERCENTAGE'">Percentage: {{promotion.percentage}} %</span>
+            </span>
+          </td>
+          <td>
+            <select (change)="updateRestaurantOffer(promotion)" [(ngModel)]="promotion.restaurantOfferStatus.id">
+              <option *ngFor="let status of restaurantOfferStatuses" [ngValue]="status.id">
+                {{status.name}}
+              </option>
+            </select>
+          </td>
+          <td class="td-bold td-rad">
+            {{promotion.restaurantOfferType?.name}}
+          </td>
+          <td>
+            <div class="btn-group" role="group" aria-label="Notification Action">
+              <button type="button" class="btn btn-view" (click)="getParticularPromotion(promotion.id)">
+                <i class="fa fa-eye" aria-hidden="true"></i>
+              </button>
+              <a role="button" class="btn btn-update"
+                [routerLink]="['/admin/business/manage-business/'+businesId+'/promotion-form/'+promotion.id]">
+                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+              </a>
+              <a role="button" title="Select User" class="btn btn-update"
+                [routerLink]="['/admin/business/manage-business/'+businesId+'/promotion-menu/'+promotion.id]"
+                *ngIf="!promotion.isPublic">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+              </a>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+<!-- Promotion data view section -->
+
+<!-- content-loader -->
+<app-content-loader *ngIf="isLoading" [theadcount]="4" [rowlength]="4"></app-content-loader>
+<!-- content-loader -->
+
+<!-- Read particular promotion  -->
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" #ReadParticularPromotion>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content pf-modal-withdraw">
+      <div class="modal-header">
+        <h5 class="modal-title">Particular Promotion Details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body promotion-code-modal">
+        <div class="row mb-2">
+          <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+            <p>
+              <span class="label">
+                Promo Code Title:
+              </span>
+              <span class="value-gray">{{viewParticularPromotion.title}}</span>
+            </p>
+          </div>
+          <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+            <p>
+              <span class="label">
+                Restaurant Offer Type :
+              </span>
+              <span class="value-gray">
+                {{viewParticularPromotion.restaurantOfferType?.name}}
+              </span>
+            </p>
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+            <p>
+              <span class="label">
+                Promo:
+              </span>
+              <span class="value-blush" *ngIf="viewParticularPromotion?.percentage">Percentage:
+                {{viewParticularPromotion.percentage}} %</span>
+              <span class="value-blush" *ngIf="viewParticularPromotion?.flatAmount">Flat Amount:
+                {{viewParticularPromotion.flatAmount | currency:'৳ '}}</span>
+              <span class="value-blush" *ngIf="viewParticularPromotion?.buyOneGetCount"> Buy One Get:
+                {{viewParticularPromotion.buyOneGetCount}}</span>
+            </p>
+          </div>
+          <div class="col-12 col-sm-6  col-md-6 col-lg-6 col-xl-6">
+            <p>
+              <span class="label">
+                Created Date:
+              </span>
+              <span class="value-gray-light">{{viewParticularPromotion.createdAt | date:'MMM d, y h:mm a'}}</span>
+            </p>
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div class="col-12 col-sm-6  col-md-6 col-lg-6 col-xl-6">
+            <p>
+              <span class="label">
+                Start Date:
+              </span>
+              <span class="value-gray-light">{{viewParticularPromotion.activeFrom | date:'MMM d, y h:mm a'}}</span>
+            </p>
+          </div>
+          <div class="col-12 col-sm-6  col-md-6 col-lg-6 col-xl-6">
+            <p>
+              <span class="label">
+                Expire Date:
+              </span>
+              <span class="value-gray-light">{{viewParticularPromotion.expiredAt | date:'MMM d, y h:mm a'}}</span>
+            </p>
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <p>
+              <span class="label">
+                Description:
+              </span>
+              <span class="value-gray">{{viewParticularPromotion.description}}</span>
+            </p>
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4" *ngIf="viewParticularPromotion?.foodMenuIds">
+            <p>
+              <span class="label">
+                Selected Food Menu:
+              </span>
+              <span class="value-blush">{{viewParticularPromotion?.foodMenuIds.length}}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Read particular promotion  -->

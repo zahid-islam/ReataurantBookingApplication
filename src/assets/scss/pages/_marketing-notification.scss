@@ -1,0 +1,27 @@
+@import "../variable.scss";
+
+.notification-details {
+  .card-header {
+    background: $blush;
+
+    p {
+      font-style: $f-s-normal;
+      font-weight: $f-w-bold;
+      font-size: $f-s-rem-16;
+      line-height: $f-s-rem-20;
+      color: $white;
+    }
+  }
+
+  .card-title {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 16px;
+    color: #717171;
+  }
+
+  .card-text {}
+
+
+}

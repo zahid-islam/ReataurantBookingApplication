@@ -1,0 +1,42 @@
+<section *ngIf="isRetingExistingShow">
+  <!-- Reviews list pagination section -->
+  <div class="row pf-pagination-container"  [addOrRemoveClassToFixedTableHeader]="'100'">
+    <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 pr-0">
+      <h5 class="total-data mb-0 mt-2">Total: {{totalCount}}</h5>
+    </div>
+    <div class="col-12 col-sm-8 col-md-8 col-lg-8 col-xl-8 pl-0">
+      <p-paginator styleClass="prefeex-pagination" [rows]="itemPerPage" (onPageChange)="paginate($event)"
+        [totalRecords]="totalCount" pageLinkSize="5" [rowsPerPageOptions]="[10, 20, 100]"></p-paginator>
+    </div>
+  </div>
+  <!-- Reviews list pagination section -->
+  <ul class="list-unstyled pf-reviews">
+    <li class="media" *ngFor="let item of allRatingsReview">
+      <figure class="mr-3">
+        <img style="width: 53px; height: 53px;"
+          [src]="item.user.photo ? item.user.photo :'/assets/images/user/user-placeholder.png'"
+          class="rounded-circle mr-3" alt="name">
+        <figcaption>
+          {{item.user.firstName}}
+          <!-- {{item.user.lastName}} -->
+        </figcaption>
+      </figure>
+      <div class="media-body">
+        <h5 class="mt-0 mb-1 rating">
+          <app-business-review-star-rating [maxScore]="5" [score]="item.rating" [forDisplay]="true">
+          </app-business-review-star-rating>
+          <span class="reviewed-date ml-3">Reviewed {{item.createdAt | date:'MMM d, y h:mm a'}}</span>
+        </h5>
+        <p class="review-details">
+          {{item.comment}}
+        </p>
+      </div>
+    </li>
+  </ul>
+
+  <!-- content-loader -->
+  <app-content-loader *ngIf="isLoading" [theadcount]="4" [rowlength]="4"></app-content-loader>
+  <!-- content-loader -->
+</section>
+
+<p class="text-warning" *ngIf="isRetingExistingHide"> Business rating does not exist </p>

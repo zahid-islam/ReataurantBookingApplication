@@ -1,0 +1,213 @@
+/****************************/
+/** Mediaqueries **/
+/****************************/
+// Extra small devices (portrait phones, less than 576px)
+@media (max-width: 575.98px) {
+  .hidden-xs {
+    display: none !important;
+  }
+}
+
+// Small devices (landscape phones, 576px and up)
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .hidden-sm {
+    display: none !important;
+  }
+}
+
+// Small devices (landscape phones, less than 768px)
+@media (max-width: 767.98px) {
+
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .hidden-md {
+    display: none !important;
+  }
+}
+
+// Medium devices (tablets, less than 992px)
+@media (max-width: 991.98px) {
+  .prefeex-nav {
+    .left-bar-toggle {
+      margin-left: 0px !important;
+    }
+
+    .navbar-toggler {
+      margin-right: 10px;
+      border-radius: 0px;
+      border: 1px solid #9b2b27;
+    }
+  }
+
+  .prefeex-nav .collapse.show {
+    background-color: rgb(247, 247, 247);
+    border-top: 1px solid rgb(185, 185, 185);
+
+    .top-left-ul {
+      height: 0px;
+      display: none;
+    }
+
+    .top-right-ul {
+      .list-date-time {
+        padding-top: 27px !important;
+        padding-right: 0px !important;
+        text-align: center;
+      }
+
+      .pf-users-profile {
+        a {
+          text-align: center;
+        }
+      }
+    }
+
+    .top-right-ul.height-75 {
+      height: auto !important;
+    }
+  }
+
+
+}
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .hidden-lg {
+    display: none !important;
+  }
+}
+
+// Large devices (desktops, less than 1200px)
+@media (max-width: 1199.98px) {
+  .fixed-sidebar-left {
+    width: 44px;
+  }
+
+  .fixed-sidebar-left .collapse.in {
+    display: none;
+  }
+
+  .fixed-sidebar-left:hover {
+    width: 218px;
+  }
+
+  .fixed-sidebar-left:hover .collapse.in {
+    display: block;
+  }
+
+  .fixed-sidebar-left:hover .right-nav-text {
+    opacity: 1;
+  }
+
+  .fixed-sidebar-left .right-nav-text {
+    opacity: 0;
+  }
+
+  .page-wrapper {
+    margin-left: 44px;
+  }
+
+  .navbar.navbar-inverse.navbar-fixed-top .nav-header {
+    width: 44px;
+  }
+
+  .navbar.navbar-inverse.navbar-fixed-top .nav-header .logo-wrap .brand-text {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .navbar.navbar-inverse.navbar-fixed-top .nav>li .dropdown-menu.mega-menu {
+    width: calc(100% - 100px);
+  }
+
+  .sidebar-hover .navbar.navbar-inverse.navbar-fixed-top .nav-header {
+    width: 218px;
+  }
+
+  .sidebar-hover .navbar.navbar-inverse.navbar-fixed-top .nav-header .logo-wrap .brand-text {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .slide-nav-toggle .fixed-sidebar-left {
+    width: 218px;
+  }
+
+  .slide-nav-toggle .fixed-sidebar-left .side-nav li.navigation-header>span {
+    display: block;
+  }
+
+  .slide-nav-toggle .fixed-sidebar-left .side-nav li.navigation-header>i {
+    display: none;
+  }
+
+  .slide-nav-toggle .fixed-sidebar-left .collapse.in {
+    display: block;
+  }
+
+  .slide-nav-toggle .fixed-sidebar-left .right-nav-text {
+    opacity: 1;
+  }
+
+  .slide-nav-toggle .page-wrapper {
+    margin-left: 0;
+    left: 218px;
+  }
+
+  .slide-nav-toggle .navbar.navbar-inverse.navbar-fixed-top .nav-header {
+    width: 218px;
+  }
+
+  .slide-nav-toggle .navbar.navbar-inverse.navbar-fixed-top .nav-header .logo-wrap .brand-text {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .pf-admin-wrapper .prefeex-nav .navbar-brand .logo-img-large {
+    display: none;
+    visibility: hidden;
+    padding-left: 0px;
+  }
+
+  .slide-nav-toggle .prefeex-nav .navbar-brand {
+    width: 43px;
+  }
+
+  .prefeex-nav .navbar-brand {
+    width: 43px;
+  }
+
+  .slide-nav-toggle .prefeex-nav .navbar-brand .logo-img-small {
+    display: block;
+    visibility: visible;
+    padding-left: 3px;
+    width: 40px;
+    height: auto;
+  }
+
+  .prefeex-nav .navbar-brand .logo-img-small {
+    display: block;
+    visibility: visible;
+    padding-left: 3px;
+    width: 40px;
+    height: auto;
+  }
+
+  .prefeex-nav .navbar {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding: .5rem 1rem;
+  }
+}
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) {
+  .hidden-xl {
+    display: none !important;
+  }
+}

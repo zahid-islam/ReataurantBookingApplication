@@ -1,0 +1,201 @@
+<form #businessPromotionForm="ngForm"
+  (ngSubmit)="businessPromotionForm.valid && submitBusinessPromotion(businessPromotionForm)"
+  class="prefeex-form prefeex-horizontal-form form-gray-dark mt-5">
+  <div class="form-group row mb-3">
+    <label for="title" class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2 col-form-label pf-required-icon">
+      Title
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <input type="text" class="form-control" name="title" [(ngModel)]="createRestaurantOffer.title" placeholder="Title"
+        required />
+    </div>
+    <label for="description" class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2 col-form-label">
+      Description
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <input type="text" class="form-control" name="description" [(ngModel)]="createRestaurantOffer.description"
+        placeholder="Description" />
+    </div>
+  </div>
+
+  <div class="form-group row mb-3" *ngIf="!isUpdateMode">
+    <label for="shouldStartFromNow" class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2 col-form-label pf-required-icon">
+      Should Start From Now
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <div class="custom-control custom-radio custom-control-inline">
+        <input type="radio" (click)='shouldStartFromNowRadioChange(true)' value="true"
+          [ngModel]='createRestaurantOffer.shouldStartFromNow' name="shouldStartFromNow" id="shouldStartFromNowYes"
+          class="custom-control-input" required>
+        <label class="custom-control-label" for="shouldStartFromNowYes">Yes</label>
+      </div>
+      <div class="custom-control custom-radio custom-control-inline">
+        <input type="radio" (click)='shouldStartFromNowRadioChange(false)' id="shouldStartFromNowNo" value="false"
+          [ngModel]='createRestaurantOffer.shouldStartFromNow' name="shouldStartFromNow" class="custom-control-input"
+          required>
+        <label class="custom-control-label" for="shouldStartFromNowNo">No</label>
+      </div>
+    </div>
+    <div class="col-12 col-sm-6  col-md-6 col-lg-6 col-xl-6"></div>
+  </div>
+
+  <div class="form-group row mb-3">
+    <label for="activeFrom" class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2 col-form-label">
+      Start Date
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <p-calendar inputStyleClass="form-control" [monthNavigator]="true" [yearNavigator]="true" yearRange="2019:2070"
+        placeholder="Start Date" [minDate]="activeFromMinDate" name="activeFrom" [style]="{'z-index': '9999'}"
+        [(ngModel)]="createRestaurantOffer.activeFrom" (onSelect)="checkActiveFrom(createRestaurantOffer.activeFrom)"
+        dateFormat="dd-mm-yy" [showTime]="true" hideOnDateTimeSelect="true" [disabled]="isUpdateMode || isStartFromNow">
+      </p-calendar>
+    </div>
+    <label for="title" class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2 col-form-label pf-required-icon">
+      Expire Date
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <p-calendar inputStyleClass="form-control" [monthNavigator]="true" [yearNavigator]="true" yearRange="2019:2070"
+        placeholder="Expire Date" [minDate]="expiredAtMinDate" name="expiredAt" [style]="{'z-index': '9999'}"
+        [(ngModel)]="createRestaurantOffer.expiredAt" dateFormat="dd-mm-yy" [showTime]="true"
+        hideOnDateTimeSelect="true" [required]="true" [disabled]="isUpdateMode">
+      </p-calendar>
+    </div>
+  </div>
+
+  <div class="form-group row mb-0" style="height: 45px;">
+    <label for="isPercentage" class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2 col-form-label pf-required-icon">
+      Restaurant Offer Type
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <select class="form-control" (change)="restaurantOfferTypeChange()" [(ngModel)]="restaurantOfferTypeId"
+        name="restaurantOfferType" placeholder="Select Offer Type" [disabled]="isUpdateMode" required>
+
+        <option *ngFor="let type of restaurantOfferTypes" [ngValue]="type.id">
+          {{type.name}}
+        </option>
+      </select>
+    </div>
+
+    <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+      <div class="form-group row" *ngIf="selectedRestaurantOfferTypeName === 'PERCENTAGE'">
+        <label for="percentage" class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 col-form-label pf-required-icon">
+          Percentage
+        </label>
+        <div class="col-12 col-sm-8 col-md-8 col-lg-8 col-xl-8">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <div class="input-group-text rounded-0">%</div>
+            </div>
+            <input type="number" name="percentage" [(ngModel)]="createRestaurantOffer.percentage" class="form-control"
+              placeholder="Percentage" [disabled]="isUpdateMode" required>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row" *ngIf="selectedRestaurantOfferTypeName === 'FLAT'">
+        <label for="flatAmount" class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 col-form-label pf-required-icon">
+          Flat Amount
+        </label>
+        <div class="col-12 col-sm-8 col-md-8 col-lg-8 col-xl-8">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <div class="input-group-text rounded-0">৳</div>
+            </div>
+            <input type="number" class="form-control" [disabled]="isUpdateMode" name="flatAmount"
+              [(ngModel)]="createRestaurantOffer.flatAmount" placeholder="Flat Amount" [disabled]="isUpdateMode"
+              required />
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row" *ngIf="selectedRestaurantOfferTypeName === 'BOGX'">
+        <label for="buyOneGetCount" class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 col-form-label pf-required-icon">
+          Buy One Get
+        </label>
+        <div class="col-12 col-sm-8 col-md-8 col-lg-8 col-xl-8">
+          <div class="input-group">
+            <input type="number" class="form-control" name="buyOneGetCount"
+              [(ngModel)]="createRestaurantOffer.buyOneGetCount" placeholder="Buy One Get" [disabled]="isUpdateMode"
+              required />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group row mb-3">
+    <label for="title" class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2 col-form-label pf-required-icon">
+      Is Always Available?
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" [(ngModel)]="createRestaurantOffer.isAlwaysAvailable"
+          (change)="changeIsAlwaysAvailable($event)" id="isAlwaysAvailable" name="isAlwaysAvailable"
+          #isAlwaysAvailable="ngModel">
+        <label class="custom-control-label" for="isAlwaysAvailable" style=" line-height: 20px;"></label>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group row mb-3" *ngIf="!createRestaurantOffer.isAlwaysAvailable">
+    <label class="col-12 col-sm-2  col-md-2 col-lg-2 col-xl-2 col-form-label">
+      Available Time Slot
+    </label>
+    <div class="col-12 col-sm-5 col-md-5 col-lg-5 col-xl-5" *ngIf="availableTimes.length">
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor="let time of availableTimes; let i=index">
+          <div class="d-flex justify-content-between">
+            <span>{{time.availableFromTime}}</span>
+            <span>To</span>
+            <span>{{time.availableToTime}}</span>
+            <button type="button" class="btn" (click)="deleteAvailableTime(time)">
+              <img width="15px" height="15px;" src="/assets/images/icon/action-delete.svg" alt="" srcset="">
+            </button>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="col-12 col-sm-5 col-md-5 col-lg-5 col-xl-5" *ngIf="!availableTimes.length">
+      <ul class="list-group">
+        <li class="list-group-item">
+          &nbsp;
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="form-group row mb-3" *ngIf="!createRestaurantOffer.isAlwaysAvailable">
+    <label class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2 col-form-label"></label>
+
+    <div class="col-12 col-sm-5 col-md-5 col-lg-5 col-xl-5">
+      <div class="row">
+        <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+          <p-calendar inputStyleClass="form-control" name="availableFromTime"
+            [(ngModel)]="availTimeModel.availableFromTime" dataType="string" [hourFormat]="24" [showSeconds]="true"
+            [timeOnly]="true" placeholder="Available From">
+          </p-calendar>
+        </div>
+        <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+          <p-calendar inputStyleClass="form-control" name="availableToTime" [(ngModel)]="availTimeModel.availableToTime"
+            dataType="string" [hourFormat]="24" [showSeconds]="true" [timeOnly]="true" placeholder="Available To">
+          </p-calendar>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-sm-1 col-md-1 col-lg-1 col-xl-1">
+      <button type="button" class="btn btn-prefeex-primary" (click)="addAvailableTime()">+</button>
+    </div>
+  </div>
+
+  <div class="form-group row mb-3" style="margin-top: 50px">
+    <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-right">
+      <button type="submit" [disabled]="!businessPromotionForm.valid"
+        class="btn btn-prefeex-primary text-center rounded-0 btn-big-padding">
+        <span [hidden]="isApiSubmit"> Submit </span>
+        <span [hidden]="!isApiSubmit">
+          <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+        </span>
+      </button>
+    </div>
+  </div>
+</form>

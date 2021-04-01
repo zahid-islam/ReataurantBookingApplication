@@ -1,0 +1,422 @@
+<section class="display-box">
+  <div class="row">
+    <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex justify-content-around">
+            <div>
+              <img style="width:40px;height:45px" src="/assets/images/icon/accounts/receivable/orders.svg"
+                class="object-fit-cover mt-2">
+            </div>
+            <div>
+              <h4 class="title-name mb-3">
+                Reservations Count
+              </h4>
+              <h5 class="amount-number mt-1 mb-0">
+                {{accountReceivableData.orderCount}}
+              </h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex justify-content-around">
+            <div>
+              <img style="width:52px;height:45px" src="/assets/images/icon/accounts/receivable/receivable_amount.svg"
+                class="object-fit-cover mt-2">
+            </div>
+            <div>
+              <h4 class="title-name mb-3">
+                Receivable Amount
+              </h4>
+              <h5 class="amount-number mt-1 mb-0">
+                {{accountReceivableData.totalReceivable | currency:'৳ '}}
+              </h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Receivable pagination section -->
+<div class="row pf-pagination-container" [addOrRemoveClassToFixedTableHeader]="'500'">
+  <div class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-1 pr-0">
+
+    <h5 class="total-data mb-0 mt-2">Total: {{totalCount}}</h5>
+  </div>
+  <div class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-1 pr-0 bg-white">
+    <button *ngIf="totalCount > 0" class="btn pf-btn-primary" (click)="convert()"> PDF </button>
+  </div>
+  <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 pr-0 bg-white">
+    <!-- Search by Reservation ID  -->
+    <form class="single-input-search">
+      <div class="form-row">
+        <div class="col-12">
+          <div class="input-group">
+            <input name="searchOrderRefId" [(ngModel)]="accountReceivableSearch.searchPGTransactionId"
+              (ngModelChange)="invokeOnChnagingSearchData()" type="text" class="form-control rounded-0"
+              placeholder="Transaction ID" aria-label="Recipient's Reservation ID with two button addons"
+              aria-describedby="reservation-id">
+            <div class="input-group-append">
+              <button (click)="receivableSearchForm()" class="btn btn-outline-secondary rounded-0" type="submit">
+                <span [hidden]="isApiSubmit"> <i class="fa fa-search" aria-hidden="true"></i> </span>
+                <span [hidden]="!isApiSubmit">
+                  <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                </span>
+              </button>
+              <button (click)="clearSearchingForm()" class="btn btn-outline-secondary rounded-0" type="button">
+                <i class="fa fa-refresh" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 pl-0">
+    <p-paginator #paginator styleClass="prefeex-pagination" [rows]="itemPerPage" (onPageChange)="paginate($event)"
+      [totalRecords]="totalCount" pageLinkSize="5" [rowsPerPageOptions]="[10, 50, 100]"></p-paginator>
+  </div>
+</div>
+<!-- Receivable pagination section -->
+<!-- Receivable data grid section -->
+<div class="row">
+  <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+    <p-table [value]="receivableAll" styleClass="prefeex-data-table" tableStyleClass="table  prefeex-thead-blush">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>
+            Date
+            <i style="cursor: pointer;" *ngIf="!receivableSorting.createdAt" (click)="sortColumnWise('createdAt')"
+              class="fa fa-sort-alpha-asc" aria-hidden="false"></i>
+            <i style="cursor: pointer;" *ngIf="receivableSorting.createdAt" (click)="sortColumnWise('createdAt')"
+              class="fa fa-sort-alpha-desc" aria-hidden="false"></i>
+          </th>
+          <th>
+            Reservation ID
+          </th>
+          <th>Scheduled </th>
+          <th>For B2B</th>
+          <th style="width: 150px">Transaction ID</th>
+          <th>Receivable Amount</th>
+          <th>Action</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-receivable>
+        <tr>
+          <td class="td-bold">{{receivable.createdAt | date:'MMM d, y h:mm a'}}</td>
+          <td class="td-bold">{{receivable.order.refId}}</td>
+          <td class="td-bold">{{receivable.order.scheduledAt | date:'MMM d, y h:mm a'}}</td>
+          <td>{{receivable.business?.name}}</td>
+          <td style="width: 150px" class="text-truncate">{{receivable.pgTransactionId}}</td>
+          <td class="td-bold td-rad">{{receivable.amount | currency:'৳ '}}</td>
+          <td>
+            <button *ngIf="receivable.isRefundShow" class="btn pf-receive-policy-btn mr-2"
+              (click)="refundById(receivable.id, receivable, receivable.order.refId)">
+              Refund
+            </button>
+            <button *ngIf="receivable.isReceiveShow" class="btn pf-receive-btn" (click)="receiveById(receivable.id)">
+              Receive
+            </button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+<!-- Receivable data grid section -->
+
+
+
+<!-- content-loader -->
+<app-content-loader *ngIf="isLoading" [theadcount]="4" [rowlength]="4"></app-content-loader>
+<!-- content-loader -->
+
+<!-- Receive Modal -->
+<div class="modal fade" tabindex="-1" role="dialog" id="receiveModal" #receiveModal>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content pf-modal-withdraw">
+      <div class="modal-header">
+        <h5 class="modal-title">Receive</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="modal-form-normal" #requestForReceiveForm="ngForm"
+          (ngSubmit)="requestForReceiveForm.valid && requestForReceiveAmount(requestForReceiveForm)">
+          <div class="form-group">
+            <label for="bankTranstionId">Bank Transition Id</label>
+            <input type="text" class="form-control" id="bankTranstionId" name="bankTranstionID"
+              [(ngModel)]="recieveRequest.bankTransactionId" placeholder="Bank Transition ID">
+          </div>
+          <div class="form-group">
+            <label for="comment">Comment</label>
+            <textarea class="form-control" name="comment" [(ngModel)]="recieveRequest.comment" id="comment"
+              placeholder="Comment" rows="3"></textarea>
+          </div>
+          <div class="form-group text-center">
+            <button type="submit" class="btn pf-btn-primary rounded-0 pr-5 pl-5">OK</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Receive Modal -->
+
+<!-- Refund Modal -->
+<div class="modal fade bd-example-modal-xl" role="dialog" #refundModal>
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content pf-modal-withdraw">
+      <div class="modal-header">
+        <h5 class="modal-title">Refund Policy Rules for this Request</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body payble-modal">
+        <div class="card rounded-0 mb-4">
+          <div class="card-body">
+            <header>
+              <div class="row mb-4">
+                <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+                  <h5 class="text-truncate mt-1">
+                    <span class="label mr-2">Invoice Date:</span>
+                    <span class="label-result">{{eachRefundPolicy.order?.createdAt | date:'MMM d, y h:mm a'}}</span>
+                  </h5>
+                </div>
+                <div class="col-12 col-sm-9 col-md-9 col-lg-9 col-xl-9">
+                  <div class="d-flex justify-content-between">
+                    <h5 class="text-left float-left  mt-1" *ngIf="eachRefundPolicy.order?.canceledAt !== 'null'">
+                      <span class="label mr-2">Canceled Date:</span>
+                      <span
+                        class="label-result text-blush">{{eachRefundPolicy.order?.canceledAt | date:'MMM d, y h:mm a'}}</span>
+                    </h5>
+                    <img class="text-right"
+                      src="/assets/images/icon/accounts/payble/payment-details.svg" class="object-fit-cover">
+                  </div>
+                </div>
+              </div>
+              <div class="row mb-4 pt-2 pb-2 ml-0 mr-0" style="background: #F7F7F7;">
+                <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+                  <h5 class=" text-truncate mb-2">
+                    <span class="label  mr-2">Schedule :</span>
+                    <span class="label-result">{{eachRefundPolicy.order?.scheduledAt | date:'MMM d, y h:mm a'}}</span>
+                  </h5>
+                </div>
+                <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+                  <h5 class=" text-truncate mb-2">
+                    <span class="label  mr-2">Reservation ID:</span>
+                    <span class="label-result">{{eachRefundPolicy.order?.refId}}</span>
+                  </h5>
+                </div>
+                <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+                  <h5 class="text-truncate mb-2">
+                    <span class="label mr-2 mb-2"> Payment Gateway: </span>
+                    <span class="label-result"> {{eachRefundPolicy.paymentMethod?.name}}</span>
+                  </h5>
+                </div>
+                <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+                  <h5 class="text-truncate mb-2">
+                    <span class="label mr-2 mb-2"> Transaction ID </span>
+                    <span class="label-result"> {{eachRefundPolicy.pgTransactionId}}</span>
+                  </h5>
+                </div>
+              </div>
+            </header>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Hours</th>
+                  <th scope="col">Applied</th>
+                  <th scope="col">B2C %</th>
+                  <th scope="col"> B2B %</th>
+                  <th scope="col"> Prefeex %</th>
+                  <th scope="col"> No Refund</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    {{refundbreakdown.refundPolicyBreakdown?.appliedMillis / (1000 * 3600) }}h
+                  </td>
+                  <td>
+                    <span *ngIf="refundbreakdown.refundPolicyBreakdown?.isAppliedBeforeMillis"> Before </span>
+                    <span *ngIf="!refundbreakdown.refundPolicyBreakdown?.isAppliedBeforeMillis"> After </span>
+                  </td>
+                  <td> {{refundbreakdown.refundPolicyBreakdown?.b2cPercentage }}</td>
+                  <td> {{refundbreakdown.refundPolicyBreakdown?.b2bPercentage }}</td>
+                  <td> {{refundbreakdown.refundPolicyBreakdown?.prefeexPercentage }}</td>
+                  <td>
+                    <span *ngIf="refundbreakdown.refundPolicyBreakdown?.isNoRefund"> Yes </span>
+                    <span *ngIf="!refundbreakdown.refundPolicyBreakdown?.isNoRefund"> No </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <hr>
+            <section class="row invoice-details mt-4">
+              <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                <h6 class="text-center mb-5">Invoice Details</h6>
+                <div class="d-flex justify-content-between mb-2">
+                  <span class="name">Invoice Amount:</span>
+                  <span class="amount">{{viewDetails?.order.totalInvoicePrice | currency:'৳ '}}</span>
+                </div>
+                <div *ngIf="checkValueIsNumberAndPositive(viewDetails?.orderPromotion?.discountAmount)"
+                  class="d-flex justify-content-between mb-2">
+                  <span class="name">Discount Amount:</span>
+                  <span class="amount">{{viewDetails?.orderPromotion?.discountAmount | currency:'৳ -'}}</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                  <span class="name">SSL Fee: </span>
+                  <span class="amount">
+                    {{viewDetails.sslFee | currency:'৳ -'}}
+                  </span>
+                </div>
+                <p class="divider"></p>
+                <div class="d-flex justify-content-between mb-2">
+                  <span class="amount">Received Amount:</span>
+                  <span class="amount">{{viewDetails.receivable.amount | currency:'৳ '}}</span>
+                </div>
+                <div *ngIf="checkValueIsNumberAndPositive(viewDetails?.order.vatAmount)"
+                  class="d-flex justify-content-between mb-2">
+                  <span class="amount">Vat Amount:</span>
+                  <span class="amount">{{viewDetails?.order.vatAmount | currency:'৳ '}}</span>
+                </div>
+                <div *ngIf="checkValueIsNumberAndPositive(viewDetails?.order.serviceChargeAmount)"
+                  class="d-flex justify-content-between mb-2">
+                  <span class="amount">Service Charge Amount:</span>
+                  <span class="amount">{{viewDetails?.order.serviceChargeAmount | currency:'৳ '}}</span>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                <h6 class="text-center  mb-5">Breakdown Details</h6>
+                <div class="d-flex justify-content-between mb-2">
+                  <span class="name">Received Amount:</span>
+                  <span class="amount">{{viewDetails.receivable.amount | currency:'৳ '}}</span>
+                </div>
+                <div *ngIf="checkValueIsNumberAndPositive(viewDetails?.orderPromotion?.discountAmount)"
+                  class="d-flex justify-content-between mb-2">
+                  <span class="name">Discount Amount:</span>
+                  <span class="amount">{{viewDetails.orderPromotion.discountAmount | currency:'৳ '}}</span>
+                </div>
+                <p class="divider"></p>
+                <div *ngIf="checkValueIsNumberAndPositive(viewDetails?.orderPromotion?.discountAmount)"
+                  class="d-flex justify-content-between mb-2">
+                  <span class="name">Total Amount:</span>
+                  <span class="amount">{{viewDetails.netAmount | currency:'৳ '}}</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                  <span class="name">B2C Amount:</span>
+                  <span class="sub-name">As Refund Policy
+                    {{refundbreakdown.refundPolicyBreakdown?.b2cPercentage}}%</span>
+                  <span class="amount">{{refundbreakdown.b2cSplitAmount | currency:'৳ '}}</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                  <span class="name">B2B Amount:</span>
+                  <span class="sub-name">As Refund Policy
+                    {{refundbreakdown.refundPolicyBreakdown?.b2bPercentage}}%</span>
+                  <span class="amount">{{refundbreakdown.b2bSplitAmount | currency:'৳ '}}</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                  <span class="name">Prefeex Amount:</span>
+                  <span class="sub-name">As Refund Policy
+                    {{refundbreakdown.refundPolicyBreakdown?.prefeexPercentage}}%</span>
+                  <span class="amount">{{refundbreakdown.prefeexSplitAmount | currency:'৳ '}}</span>
+                </div>
+                <p class="divider"></p>
+                <div class="d-flex justify-content-between mb-2">
+                  <span class="amount">Net Amount:</span>
+                  <span class="amount">{{ viewDetails.netAmount | currency:'৳ '}}</span>
+                </div>
+
+              </div>
+            </section>
+          </div>
+        </div>
+        <form class="modal-form-normal" #refundForm="ngForm"
+          (ngSubmit)="refundForm.valid && refundMondyForm(refundForm)">
+          <div class="form-group">
+            <div class="card  rounded-0 notification-details ">
+              <div class="card-body">
+                <div class=" form-group row">
+                  <label class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 col-form-label text-right"
+                    for="refundComment">Comment</label>
+                  <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                    <textarea type="text" class="form-control" name="refundComment" [(ngModel)]="refundRequest.comment"
+                      placeholder="Comment" rows="5"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group text-center">
+            <button type="button" class="btn btn-cancel-dialog  rounded-0 pr-5 pl-5 mr-3"
+              data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-refund-dialog rounded-0 pr-5 pl-5">OK</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Receive Modal -->
+
+<!-- refund Confirm Modal  -->
+<div class="modal fade" role="dialog" #refundConfirmModal>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Refund Confirmation </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h6> Are you sure you want to refund money?</h6>
+      </div>
+      <div class=" modal-footer">
+        <div class="form-group mb-0 text-center">
+          <button type="button" (click)="markReceivableAsRefund(false)"
+            class="btn pf-btn-primary pr-5 pl-5 mr-3">No</button>
+          <button type="button" (click)="markReceivableAsRefund(true)" class="btn pf-btn-primary pr-5 pl-5">
+            <span [hidden]="isRefundApiSubmit"> Yes </span>
+            <span [hidden]="!isRefundApiSubmit">
+              <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+              <!-- Inprogress... -->
+            </span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- refund Confirm Modal  -->
+
+
+<!-- Refund Not Exist Modal  -->
+<div class="modal fade" #refundNotExistModal id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Refund Policy Not Exists </h5>
+        </div>
+        <div class="modal-body text-center">
+          <h6 class="mb-5"> {{refundPoliyNotExistMessage}} </h6>
+          <a class="btn pf-btn-primary pr-5 pl-5" data-dismiss="modal" aria-label="Close"
+            [routerLink]="['/admin/setting/create-refund-policy']"> Create Refund Rolicy</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- refund Not Exist Modal  -->

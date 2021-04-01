@@ -1,0 +1,39 @@
+<!-- dynamic router -->
+<div class="row ">
+  <div class="col-md-12 text-right mb-2">
+    <div class="btn-group business-menu" role="group" aria-label="Business profile">
+      <a [appHideIfUnauthorized]="'profile'" [actionRoot]="'mangeBusiness'" class="btn"
+        [routerLink]="['/admin/business/manage-business/'+ businessId]" [routerLinkActiveOptions]="{exact: true}"
+        routerLinkActive="btn-menu-pimery" role="button">
+        Profile
+      </a>
+      <a [appHideIfUnauthorized]="'reservation'" [actionRoot]="'mangeBusiness'" class="btn"
+        [routerLink]="['/admin/business/manage-business/'+ businessId +'/activities']"
+        routerLinkActive="btn-menu-pimery" role="button">
+        Reservation
+      </a>
+      <a [appHideIfUnauthorized]="'foodMenu'" [actionRoot]="'mangeBusiness'" class="btn"
+        [routerLink]="['/admin/business/manage-business/'+ businessId +'/food-menu']" routerLinkActive="btn-menu-pimery"
+        role="button">
+        Menu
+      </a>
+      <a [appHideIfUnauthorized]="'layout'" [actionRoot]="'mangeBusiness'" class="btn"
+        [routerLink]="['/admin/business/manage-business/'+ businessId + '/layout']" routerLinkActive="btn-menu-pimery"
+        role="button">
+        Layout
+      </a>
+      <a [appHideIfUnauthorized]="'reviews'" [actionRoot]="'mangeBusiness'" class="btn"
+        [routerLink]="['/admin/business/manage-business/'+ businessId + '/reviews']" routerLinkActive="btn-menu-pimery"
+        role="button">
+        Reviews
+      </a>
+      <a [appHideIfUnauthorized]="'promotion'" [actionRoot]="'mangeBusiness'" class="btn"
+        [routerLink]="['/admin/business/manage-business/'+ businessId + '/business-promotion']"
+        routerLinkActive="btn-menu-pimery" role="button">
+        Business Promotion
+      </a>
+    </div>
+  </div>
+</div>
+
+<router-outlet></router-outlet>

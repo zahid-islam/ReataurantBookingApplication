@@ -1,0 +1,155 @@
+<div class="row layout-create mt-5">
+  <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+    <div class="form-row">
+      <div *ngIf="!floorId" class="form-group col-md-4">
+        <button class="btn bg-white border-1 rounded-0" type="button" (click)="photo.click()">
+          <img class="object-fit-contain mr-2" style="width: 24px; height: 21px;"
+            src="/assets/images/icon/upload-layout-camera.svg" alt=""> Upload Layout
+        </button>
+        <input style="visibility: hidden" accept=".svg" type="file" name="photo" #photo (change)="fileProcess(photo)">
+      </div>
+      <div class="form-group col-md-8">
+        <div class="form-group row">
+          <label for="floorName" class="col-sm-4 col-form-label">Floor Name</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control rounded-0" #floor="ngModel" name="floor"
+              [(ngModel)]="floorPlan.floor" placeholder="Floor Name" required />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 text-right">
+    <button *ngIf="!floorId" class="btn pf-btn-primary pl-5 pr-5 mr-2" type="button" (click)="clearLayout('clear')">
+      Clear
+    </button>
+    <button class="btn pf-btn-primary pl-5 pr-5" type="button" (click)="saveLayout()">
+      <div *ngIf="isSubmit" class="spinner-border pf-spinner-border text-white" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <span *ngIf="floorId">Update</span>
+      <span *ngIf="!floorId">Create</span>
+    </button>
+    <button *ngIf="action === 'delete'" class="btn pf-btn-primary pl-5 pr-5 ml-2" type="button"
+      (click)="removeTableFromLayout()">
+      Delete Table
+    </button>
+  </div>
+</div>
+
+<!-- layout container -->
+<div class="row">
+  <div class="col-12 col-sm-12 col-md-9 col-lg-10 col-xl-10 toolbar text-center">
+    <div [hidden]="isLoading">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+        (mousedown)="onMouseDown($event)" (mouseup)="onMouseUp($event)" (mousemove)="onMouseMove($event)">
+        <ng-container *ngFor="let shape of getShapes()">
+          <ng-template dynamic-svg [component]="shape"></ng-template>
+        </ng-container>
+      </svg>
+    </div>
+    <app-spin-loader [hidden]="!isLoading"></app-spin-loader>
+  </div>
+
+  <div *ngIf="action === 'edit'" class="col-12 col-sm-12 col-md-3 col-lg-2 col-xl-2 tools">
+    <div class="panel-group" id="accordion" aria-multiselectable="true">
+      <div class="panel panel-default">
+        <div class="panel-heading" data-toggle="collapse" href="#shapes">
+          <div class="panel-title">
+            <a class="accordion-toggle collapsed" data-toggle="collapse" href="#shapes" aria-expanded="false"
+              aria-controls="basicshapes">
+              Tables
+            </a>
+          </div>
+        </div>
+        <div id="shapes" data-parent="#accordion" class="panel-collapse collapse">
+          <div class="panel-body">
+            <div class="row nopadding">
+              <button (click)="selectShape('Rectangle', 'One')" type="button"
+                class="btn btn-outline-primary col-md-3 shape"><img style="padding-right: 6px;"
+                  src="assets/pictures/seat_1.svg" width="24" height="24"></button>
+              <button (click)="selectShape('Rectangle', 'Two')" type="button"
+                class="btn btn-outline-primary col-md-3 shape"><img style="padding-right: 6px;"
+                  src="assets/pictures/seat_2.svg" width="24" height="24"></button>
+              <button (click)="selectShape('Rectangle', 'Three')" type="button"
+                class="btn btn-outline-primary col-md-3 shape"><img style="padding-right: 6px;"
+                  src="assets/pictures/seat_3.svg" width="24" height="24"></button>
+              <button (click)="selectShape('Rectangle', 'Four')" type="button"
+                class="btn btn-outline-primary col-md-3 shape"><img style="padding-right: 6px;"
+                  src="assets/pictures/seat_4.svg" width="24" height="24"></button>
+
+              <button (click)="selectShape('Rectangle', 'Five')" type="button"
+                class="btn btn-outline-primary col-md-3 shape"><img style="padding-right: 6px;"
+                  src="assets/pictures/seat_5.svg" width="24" height="24"></button>
+              <button (click)="selectShape('Rectangle', 'Six')" type="button"
+                class="btn btn-outline-primary col-md-3 shape"><img style="padding-right: 6px;"
+                  src="assets/pictures/seat_6.svg" width="24" height="24"></button>
+              <button (click)="selectShape('Rectangle', 'Seven')" type="button"
+                class="btn btn-outline-primary col-md-3 shape"><img style="padding-right: 6px;"
+                  src="assets/pictures/seat_7.svg" width="24" height="24"></button>
+              <button (click)="selectShape('Rectangle', 'Eight')" type="button"
+                class="btn btn-outline-primary col-md-3 shape"><img style="padding-right: 6px;"
+                  src="assets/pictures/seat_8.svg" width="24" height="24"></button>
+              <button (click)="selectShape('Rectangle', 'Nine')" type="button"
+                class="btn btn-outline-primary col-md-3 shape"><img style="padding-right: 6px;"
+                  src="assets/pictures/seat_9.svg" width="24" height="24"></button>
+              <button (click)="selectShape('Rectangle', 'Ten')" type="button"
+                class="btn btn-outline-primary col-md-3 shape"><img style="padding-right: 6px;"
+                  src="assets/pictures/seat_10.svg" width="24" height="24"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" (click)="openPropertiesToggle()">
+          <div class="panel-title">
+            <a class="accordion-toggle collapsed" #propertiesAnchor>
+              Properties
+            </a>
+          </div>
+        </div>
+        <div #properties class="panel-collapse collapse">
+          <div class="panel-body">
+            <div class="row nopadding">
+              <div class="col-md-12">
+                <form #profileForm="ngForm" confirmLayoutValidator="profileForm"
+                  *ngIf="selectedComponent?.shape?.shapeProperties?.isTable">
+                  <div *ngFor="let field of formFields; let i=index">
+                    <ng-container *ngIf="selectedComponent.primaryId === 0">
+                      <label>{{field.label}}</label>
+                      <input [attr.step]="field.inputType == 'range' ? .01 : null"
+                        [attr.min]="field.inputType == 'range' ? .25 : null"
+                        [attr.max]="field.inputType == 'range' ? 2 : null" [type]="field.inputType" class="form-control"
+                        #{{field.name}}="ngModel" [name]="field.name" [(ngModel)]="data[field.name] = field.value"
+                        [required]="field.name == 'tableNo' ? false : true"
+                        (change)="field.name == 'tableNo' ? setTableName(field.value) : false" />
+                    </ng-container>
+                    <ng-container *ngIf="selectedComponent.primaryId > 0 && field.name !== 'tableNo'">
+                      <label>{{field.label}}</label>
+                      <input [attr.step]="field.inputType == 'range' ? .01 : null"
+                        [attr.min]="field.inputType == 'range' ? .25 : null"
+                        [attr.max]="field.inputType == 'range' ? 2 : null" [type]="field.inputType" class="form-control"
+                        #{{field.name}}="ngModel" [name]="field.name" [(ngModel)]="data[field.name] = field.value"
+                        [required]="field.name == 'tableNo' ? false : true"
+                        (change)="field.name == 'tableNo' ? setTableName(field.value) : false" />
+                    </ng-container>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="alertModal" #alertModal>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <h5 class="text-center md-0">Table number already exist!</h5>
+      </div>
+    </div>
+  </div>
+</div>

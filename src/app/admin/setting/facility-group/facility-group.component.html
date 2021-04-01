@@ -1,0 +1,96 @@
+<!-- Create Banks -->
+<div class="row">
+  <div class="col-12">
+    <div class="prefeex-add-btn text-center mt-4" style="margin-bottom: 34px">
+      <a (click)="createFacilityGroupModal()" style="cursor: pointer" class="text-decoration-none">
+        <img src="/assets/images/icon/plus-icon.svg" alt="add-icon">
+        <span>Facility Group </span>
+      </a>
+    </div>
+  </div>
+</div>
+<!-- Facility pagination section -->
+<div class="row pf-pagination-container" [addOrRemoveClassToFixedTableHeader]="'250'">
+  <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 pr-0">
+    <h5 class="total-data mb-0 mt-2">Total: {{totalCount}} </h5>
+  </div>
+  <div class="col-12 col-sm-8 col-md-8 col-lg-8 col-xl-8 pl-0">
+    <p-paginator styleClass="prefeex-pagination" [rows]="itemPerPage" (onPageChange)="paginate($event)"
+      [totalRecords]="totalCount" pageLinkSize="5" [rowsPerPageOptions]="[10, 50, 100]"></p-paginator>
+  </div>
+</div>
+<!-- user data view section -->
+<div class="row">
+  <div class="col-12">
+    <p-table styleClass="prefeex-data-table" [value]="allFacilityGroup" tableStyleClass="table  prefeex-thead-blush">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Name</th>
+          <th style="width: 150px">Status</th>
+          <th>Action</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-facilities>
+        <tr>
+          <td>{{facilities.name}}</td>
+          <td style="width: 150px">
+            <select (change)="statusChangesAction(facilities.facilityGroupStatus.id, facilities)"
+              [(ngModel)]="facilities.facilityGroupStatus.id">
+              <option *ngFor="let status of allFacilityGroupStatuses" [ngValue]="status.id">
+                {{status.name}}
+              </option>
+            </select>
+          </td>
+          <td>
+            <a role="button" class="btn create-user mr-3" style="cursor: pointer"
+              (click)="updateFacilityModal(facilities.id)"> Edit
+            </a>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+<!-- content-loader -->
+<app-content-loader *ngIf="isLoading" [theadcount]="4" [rowlength]="4"></app-content-loader>
+<!-- content-loader -->
+
+<!-- Modal for pay to Money -->
+<div class="modal fade" #facilityGrooupModal tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content pf-modal-withdraw">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          Facility Group
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form #facilityGroupForm="ngForm" class="prefeex-form prefeex-horizontal-form form-gray-dark"
+        (ngSubmit)="facilityGroupForm.valid && submitFacilityGroup(facilityGroupForm)">
+        <div class="modal-body">
+          <div class="form-group row">
+            <label for="tag" class="col-12 col-sm-3 col-md-3 col-lg-3 col-xl-3 col-form-label">
+              Group Name
+            </label>
+            <div class="col-12 col-sm-9 col-md-9 col-lg-9 col-xl-9">
+              <input type="text" class="form-control" name="name" [(ngModel)]="facilityGroupModel.name" #name="ngModel"
+                placeholder="Facility Group Name" required>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button [disabled]="!facilityGroupForm.valid" type="submit"
+            class="btn btn-prefeex-primary text-center rounded-0 btn-big-padding">
+            <span [hidden]="isApiSubmit"> Save </span>
+            <span [hidden]="!isApiSubmit">
+              <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+            </span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

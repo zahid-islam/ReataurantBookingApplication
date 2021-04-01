@@ -1,0 +1,49 @@
+<!-- Create Banks -->
+<div class="row">
+  <div class="col-12">
+    <div class="prefeex-add-btn text-center mt-4" style="margin-bottom: 34px">
+      <a [routerLink]="['/admin/setting/email-template']" style="cursor: pointer" class="text-decoration-none">
+        <img src="/assets/images/icon/plus-icon.svg" alt="add-icon">
+        <span> Create Email </span>
+      </a>
+    </div>
+  </div>
+</div>
+<!-- Email Templates pagination section -->
+<div class="row pf-pagination-container">
+  <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+    <h5 class="total-data mb-0 mt-2 mb-2">Total: {{totalCount}}  </h5>
+  </div>
+  <div class="col-12 col-sm-8 col-md-8 col-lg-8 col-xl-8">
+    <!-- <p-paginator styleClass="prefeex-pagination" pageLinkSize="5" [rowsPerPageOptions]="[10, 20, 30]"></p-paginator> -->
+  </div>
+</div>
+<!-- Email Templates view section -->
+<div class="row">
+  <div class="col-12">
+    <p-table styleClass="prefeex-data-table" [value]="allEmailTemplates" tableStyleClass="table  prefeex-thead-blush">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Email Subject</th>
+          <th>Email Template Type</th>
+          <th>Action</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-emailTemplate>
+        <tr>
+          <td class="td-bold">{{emailTemplate.emailSubject}}</td>
+          <td class="td-bold">{{emailTemplate.emailTemplateType.name}}</td>
+          <td>
+            <a role="button" class="btn create-user mr-3" style="cursor: pointer"
+              (click)="updateEmailTemplate(emailTemplate.id)"> Edit
+            </a>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+<!-- content-loader -->
+<app-content-loader *ngIf="isLoading" [theadcount]="4" [rowlength]="4"></app-content-loader>
+<!-- content-loader -->

@@ -1,0 +1,19 @@
+@import "../variable.scss";
+.pf-nav-tabs.nav-tabs {
+  .nav-link,.nav-link.active  {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 21px;
+  }
+
+  .nav-link {
+    color: $pf-chips-t;
+  }
+
+  .nav-link.active {
+    color: $blush;
+  }
+}
+.pf-tab-content.tab-content {
+}

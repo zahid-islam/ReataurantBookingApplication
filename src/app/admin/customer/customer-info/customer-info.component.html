@@ -1,0 +1,108 @@
+<!-- Search customer -->
+<div class="row">
+  <div class="col-12">
+    <form #customerSearchForm="ngForm" (ngSubmit)="searchCustomer(customerSearchForm.value)"
+      class="pf-search-component">
+      <div class="form-row" style="margin-bottom: 30px;">
+        <div class="form-group col-md-4">
+          <label for="">Customer Name</label>
+          <input type="text" name="name" [(ngModel)]="customerSearch.name" #name="ngModel" class="form-control"
+            placeholder="Customer Name">
+        </div>
+        <div class="form-group col-md-4">
+          <label for="">Mobile</label>
+          <input type="text" name="mobile" [(ngModel)]="customerSearch.mobile" #mobile="ngModel" class="form-control"
+             placeholder="Mobile">
+        </div>
+        <div class="form-group col-md-4 mt-md-4 pt-md-1">
+          <button type="button" (click)="resetSearch(customerSearchForm)" class="btn pf-btn-primary">Reset</button>
+          <button type="submit" class="btn pf-btn-primary">
+            <span [hidden]="isApiSubmit"> Search </span>
+            <span [hidden]="!isApiSubmit">
+              <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+            </span>
+          </button>
+        </div>
+      </div>
+      <div class="form-row">
+
+      </div>
+    </form>
+  </div>
+</div>
+<!-- Search Customer -->
+<!-- Customer pagination section -->
+<div class="row pf-pagination-container" [addOrRemoveClassToFixedTableHeader]="'500'">
+  <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 pr-0">
+    <h5 class="total-data mb-0 mt-2">Total: {{totalCount}}</h5>
+  </div>
+  <div class="col-12 col-sm-8 col-md-8 col-lg-8 col-xl-8 pl-0">
+    <p-paginator #paginator styleClass="prefeex-pagination" [rows]="itemPerPage" (onPageChange)="paginate($event)"
+      [totalRecords]="totalCount" pageLinkSize="5" [rowsPerPageOptions]="[10, 50, 100]"></p-paginator>
+  </div>
+</div>
+<!-- customer pagination section -->
+
+<!-- customer data view section -->
+<div class="row">
+  <div class="col-12">
+    <p-table [value]="customers" styleClass="prefeex-data-table" tableStyleClass="table prefeex-thead-blush">
+      <ng-template pTemplate="header">
+        <tr>
+          <th class="text-left"> Mobile </th>
+          <th> Customer Name </th>
+          <th> Joining Date </th>
+          <th style="width: 120px">
+            <select class="status-filter" (change)="filterCustomerOnStatusChange(statusForFilter)"
+              [(ngModel)]="statusForFilter">
+              <option selected [ngValue]="0"> All </option>
+              <option *ngFor="let stat of customerStatuses" [ngValue]="stat.id">
+                {{stat.name}}
+              </option>
+            </select>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-customer>
+        <tr>
+          <td [routerLink]="['/admin/customer/'+ customer.id]" class="td-bold cursor text-left">
+            <img style=" width:40px;height:40px " [src]="customer.photo ? customer.photo : '/assets/images/user/user-placeholder.png'"
+            class="object-fit-cover rounded-circle mr-2">
+            <span *ngIf="customer.mobile">
+              {{customer.mobile}}
+              <span *ngIf="!customer.isPhoneVerified" style=" color: #b8423e;">
+                <img style="width:20px;height:20px" src="/assets/images/icon/unverified-email.svg"
+                  class="object-fit-cover">
+              </span>
+              <span *ngIf="customer.isPhoneVerified" style=" color: #b8423e;">
+                <img style="width:20px;height:20px" src="/assets/images/icon/verify-email-success.svg"
+                  class="object-fit-cover">
+              </span>
+            </span>
+          </td>
+          <td [routerLink]="['/admin/customer/'+ customer.id]" class="td-bold cursor">
+            <a [routerLink]="['/admin/customer/'+ customer.id]">
+              {{customer.firstName}} {{customer.lastName}}
+            </a>
+          </td>
+          <td [routerLink]="['/admin/customer/'+ customer.id]" class="td-bold cursor">
+            {{customer.createdAt | date:'MMM d, y h:mm a'}}
+          </td>
+          <td class="cursor" style="width: 120px">
+            <select (change)="statusChangesAction(customer.userStatus.id, customer)"
+              [(ngModel)]="customer.userStatus.id">
+              <option *ngFor="let stat of customerStatuses" [ngValue]="stat.id">
+                {{stat.name}}
+              </option>
+            </select>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+<!-- customer data view section -->
+
+<!-- content-loader -->
+<app-content-loader *ngIf="isLoading" [theadcount]="4" [rowlength]="4"></app-content-loader>
+<!-- content-loader -->

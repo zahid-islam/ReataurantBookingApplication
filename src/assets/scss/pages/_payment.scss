@@ -1,0 +1,433 @@
+@import "../variable.scss";
+
+.payment-header-boxs {
+  .card-body {
+    // height: 186px;
+    cursor: pointer;
+    background: $top-menu-bg;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+  }
+
+  .card-title {
+    span {
+      font-style: $f-s-normal;
+      font-weight: $f-w-bold;
+      font-size: $f-s-rem-36;
+      line-height: 42px;
+      color: $payment-title;
+    }
+  }
+
+  .card-subtitle {
+    font-style: $f-s-normal;
+    font-weight: $f-w-normal;
+    font-size: $f-s-rem-18;
+    line-height: 21px;
+    color: $t-gray-dark;
+  }
+
+  .card-text {
+    font-style: $f-s-normal;
+    font-weight: $f-w-normal;
+    font-size: $f-s-rem-14;
+    line-height: 16px;
+    color: $pf-chips-t;
+  }
+
+  .avilable-balance-dropdown {
+    padding: 0px;
+
+    .card-body {
+      width: 278px;
+      height: 216px;
+      padding: 0;
+      box-shadow: none !important;
+      border: 0px !important;
+      background-color: $white-gray !important;
+    }
+
+    .card-title {
+      font-style: normal;
+      font-weight: bold;
+      font-size: 36px;
+      line-height: 42px;
+      text-decoration-line: underline;
+      color: $blush !important;
+      margin-bottom: 18px;
+      margin-top: 25px;
+    }
+
+    .card-text {
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 16px;
+      color: #a7a9ac !important;
+      margin-bottom: 30px;
+    }
+
+    .pf-btn-primary {
+      background-color: $blush !important;
+      border: 1px solid $blush !important;
+      color: $white;
+    }
+  }
+}
+
+// active box
+.payment-header-boxs.active-box {
+  .card-body {
+    background: $blush;
+    border: 1px solid $blush;
+    box-sizing: border-box;
+    -webkit-box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+    -ms-box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+  }
+
+  .card-title {
+    .filter-white {
+      -webkit-filter: brightness(0) invert(1);
+      -moz-filter: brightness(0) invert(1);
+      -ms-filter: brightness(0) invert(1);
+      filter: brightness(0) invert(1);
+    }
+
+    svg:hover {
+      fill: red;
+    }
+
+    span {
+      color: $white;
+    }
+  }
+
+  .card-subtitle {
+    color: $white;
+  }
+
+  .card-text {
+    color: $white;
+  }
+
+  .pf-btn-primary {
+    background-color: $white-gray !important;
+    border: 1px solid $white-gray !important;
+    color: $blush;
+  }
+
+  .avilable-balance-dropdown {
+    padding: 0px;
+
+    .card-body {
+      width: 278px;
+      height: 216px;
+      padding: 0;
+      box-shadow: none !important;
+      border: 0px !important;
+      background-color: $white-gray !important;
+    }
+
+    .card-title {
+      font-style: normal;
+      font-weight: bold;
+      font-size: 36px;
+      line-height: 42px;
+      text-decoration-line: underline;
+      color: $blush !important;
+      margin-bottom: 18px;
+      margin-top: 25px;
+    }
+
+    .card-text {
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 16px;
+      color: #a7a9ac !important;
+      margin-bottom: 30px;
+    }
+
+    .pf-btn-primary {
+      background-color: $blush !important;
+      border: 1px solid $blush !important;
+      color: $white;
+    }
+  }
+}
+
+.dialog-header {
+  background: #a02e2b;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* ------------------- Accounts page --------------------*/
+.account-nav {
+  .nav-item {
+    margin-right: 30px;
+    position: relative;
+  }
+
+  .nav-link {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 21px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #ffffff;
+    background-color: #a1a1a1;
+
+    &:after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 100%;
+      width: 17px;
+      height: 35px;
+      border-top: 17px solid transparent;
+      border-bottom: 17px solid transparent;
+      border-right: 17px solid transparent;
+      border-left: 17px solid #a1a1a1;
+    }
+  }
+
+  .nav-link.active {
+    background-color: $blush;
+
+    &:after {
+      border-top: 17px solid transparent;
+      border-bottom: 17px solid transparent;
+      border-right: 17px solid transparent;
+      border-left: 17px solid $blush;
+    }
+  }
+}
+
+.display-box {
+  .card {
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+    margin-bottom: 24px;
+
+    .title-name {
+      font-style: $f-s-normal;
+      font-weight: $f-w-bold;
+      font-size: 18px;
+      line-height: 21px;
+      text-align: center;
+      color: $t-gray-dark;
+    }
+
+    .amount-number {
+      font-style: normal;
+      font-weight: bold;
+      font-size: 24px;
+      line-height: 28px;
+      text-align: center;
+      color: $blush;
+
+      a {
+        font-style: normal;
+        font-weight: bold;
+        font-size: 24px;
+        line-height: 28px;
+        text-align: center;
+        text-decoration-line: underline;
+        color: $blush;
+      }
+    }
+  }
+}
+
+.pay-panal {
+  .request-time {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    color: #969696;
+  }
+
+  .applied-amount {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    align-items: center;
+    text-align: center;
+
+    color: #a02e2b;
+  }
+
+  .amounts {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 21px;
+
+    align-items: center;
+    text-align: center;
+
+    color: #5d5d5d;
+  }
+}
+
+.pf-pay-btn {
+  background: #69ab1d;
+  /* Drop Shedow */
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 21px;
+  text-align: center;
+
+  color: #ffffff;
+}
+
+.refund-policy-value {
+  p {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 16px;
+    color: #5d5d5d;
+  }
+}
+
+/*
+*  ------------------------------- Ticket support details ----------------
+*/
+.support-messages-panal {
+  height: 704px;
+  background: #f7f7f7;
+  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
+
+  .card-header {
+    font-weight: bold;
+    font-size: 14px;
+    color: #8c8e90;
+    background: #ffffff;
+    border: 1px solid #e7e7e7;
+    box-sizing: border-box;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
+    line-height: 18px;
+    height: 70px;
+  }
+}
+.support-messages::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 7px;
+}
+.support-messages::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
+}
+.support-messages {
+  height: 550px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  // .list-unstyled {
+  //   height: 590px;
+  // }
+
+  .send {
+    .mess-body {
+      background: #eaf5f5;
+      padding: 10px;
+      border-radius: 0px 0px 10px 0px;
+      font-size: 14px;
+      line-height: 16px;
+      color: #6e6e6e;
+      border-radius: 5px;
+    }
+  }
+  .replies {
+    .mess-body {
+      font-size: 14px;
+      line-height: 16px;
+      color: #6e6e6e;
+      padding: 10px;
+      background: #f5f4ea;
+      box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
+      border-radius: 10px 0px 0px 0px;
+    }
+  }
+
+  .conversation-started,
+  .mess-date,
+  .mess-date {
+    font-size: 12px;
+    line-height: 14px;
+    color: #afafaf;
+  }
+  .seeMore {
+    position: absolute;
+    height: 100px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 21px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: $blush;
+    top: 0px;
+    right: 30px;
+    background: #cccccc87;
+    border: 0px;
+
+    .plus {
+      cursor: pointer;
+    }
+  }
+}
+
+.support-message-footer {
+  position: relative;
+  background: #fff;
+  .upload-image {
+    margin-left: -18px;
+    height: 100px;
+    position: absolute;
+    width: 100%;
+    top: -100px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: #fff;
+    padding-left: 10px;
+    padding-top: 10px;
+  }
+
+  .image-wrapper {
+    li {
+      width: 50px;
+      height: 50px;
+      margin: 0px 5px 5px 0px;
+      float: left;
+      position: relative;
+      text-align: center;
+      cursor: default;
+      background: #fff;
+      margin-bottom: 5px;
+      .product-image {
+        width: 100%;
+        height: 50px;
+      }
+      .close-btn {
+        background: #ffffff;
+        position: absolute;
+        left: 20px;
+        top: 0px;
+        height: 30px;
+        width: 30px;
+        padding: 0px;
+        border: 1px solid #ccc;
+      }
+    }
+  }
+}

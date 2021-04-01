@@ -1,0 +1,172 @@
+<!-- support dashboard  -->
+<section class="support-dashboard">
+  <div class="row mb-4">
+    <div class="col-5 mb-3" *ngFor="let item of ticketStatistics; let i = index">
+      <div class="card" [ngStyle]="active === i ? {'background-color': '#f0e3e3'} : {'background-color': 'white'}"
+        (click)="filterTicketOnStatusChange(item.ticketStatus.id, i)">
+        <div class="card-header p-0 rounded-0">
+          <h3 class="mb-0 pl-2 title" [ngClass]="{
+            'PENDING': item.ticketStatus.name === 'PENDING',
+            'B2B_INPROGRESS': item.ticketStatus.name === 'B2B_INPROGRESS',
+            'B2C_INPROGRESS': item.ticketStatus.name === 'B2C_INPROGRESS',
+            'B2C_PENDING': item.ticketStatus.name === 'B2C_PENDING',
+            'WAITING_FOR_RESOLVED': item.ticketStatus.name === 'WAITING_FOR_RESOLVED',
+            'WAITING_FOR_B2B': item.ticketStatus.name === 'WAITING_FOR_B2B',
+            'WAITING_FOR_B2C': item.ticketStatus.name === 'WAITING_FOR_B2C',
+            'SUPPORT_CONVERSATION_IN_PROGRESS': item.ticketStatus.name === 'SUPPORT_CONVERSATION_IN_PROGRESS',
+            'SUPPORT_CONVERSATION_CUSTOMER_SUPPORT_PENDING': item.ticketStatus.name === 'SUPPORT_CONVERSATION_CUSTOMER_SUPPORT_PENDING',
+            'REFUND_AND_CANCELATION': item.ticketStatus.name === 'REFUND_AND_CANCELATION'
+          }">
+            {{item.display}}
+          </h3>
+        </div>
+        <div class="card-body px-2 py-2">
+          <div class="d-flex justify-content-between">
+            <div>
+              <img style="width:64px;height:64px"
+                [src]="'/assets/images/ticket/dashboard/'+item.ticketStatus.name+'.svg'" class="object-fit-cover">
+            </div>
+            <div>
+              <h4 class="count mb-0">
+                {{item.count}}
+              </h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- support dashboard  -->
+
+<!-- Order lists pagination section -->
+<div class="row pf-pagination-container" [addOrRemoveClassToFixedTableHeader]="'600'">
+  <div class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2 pr-0">
+    <h5 class="total-data mb-0 mt-2">Total: {{totalCount}}</h5>
+  </div>
+  <div class="form-group col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 mb-0 bg-white">
+    <form #customerSearchForm="ngForm" class="pf-search-component single-input-search">
+      <div class="input-group">
+        <input type="text" name="searchingOrderRefId" [(ngModel)]="filter.searchingOrderRefId"
+          #searchingOrderRefId="ngModel" class="form-control" placeholder="Search Ticket by Reservation ID"
+          autocomplete="off">
+        <div class="input-group-append" (click)="searchByOrderRefId()">
+          <button class="btn btn-outline-secondary" type="submit"><i class="fa fa-search"
+              aria-hidden="true"></i></button>
+        </div>
+        <div class="input-group-append" (click)="resetTicketList()">
+          <button class="btn btn-outline-secondary" type="button">
+            <i class="fa fa-refresh" aria-hidden="true"></i></button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 pl-0">
+    <p-paginator styleClass="prefeex-pagination" #paginator [rows]="itemPerPage" (onPageChange)="paginate($event)"
+      [totalRecords]="totalCount" pageLinkSize="5" [rowsPerPageOptions]="[10, 50, 100]"></p-paginator>
+  </div>
+</div>
+<!-- Order lists pagination section -->
+
+<!-- Order lists data grid section -->
+<div class="row">
+  <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+    <p-table [value]="allTickets" styleClass="prefeex-data-table" tableStyleClass="table prefeex-thead-blush">
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 80px">Ticket ID</th>
+          <th style="width: 60px">RefID</th>
+          <th class="px-0" style="width: 160px">
+            <select class="status-filter" (change)="filterTicketOnTypeChange(ticketTypeForFilter)"
+              [(ngModel)]="ticketTypeForFilter">
+              <option selected [ngValue]="0"> All </option>
+              <option *ngFor="let type of ticketTypes" [ngValue]="type.id">
+                {{type.display}}
+              </option>
+            </select>
+          </th>
+          <th style="width: 50px">Details</th>
+          <th style="width: 150px;">Business Name</th>
+          <th>Place At</th>
+          <th>Scheduled At </th>
+          <th>Reservation Status</th>
+          <th>
+            Ticket Status
+          </th>
+          <th>Wait Time</th>
+          <th style="width: 150px">Assign To</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-ticket>
+        <tr [ngClass]="{'wait-time-expired': ticket.isWaitTimeExpired}">
+          <td class=" td-bold" style="width: 80px">
+            {{ticket.ticketRefId}}
+          </td>
+          <td class=" td-bold" style="width: 60px">
+            {{ticket?.order?.refId}}
+          </td>
+
+          <td style="width: 160px">{{ticket.ticketTypeDisplay}}</td>
+
+          <td style="cursor: pointer" class="td-bold">
+            <div class="btn-group" role="group" aria-label="Support view detaisl">
+              <button type="button" class="btn btn-view" (click)="pickAssignTicketToMe(ticket.ticketRefId, ticket)">
+                <i class="fa fa-eye" aria-hidden="true"></i>
+              </button>
+            </div>
+          </td>
+
+          <td style="width: 150px;">
+            <b>{{ticket.order?.businessName}}</b>
+            <br>
+            {{ticket?.order?.business.defaultOpeningTime}} - {{ticket?.order?.business.defaultClosingTime}}
+          </td>
+          <td> {{ticket?.order?.createdAt | date:'MMM d, yy h:mm a'}} </td>
+          <td> {{ticket?.order?.scheduledAt | date:'MMM d, yy h:mm a'}}</td>
+          <td> {{ticket.orderStatusDisplay}} </td>
+          <td style="width: 120px" class="td-bold">{{ticket.ticketStatusDisplay}}</td>
+          <td class="td-bold"> {{ticket?.waitingTime}} </td>
+
+          <td style="width: 150px" *ngIf="userType === 'CUSTOMER_SUPPORT'">
+            <select [hidden]="ticket?.ticketStatus.name === 'WAITING_FOR_RESOLVED' || 
+            ticket?.ticketStatus.name === 'REFUND_AND_CANCELATION'" *ngIf="(ticket?.ticketStatus.name !== 'SUPPORT_CONVERSATION_IN_PROGRESS' &&
+            ticket?.ticketStatus.name !== 'B2B_INPROGRESS' && ticket?.ticketStatus.name !=='B2C_INPROGRESS')"
+              (change)="assignToCustomerSupport(ticket)" [(ngModel)]="ticket.assignToIdDisplay">
+              <option [ngValue]="0"></option>
+              <option *ngFor="let user of allCustomerSupportUser" [ngValue]="user.id">
+                {{user.displayName}}
+              </option>
+            </select>
+
+            <span style="overflow-wrap: break-word;" *ngIf="(ticket?.ticketStatus.name === 'SUPPORT_CONVERSATION_IN_PROGRESS' ||
+            ticket?.ticketStatus.name === 'B2B_INPROGRESS' ||
+            ticket?.ticketStatus.name === 'B2C_INPROGRESS')">
+              {{viewAssignedName(ticket.assignedTo)}}
+            </span>
+          </td>
+
+          <td style="width: 150px" *ngIf="userType !== 'CUSTOMER_SUPPORT'">
+            <select [hidden]="userType !== 'CUSTOMER_SUPPORT_MANAGER' 
+              || ticket?.ticketStatus.name === 'WAITING_FOR_RESOLVED'
+              || ticket?.ticketStatus.name === 'REFUND_AND_CANCELATION'" (change)="assignToCustomerSupport(ticket)"
+              [(ngModel)]="ticket.assignToIdDisplay" *ngIf="(ticket?.ticketStatus.name !== 'SUPPORT_CONVERSATION_IN_PROGRESS' &&
+              ticket?.ticketStatus.name !== 'B2B_INPROGRESS' &&
+              ticket?.ticketStatus.name !=='B2C_INPROGRESS')">
+              <option [ngValue]="0"></option>
+              <option *ngFor="let user of allCustomerSupportUser" [ngValue]="user.id">
+                {{user.displayName}}
+              </option>
+            </select>
+
+            <span style="overflow-wrap: break-word;" *ngIf="(ticket?.ticketStatus.name === 'SUPPORT_CONVERSATION_IN_PROGRESS' ||
+            ticket?.ticketStatus.name === 'B2B_INPROGRESS' ||
+            ticket?.ticketStatus.name === 'B2C_INPROGRESS')">
+              {{viewAssignedName(ticket.assignedTo)}}
+            </span>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+<!-- Order lists data grid section -->

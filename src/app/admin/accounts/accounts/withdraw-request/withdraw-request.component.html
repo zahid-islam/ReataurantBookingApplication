@@ -1,0 +1,531 @@
+<section class="display-box">
+  <div class="row">
+    <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex justify-content-around">
+            <div>
+              <img style="width:36px;height:45px" src="/assets/images/icon/accounts/payble/withdraw_request.svg"
+                class="object-fit-cover mt-2">
+            </div>
+            <div>
+              <h4 class="title-name mb-3">
+                Withdrawn
+              </h4>
+              <h5 class="amount-number mt-1 mb-0">
+                {{ withdrawSummary.withdrawnCount}}
+              </h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex justify-content-around">
+            <div>
+              <img style="width:57px;height:45px" src="/assets/images/icon/accounts/withdraw-request/pending.svg"
+                class="object-fit-cover mt-2">
+            </div>
+            <div>
+              <h4 class="title-name mb-3">
+                <!-- Pending -->
+                Withdraw Pending
+              </h4>
+              <h5 class="amount-number mt-1 mb-0">
+                {{ withdrawSummary.withdrawPendingCount}}
+              </h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex justify-content-around">
+            <div>
+              <img style="width:74px;height:45px" src="/assets/images/icon/accounts/paid/total_paid_amount.svg"
+                class="object-fit-cover mt-2">
+            </div>
+            <div>
+              <h4 class="title-name mb-3">
+                Withdrawn Amount
+              </h4>
+              <h5 class="amount-number mt-1 mb-0">
+                {{ withdrawSummary.withdrawPendingAmount | currency:'৳ '}}
+              </h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- withdraw pagination section -->
+<div class="row pf-pagination-container" [addOrRemoveClassToFixedTableHeader]="'350'">
+  <div class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2 pr-0">
+    <h5 class="total-data mb-0 mt-2">Total: {{totalCount}}</h5>
+  </div>
+  <div class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2 pr-0 bg-white">
+    <button *ngIf="totalCount > 0" class="btn pf-btn-primary" (click)="convert()"> Download PDF </button>
+  </div>
+  <div class="col-12 col-sm-8 col-md-8 col-lg-8 col-xl-8 pl-0">
+    <p-paginator styleClass="prefeex-pagination" [rows]="itemPerPage" (onPageChange)="paginate($event)"
+      [totalRecords]="totalCount" pageLinkSize="5" [rowsPerPageOptions]="[10, 50, 100]"></p-paginator>
+  </div>
+</div>
+<!-- withdraw pagination section -->
+<!-- withdraw data grid section -->
+<div class="row">
+  <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+    <p-table [value]="allWithdraw" styleClass="prefeex-data-table" tableStyleClass="table  prefeex-thead-blush">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>
+            Applied Date
+            <i style="cursor: pointer;" *ngIf="!withdrawnSortingModel.createdAt" (click)="sortColumnWise('createdAt')"
+              class="fa fa-sort-alpha-asc" aria-hidden="false"></i>
+            <i style="cursor: pointer;" *ngIf="withdrawnSortingModel.createdAt" (click)="sortColumnWise('createdAt')"
+              class="fa fa-sort-alpha-desc" aria-hidden="false"></i>
+          </th>
+          <th>For B2B</th>
+          <th>Applied for Amounts</th>
+          <th>Details</th>
+          <th>Action</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-withdraw>
+        <tr>
+          <td>{{withdraw.createdAt | date:'MMM d, y h:mm a'}}</td>
+          <td>{{withdraw.business?.name}}</td>
+          <td class="td-bold td-rad">{{withdraw.amount | currency:'৳ '}}</td>
+          <td>
+            <div class="btn-group" role="group" aria-label="withdraw view detaisl">
+              <button type="button" title="Withdraw View Details" class="btn btn-view"
+                (click)="withdrawRequestViewDetails(withdraw.id, withdraw.business?.id)">
+                <i class="fa fa-eye" aria-hidden="true"></i>
+              </button>
+            </div>
+          </td>
+          <td>
+            <button type="button" class="btn pf-receive-btn pl-5 pr-5" (click)="payTo(withdraw, withdraw.business?.id)">
+              Pay </button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+<!-- withdraw data grid section -->
+
+
+<!-- content-loader -->
+<app-content-loader *ngIf="isLoading" [theadcount]="4" [rowlength]="4"></app-content-loader>
+<!-- content-loader -->
+
+<!-- Modal for withdraw Request View details -->
+<div class="modal fade bd-example-modal-xl" #withdrawRequestViewDetailsModal id="viewDetails" tabindex="-1"
+  role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content pf-modal-withdraw">
+      <div class="modal-header">
+        <h5 class="modal-title" id="viewDetailsModalLabel">
+          {{viewDetails.business?.name}}
+          <span class="address">
+            {{viewDetails.business?.address}}
+          </span>
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <header>
+          <div class="row d-flex align-items-stretch">
+            <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+              <div class="card payment-header-boxs mb-5">
+                <div class="card-body rounded-0 h-auto">
+                  <h5 class="card-title mb-3">
+                    <img style="width:52px;height:44px" src="/assets/images/icon/payment/payment-received-balance.svg"
+                      class="object-fit-cover mr-3 filter-white">
+                    <span>{{businessAccountSummary.lastAcceptedWithdrawMoneyRequest?.amount}}</span>
+                  </h5>
+                  <h6 class="card-subtitle mb-2">Last Payment Made </h6>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+              <div class="card payment-header-boxs mb-5">
+                <div class="card-body rounded-0 border-0 h-auto">
+                  <h5 class="card-title mb-3">
+                    <img style="width:52px;height:44px" src="/assets/images/icon/payment/payment-pending-balance.svg"
+                      class="object-fit-cover mr-3 filter-white">
+                    <span>{{businessAccountSummary.receivableBalance}}</span>
+                  </h5>
+                  <h6 class="card-subtitle mb-2">Pending Balance </h6>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+              <div class="card payment-header-boxs mb-5">
+                <div class="card-body rounded-0 h-auto">
+                  <h5 class="card-title mb-3">
+                    <img style="width:52px;height:44px" src="/assets/images/icon/payment/payment-avilable-balance.svg"
+                      class="object-fit-cover mr-3 filter-white">
+                    <span>{{businessAccountSummary.payableBalance}}</span>
+                  </h5>
+                  <h6 class="card-subtitle mb-2">Available balance </h6>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+              <div class="card payment-header-boxs mb-5">
+                <div class="card-body rounded-0 h-auto">
+                  <h5 class="card-title mb-3">
+                    <img style="width:60px;height:44px" src="/assets/images/icon/payment/payment-inprogress-balance.svg"
+                      class="object-fit-cover mr-3 filter-white">
+                    <span>{{businessAccountSummary.requestedBalance}}</span>
+                  </h5>
+                  <h6 class="card-subtitle mb-2">Inprogress balance </h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+        <section>
+          <div class="row pay-panal mb-4">
+            <div class="col-12 col-sm-6 col-md-5 col-lg-5 col-xl-5">
+              <div class="d-flex justify-content-between pay-panal mt-1">
+                <div>
+                  <p class="request-time mb-0 mt-2">
+                    Request Date:
+                    <span class="text-black">
+                      {{viewDetails.createdAt | date:'MMM d, y h:mm a'}}
+                    </span>
+                  </p>
+                </div>
+                <div>
+                  <p class="request-time mb-0 mt-2">
+                    Withdraw Request ID:
+                    <span class="text-black">
+                      {{viewDetails.id}}
+                    </span>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7">
+              <div class="d-flex justify-content-between">
+                <p class="col-9 mb-0 mt-2">
+                  <span class="applied-amount mr-3">Applied for amounts: </span>
+                  <span class="amounts">{{viewDetails.amount | currency:'৳ '}}</span>
+                </p>
+                <button type="button" (click)="payToBusiness(viewDetails, viewDetails.business.id)"
+                  class="btn pf-pay-btn rounded-0 pr-4 pl-4">Pay</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <table class="table prefeex-thead-blush">
+          <thead class="thead-light">
+            <tr>
+              <th scope="col">Received Date</th>
+              <th scope="col">Reservation ID</th>
+              <th scope="col">Received Amount</th>
+              <th scope="col">Percentage</th>
+              <th scope="col">Amount</th>
+              <th scope="col">Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of viewDetails.accountPayables">
+              <td>{{item.createdAt | date:'MMM d, y h:mm a'}}</td>
+              <td>{{item.order?.refId}}</td>
+              <td>{{item.accountReceived.amount | currency:'৳ '}}</td>
+              <td>{{item.sharedPercentage}} %</td>
+              <td class="td-bold td-rad">{{item.amount | currency:'৳ '}}</td>
+
+              <td style="width: 50px;">
+                <div class="btn-group" role="group" aria-label="Withdraw view details">
+                  <button type="button" class="btn btn-view" (click)="viewParticularPaybleDetails(item.order.refId)">
+                    <i class="fa fa-eye" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal for withdraw Request View details -->
+
+<!-- Modal for pay to Money -->
+<div class="modal fade" #withdrawMoneyRequestModal tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content pf-modal-withdraw">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          Withdraw Requests
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="prefeex-form prefeex-horizontal-form" #withdraReceiveForm="ngForm"
+          (ngSubmit)="withdraReceiveForm.valid && requestForWithdrawAmount(withdraReceiveForm)">
+          <div class="row mt-5">
+            <div class="col-md-12">
+
+              <div class="form-group row" *ngIf="allRegisteredBanks.length > 0">
+                <label for="bankId"
+                  class="col-12 col-sm-4  ccol-md-4 col-lg-4 col-xl-4 col-form-label pf-required-icon">
+                  Bank Account
+                </label>
+                <div class="col-12 col-sm-8  col-md-8 col-lg-8 col-xl-8">
+                  <select class="form-control" name="bankId" (change)="setPreferedBankId(preferredBankId)"
+                    [(ngModel)]="preferredBankId" placeholder="Select bank">
+                    <option *ngFor="let bank of allRegisteredBanks" [ngValue]="bank.id">
+                      {{bank.bankName}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row" *ngIf="allRegisteredBanks.length ==  0">
+                <label for="bankId" class="col-12 col-form-label h3 text-center">
+                  <span class="h3">
+                    Please add your bank
+                  </span>
+                </label>
+              </div>
+              <div class="form-group row">
+                <label for="bankTransactionId"
+                  class="col-12 col-sm-4  ccol-md-4 col-lg-4 col-xl-4 col-form-label pf-required-icon">
+                  Bank Transaction Id
+                </label>
+                <div class="col-12 col-sm-8  col-md-8 col-lg-8 col-xl-8">
+                  <input type="text" name="bankTransactionId" [(ngModel)]="withdawRequestModel.bankTransactionId"
+                    class="form-control" placeholder="Transaction ID" required />
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="bankTransactionId"
+                  class="col-12 col-sm-4  ccol-md-4 col-lg-4 col-xl-4 col-form-label pf-required-icon">
+                  Comment
+                </label>
+                <div class="col-12 col-sm-8  col-md-8 col-lg-8 col-xl-8">
+                  <textarea class="form-control" name="comment" [(ngModel)]="withdawRequestModel.comment" id="comment"
+                    placeholder="Comment" rows="3" required></textarea>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center">
+                  <button type="submit" class="btn pf-pay-btn text-center rounded-0 btn-big-padding">
+                    Submit
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Payble view details Modal -->
+<div class="modal fade bd-example-modal-md" #payableDetailsModal tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content pf-modal-withdraw">
+      <!-- Header -->
+      <div class="modal-header">
+        <h5 class="modal-title">
+          Payment Details
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body payble-modal">
+        <!--Common header section -->
+        <header>
+          <div class="row mb-4">
+            <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+              <h5 class="text-truncate mt-1">
+                <span class="label mr-2">Payment for: </span>
+                <span class="label-result">{{payableViewDetails.receivable.business?.name}}</span>
+              </h5>
+            </div>
+            <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+              <h5 class="text-truncate mt-1">
+                <span class="label mr-2">Invoice Date:</span>
+                <span class="label-result">{{payableViewDetails.order.createdAt | date:'MMM d, y h:mm a'}}</span>
+              </h5>
+            </div>
+            <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-right">
+              <img style="width:99px;height:33px" src="/assets/images/icon/accounts/payble/payment-details.svg"
+                class="object-fit-cover">
+            </div>
+          </div>
+          <div class="row mb-4 pt-2 pb-2 ml-0 mr-0" style="background: #F7F7F7;">
+            <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+              <h5 class="text-truncate mb-2">
+                <span class="label mr-2">Client ID:</span>
+                <span class="label-result">{{payableViewDetails.order.creatorId}}</span>
+              </h5>
+            </div>
+            <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+              <h5 class=" text-truncate mb-2">
+                <span class="label  mr-2">Reservation ID:</span>
+                <span class="label-result">{{payableViewDetails.order.refId}}</span>
+              </h5>
+            </div>
+            <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+              <h5 class="text-truncate mb-2">
+                <span class="label mr-2 mb-2"> Payment Gateway: </span>
+                <span class="label-result"> {{payableViewDetails.receivable.paymentMethod?.name}}</span>
+              </h5>
+            </div>
+            <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+              <h5 class="text-truncate mb-2">
+                <span class="label mr-2 mb-2"> Transaction ID </span>
+                <span class="label-result"> {{payableViewDetails.receivable.pgTransactionId}}</span>
+              </h5>
+            </div>
+          </div>
+        </header>
+
+        <!--Common Payable Divider-->
+        <section class="divider">
+          <div class="row invoice-details mb-4">
+            <div class="col-12 col-sm-6 col-md-12 col-lg-12 col-xl-12">
+              <h5 class="text-truncate received text-center">
+                <span class="label  mr-2">Received:</span>
+                <span class="label-result">{{payableViewDetails.received.createdAt | date:'MMM d, y h:mm a'}}</span>
+              </h5>
+            </div>
+          </div>
+        </section>
+
+        <div *ngIf="payableViewDetails.refund != null" class="mb-4">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Hours</th>
+                <th scope="col">Applied</th>
+                <th scope="col">B2C %</th>
+                <th scope="col"> B2B %</th>
+                <th scope="col"> Prefeex %</th>
+                <th scope="col"> No Refund</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  {{payableViewDetails.refund.refundPolicyBreakdown?.appliedMillis / (1000 * 3600) }}h
+                </td>
+                <td>
+                  <span *ngIf="payableViewDetails.refund.refundPolicyBreakdown?.isAppliedBeforeMillis"> Before </span>
+                  <span *ngIf="!payableViewDetails.refund.refundPolicyBreakdown?.isAppliedBeforeMillis"> After </span>
+                </td>
+                <td> {{payableViewDetails.refund.refundPolicyBreakdown?.b2cPercentage }}</td>
+                <td> {{payableViewDetails.refund.refundPolicyBreakdown?.b2bPercentage }}</td>
+                <td> {{payableViewDetails.refund.refundPolicyBreakdown?.prefeexPercentage }}</td>
+                <td>
+                  <span *ngIf="payableViewDetails.refund.refundPolicyBreakdown?.isNoRefund"> Yes </span>
+                  <span *ngIf="!payableViewDetails.refund.refundPolicyBreakdown?.isNoRefund"> No </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <hr>
+        </div>
+
+        <section class="row invoice-details">
+          <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+            <h6 class="text-center">Invoice Details</h6>
+            <div class="d-flex justify-content-between mb-2">
+              <span class="name">Invoice Amount:</span>
+              <span class="amount">{{payableViewDetails?.order.totalInvoicePrice | currency:'৳ '}}</span>
+            </div>
+            <div *ngIf="checkValueIsNumberAndPositive(payableViewDetails?.orderPromotion?.discountAmount)"
+              class="d-flex justify-content-between mb-2">
+              <span class="name">Discount Amount:</span>
+              <span class="amount">{{payableViewDetails?.orderPromotion?.discountAmount | currency:'৳ -'}}</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+              <span class="name">SSL Fee: </span>
+              <span class="amount">
+                {{payableViewDetails.sslFee | currency:'৳ -'}}
+              </span>
+            </div>
+            <p class="divider"></p>
+            <div class="d-flex justify-content-between mb-2">
+              <span class="amount">Received Amount:</span>
+              <span class="amount">{{payableViewDetails.receivable.amount | currency:'৳ '}}</span>
+            </div>
+            <div *ngIf="checkValueIsNumberAndPositive(payableViewDetails?.order.vatAmount)"
+              class="d-flex justify-content-between mb-2">
+              <span class="amount">Vat Amount:</span>
+              <span class="amount">{{payableViewDetails?.order.vatAmount | currency:'৳ '}}</span>
+            </div>
+            <div *ngIf="checkValueIsNumberAndPositive(payableViewDetails?.order.serviceChargeAmount)"
+              class="d-flex justify-content-between mb-2">
+              <span class="amount">Service Charge Amount:</span>
+              <span class="amount">{{payableViewDetails?.order.serviceChargeAmount | currency:'৳ '}}</span>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+            <h6 class="text-center">Breakdown Details</h6>
+            <div class="d-flex justify-content-between mb-2">
+              <span class="name">Received Amount:</span>
+              <span class="amount">{{payableViewDetails.receivable.amount | currency:'৳ '}}</span>
+            </div>
+            <div *ngIf="checkValueIsNumberAndPositive(payableViewDetails?.orderPromotion?.discountAmount)"
+              class="d-flex justify-content-between mb-2">
+              <span class="name">Discount Amount:</span>
+              <span class="amount">{{payableViewDetails.orderPromotion.discountAmount | currency:'৳ '}}</span>
+            </div>
+            <p class="divider"></p>
+            <div *ngIf="checkValueIsNumberAndPositive(payableViewDetails?.orderPromotion?.discountAmount)"
+              class="d-flex justify-content-between mb-2">
+              <span class="name">Total Amount:</span>
+              <span class="amount">{{payableViewDetails.netAmount | currency:'৳ '}}</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+              <span class="name">Prefeex Amount:</span>
+              <span class="sub-name">As an agreement {{prefeexIndex.sharedPercentage}}%</span>
+              <span class="amount">{{prefeexIndex.amount | currency:'৳ '}}</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+              <span class="name">B2B Amount:</span>
+              <span class="sub-name">As an agreement {{b2bIndex.sharedPercentage}}%</span>
+              <span class="amount">{{b2bIndex?.amount | currency:'৳ '}}</span>
+            </div>
+            <div *ngIf="checkValueIsNumberAndPositive(customerIndex?.amount)"
+              class="d-flex justify-content-between mb-2">
+              <span class="name">B2C Amount:</span>
+              <span class="sub-name">As an agreement {{customerIndex.sharedPercentage}}%</span>
+              <span class="amount">{{customerIndex?.amount | currency:'৳ '}}</span>
+            </div>
+            <p class="divider"></p>
+            <div class="d-flex justify-content-between mb-2">
+              <span class="amount">Net Amount:</span>
+              <span class="amount">{{payableViewDetails.netAmount | currency:'৳ '}}</span>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Payble view details Modal -->

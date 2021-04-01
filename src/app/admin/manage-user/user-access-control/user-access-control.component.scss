@@ -1,0 +1,15 @@
+@import "../../../../assets/scss/variable.scss";
+
+.prefeex-ac-list > li {
+    font-weight: $f-w-bold;
+    padding-left: 55px;
+    border: 0px;
+    color: $t-gray-dark;
+}
+
+.prefeex-ac-list > li ul > li{
+    font-weight: 400;
+    border: 0px;
+    color: $t-gray-dark;
+    padding-bottom: 0px;
+}

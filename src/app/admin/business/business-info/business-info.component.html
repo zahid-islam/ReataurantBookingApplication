@@ -1,0 +1,108 @@
+<!-- Search Business -->
+<div class="row">
+  <div class="col-12">
+    <form #businessInfoSearch="ngForm" (ngSubmit)="searchBusiness(businessInfoSearch.value)"
+      class="pf-search-component">
+      <div class="form-row" style="margin-bottom: 30px;">
+        <div class="form-group col-md-4">
+          <label for="">Business Name</label>
+          <input type="text" name="name" [(ngModel)]="businessSearchModel.name" #name="ngModel" class="form-control"
+            placeholder="Business Name">
+        </div>
+        <div class="form-group col-md-4">
+          <label for="">Email</label>
+          <input type="email" name="email" [(ngModel)]="businessSearchModel.email" #email="ngModel" class="form-control"
+            placeholder="Email">
+        </div>
+        <div class="form-group col-md-4">
+          <label for="">Mobile</label>
+          <input type="tel" name="phone" [(ngModel)]="businessSearchModel.phone" #phone="ngModel" class="form-control"
+            placeholder="Mobile">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-12 text-center">
+          <button type="button" (click)="searchReset(businessInfoSearch)" class="btn pf-btn-primary">Reset</button>
+          <button type="submit" class="btn pf-btn-primary">
+            <span [hidden]="isApiSubmit"> Search </span>
+            <span [hidden]="!isApiSubmit">
+              <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+              <!-- Inprogress... -->
+            </span>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- Search Business -->
+<!-- Business pagination section -->
+<div class="row pf-pagination-container" [addOrRemoveClassToFixedTableHeader]="'400'">
+  <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 pr-0">
+    <h5 class="total-data mb-0 mt-2">Total: {{totalCount}}</h5>
+  </div>
+  <div class="col-12 col-sm-8 col-md-8 col-lg-8 col-xl-8 pl-0">
+    <p-paginator #paginator styleClass="prefeex-pagination" [rows]="itemPerPage" (onPageChange)="paginate($event)"
+      [totalRecords]="totalCount" pageLinkSize="5" [rowsPerPageOptions]="[10, 50, 100]"></p-paginator>
+  </div>
+</div>
+<!-- Business pagination section -->
+
+<!-- Business data view section -->
+<div class="row">
+  <div class="col-12">
+    <p-table [value]="businessGridLists" styleClass="prefeex-data-table" tableStyleClass="table prefeex-thead-blush">
+      <ng-template pTemplate="header">
+        <tr>
+          <th> Business Name </th>
+          <th> Business Type </th>
+          <th> Phone Numbers </th>
+          <th> Email </th>
+          <th style="width: 150px;">
+            <select class="status-filter" (change)="filterBusinessOnStatusChange(statusForFilter)"
+              [(ngModel)]="statusForFilter" placeholder="Select status">
+              <option selected [ngValue]="0"> All Status </option>
+              <option *ngFor="let stat of businessStatuses" [ngValue]="stat.id">
+                {{stat.name}}
+              </option>
+            </select>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-business>
+        <tr>
+          <td class="td-bold text-truncate">
+            <a [routerLink]="['/admin/business/manage-business/'+ business.id]">
+              {{business.name}}
+            </a>
+          </td>
+          <td style="width: 100px;">
+            <span class=" text-status"> {{business.businessType.name}} </span>
+          </td>
+          <td class="td-bold">
+            <span *ngFor="let item of business.phones.slice(0, 2); let i=index">
+              <span class=" assignee-phone w-100"> {{item.phone}} </span>
+              <br *ngIf="!(i === 1)">
+            </span>
+          </td>
+          <td class="td-bold">
+            <span *ngFor="let item of business.emails.slice(0, 2); let i=index">
+              <span class=" assignee-email"> {{item.email}} </span>
+              <br *ngIf="!(i === 1)">
+            </span>
+          </td>
+          <td style="width: 150px;">
+            <select (change)="statusChangesAction(business.businessStatus.id, business)"
+              [(ngModel)]="business.businessStatus.id">
+              <option *ngFor="let stat of businessStatuses" [ngValue]="stat.id">
+                {{stat.name}}
+              </option>
+            </select>
+          </td>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+<app-content-loader *ngIf="isLoading" [theadcount]="8" [rowlength]="4"></app-content-loader>
+<!-- Menu data view section -->

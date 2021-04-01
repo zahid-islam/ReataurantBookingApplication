@@ -1,0 +1,200 @@
+<!--/Preloader-->
+<div class="pf-admin-wrapper" [ngClass]="{
+    'slide-nav-toggle': leftSlideNavtoggle,
+    'open-right-sidebar': rightSlideNavtoggle,
+    'sidebar-hover': sidebarHover
+  }">
+  <!-- Top Menu Items -->
+  <nav class="navbar fixed-top navbar-light navbar-expand-lg prefeex-nav p-0">
+    <a class="navbar-brand">
+      <img src="/assets/images/icon/Small.png" class="d-inline-block align-top logo-img-small" alt="small-logo">
+      <img src="/assets/images/admin-right-log.svg" width="150" height="49"
+        class="d-inline-block align-top logo-img-large" alt="Prefeex logo">
+    </a>
+    <button class="btn ml-auto bg-transparent border-0 left-bar-toggle" (click)="toggleLeftSlideNav()">
+      <i class="fa fa-bars" aria-hidden="true"></i>
+    </button>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto top-left-ul height-75 hidden-xs ">
+        <li class="nav-item nav-brand-text">
+          {{businessProfile.name}}
+        </li>
+      </ul>
+      <ul class="navbar-nav ml-auto height-75 top-right-ul mr-3">
+        <li class="nav-item user-name-type">
+          <a [routerLink]="['/admin/profile']" class="nav-link mt-2" href="#">
+            <span class="name"> {{businessUser.firstName}} {{businessUser.lastName}} </span>
+            <br>
+            <span class="user-type"> {{userType}} </span>
+          </a>
+        </li>
+        <li class="nav-item dropdown pf-users-profile">
+          <a class="nav-link dropdown-toggle" href="#" id="userProfileDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            <img class="user-auth-img object-fit-cover rounded-circle" [hidden]="isImgLoading" (load)="onLoad()"
+              [src]="businessUser.photo? businessUser.photo : '/assets/images/icon/icon-user-admin.svg'" alt="User">
+            <div *ngIf="isImgLoading" class="spinner-border text-danger" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </a>
+          <div style="z-index: 99999 !important;"
+            class="dropdown-menu dropdown-menu-right user-profile-dropdown text-right"
+            aria-labelledby="userProfileDropdown">
+            <a class="dropdown-item user-name text-truncate" href="javascript:void(0)">{{businessUser.firstName}}
+              {{businessUser.lastName}}</a>
+            <a class="dropdown-item user-email  text-truncate" href="javascript:void(0)">{{businessUser.email}}</a>
+            <div class="dropdown-divider"></div>
+
+            <a class="dropdown-item user-customize-profile" [routerLink]="['/admin/profile']">
+              Customize Profile
+              <img width="18 " height="18" class="ml-3" src="/assets/images/icon/user-customize-profile.svg"
+                alt="Logout">
+            </a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item logout" style="cursor: pointer" (click)="logout()">
+              Logout
+              <img width="18 " height="18" class="ml-3" src="/assets/images/icon/user-logout.svg" alt="Logout">
+            </a>
+          </div>
+        </li>
+
+      </ul>
+    </div>
+  </nav>
+  <!-- /Top Menu Items -->
+  <!-- Left Sidebar Menu -->
+  <div class="fixed-sidebar-left">
+    <ul class="side-nav p-t-26 scrollable" (mouseover)="sidebarHover=true" (mouseout)="sidebarHover=false">
+      <!-- Left Sidebar Dynamic Menu -->
+      <li class="nav-item" *ngFor="let parent of navBarItems">
+        <a class="nav-link" [routerLink]="[parent.route]" *ngIf="parent?.route" routerLinkActive="active">
+          <div class="d-flex justify-content-between">
+            <div class="">
+              <img width="18 " height="18" class="mr-3" [src]="parent.imagePath" alt="Admin Dashboard">
+              <span class="right-nav-text">{{parent.displayName}}</span>
+            </div>
+            <div class=""></div>
+          </div>
+        </a>
+        <a class="nav-link" data-toggle="collapse" *ngIf="!parent?.route" href="#{{parent.listElementId}}" role="button"
+          aria-expanded="false">
+          <div class="d-flex justify-content-between">
+            <div class="left-icon">
+              <img width="18 " height="18" class="mr-3" [src]="parent.imagePath" alt="Sales">
+              <span class="right-nav-text"> {{parent.displayName}} </span>
+            </div>
+            <div class="right-icon-toggle"></div>
+          </div>
+        </a>
+        <div class="collapse" id="{{parent.listElementId}}" *ngIf="parent.children?.length">
+          <ul class="nav flex-column  collapse-level-1">
+            <li class="nav-item" *ngFor="let child of parent.children">
+              <a class="nav-link " routerLinkActive="active" *ngIf="child?.route" [routerLink]="[child.route]">
+                <div class="d-flex justify-content-between">
+                  <div class="">
+                    <img width="18 " height="18" class="mr-3" [src]="child.imagePath" *ngIf="child.imagePath">
+                    <span class="right-nav-text">{{child.displayName}}</span>
+                  </div>
+                  <div class=""></div>
+                </div>
+              </a>
+
+              <a class="nav-link" data-toggle="collapse" *ngIf="!child?.route" href="#{{child.listElementId}}"
+                role="button" aria-expanded="false">
+                <div class="d-flex justify-content-between">
+                  <div class="left-icon">
+                    <img width="18 " height="18" class="mr-3" [src]="child.imagePath" *ngIf="child.imagePath">
+                    <span class="right-nav-text"> {{child.displayName}} </span>
+                  </div>
+                  <div class="right-icon-toggle"></div>
+                </div>
+              </a>
+
+              <div class="collapse" id="{{child.listElementId}}" *ngIf="child.children?.length">
+                <ul class="nav flex-column  collapse-level-1">
+                  <li class="nav-item" *ngFor="let nestChild of child.children">
+                    <a class="nav-link " routerLinkActive="active" [routerLink]="[nestChild.route]">
+                      {{nestChild.displayName}}
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+    <!-- chat button  -->
+  </div>
+  <!-- /Left Sidebar Menu -->
+  <!-- Right Sidebar Menu -->
+  <div class="fixed-sidebar-right">
+    <div class="right-sidebar">
+      <div class="tab-struct custom-tab-1">
+        <ul class="nav nav-tabs" id="right_sidebar_tab" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" id="chat_tab_btn" data-toggle="tab" href="#chat_tab" role="tab"
+              aria-controls="chat" aria-selected="true">chat</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="messages_tab_btn" data-toggle="tab" href="#messages_tab" role="tab"
+              aria-controls="messages" aria-selected="false">messages</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="todo_tab_btn" data-toggle="tab" href="#todo_tab" role="tab" aria-controls="todo"
+              aria-selected="false">todo</a>
+          </li>
+        </ul>
+        <div class="tab-content" id="right_sidebar_content">
+          <div class="tab-pane fade show active" id="chat_tab" role="tabpanel" aria-labelledby="chat_tab_btn">
+            chat
+          </div>
+          <div class="tab-pane fade" id="messages_tab" role="tabpanel" aria-labelledby="messages_tab_btn">
+            messages
+          </div>
+          <div class="tab-pane fade" id="todo_tab" role="tabpanel" aria-labelledby="todo_tab_btn">
+            todo
+          </div>
+        </div>
+      </div>
+    </div>
+    <ul class="nav nav-tabs right-sidebar">
+      <li class="nav-item">
+        <a class="nav-link active" href="#">Active</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Link</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Link</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link disabled" href="#">Disabled</a>
+      </li>
+    </ul>
+  </div>
+  <!-- /Right Sidebar Menu -->
+
+  <!-- Right Setting Menu -->
+  <div class="setting-panel"></div>
+  <!-- /Right Setting Menu -->
+
+  <!-- Right Sidebar Backdrop -->
+  <div class="right-sidebar-backdrop"></div>
+  <!-- /Right Sidebar Backdrop -->
+  <!-- Main Content -->
+  <div class="page-wrapper">
+    <div class="container-fluid pf-admin-dynamic-containe">
+      <!-- Dynamic containe -->
+      <router-outlet></router-outlet>
+      <!-- Dynamic containe -->
+    </div>
+  </div>
+  <!-- /Main Content -->
+</div>
+<!-- /#wrapper -->

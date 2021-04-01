@@ -1,0 +1,292 @@
+@import "../variable.scss";
+body .ui-dialog .ui-dialog-titlebar {
+  border: 1px solid $blush;
+  background-color: $blush;
+  padding: 1em;
+  font-weight: 700;
+  border-bottom: 0 none;
+  color: #fff;
+}
+
+body .ui-dialog .ui-dialog-content {
+  background-color: #ffffff;
+  color: #333333;
+  border: 1px solid #c8c8c8;
+  padding: 0.571em 1em;
+}
+
+/* Business admin dialo edit seat area*/
+.edit-dialog-seat-areat {
+  .btn-dialog {
+    float: left;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    text-transform: uppercase;
+    color: #5d5d5d;
+    border-radius: 0px;
+  }
+
+  .btn-dialog-primary {
+    border: 1px solid $blush;
+    background-color: $blush;
+    color: #fff;
+  }
+}
+
+.ui-shadow {
+  box-shadow: 0px 0px 0px 0px !important;
+}
+
+.ui-dialog-resizable .ui-dialog-content {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+body .ui-dialog .ui-dialog-titlebar .ui-dialog-titlebar-icon {
+  color: #ffffff;
+}
+
+body .ui-dialog .ui-dialog-titlebar .ui-dialog-titlebar-icon:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+/* -------------------- Modal ------------------------ */
+.pf-modal-withdraw {
+  .modal-header {
+    background-color: $blush;
+
+    .modal-title {
+      font-style: normal;
+      font-weight: bold;
+      font-size: 18px;
+      line-height: 21px;
+      color: #ffffff;
+
+      .address {
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 16px;
+        text-align: center;
+        color: #ffffff;
+      }
+    }
+
+    .close {
+      color: #ffffff;
+    }
+  }
+
+  .text-black {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 16px;
+    color: #484848;
+  }
+
+  button.pf-viewdetails-btn {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 16px;
+    text-align: center;
+    -webkit-text-decoration-line: underline;
+    text-decoration-line: underline;
+    color: #69ab1d;
+  }
+}
+
+.modal-form-normal {
+  .label {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    display: flex;
+    align-items: center;
+    color: #5d5d5d;
+  }
+
+  .form-control {
+    border-radius: 0;
+  }
+
+  .btn-submit {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    text-align: center;
+    color: #ffffff;
+    background: #69ab1d;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+
+    &:hover {
+      color: #fff;
+    }
+  }
+  .btn-cancel-dialog,
+  .btn-refund-dialog {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    text-align: center;
+    color: #ffffff;
+    background: #bea341;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+
+    &:hover {
+      color: #fff;
+    }
+  }
+  .btn-refund-dialog {
+    background: #bea341;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+  }
+  .btn-cancel-dialog {
+    background: #ababab;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+  }
+}
+/* ------------------------Payble modal --*/
+.payble-modal {
+  header {
+    margin-bottom: 20px;
+
+    h5 {
+      .label {
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 16px;
+        color: #a7a9ac;
+      }
+
+      .label-result {
+        font-style: normal;
+        font-weight: bold;
+        font-size: 14px;
+        line-height: 16px;
+        color: #a7a9ac;
+      }
+    }
+  }
+
+  h5.received {
+    .label {
+      font-family: Roboto;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 16px;
+      color: #a7a9ac;
+    }
+
+    .label-result {
+      font-style: normal;
+      font-weight: bold;
+      font-size: 14px;
+      line-height: 16px;
+      color: #a7a9ac;
+    }
+  }
+
+  section.invoice-details {
+    .divider {
+      margin-top: 10px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #929292;
+    }
+
+    .name {
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 16px;
+      color: #5d5d5d;
+    }
+
+    .sub-name {
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 16px;
+      color: #a4a4a4;
+    }
+
+    .amount {
+      font-style: normal;
+      font-weight: bold;
+      font-size: 14px;
+      line-height: 16px;
+      color: #5d5d5d;
+    }
+  }
+}
+
+/** ----------------- apply for withdraw -------------- */
+.apply-for-withdraw {
+  h4 {
+    .lable {
+      font-style: normal;
+      font-weight: normal;
+      font-size: 18px;
+      line-height: 21px;
+      color: #a1a1a1;
+    }
+
+    .lable-value {
+      font-style: normal;
+      font-weight: bold;
+      font-size: 18px;
+      line-height: 21px;
+      color: $blush;
+    }
+  }
+
+  .selected-total {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 28px;
+    color: $blush;
+  }
+}
+
+/* ------------------------------ promotion-code-modal ---------------------*/
+.promotion-code-modal {
+  .label,
+  .value-blush {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 16px;
+  }
+  .value-gray-light,
+  .value-gray {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+  }
+
+  .label {
+    color: $t-gray-dark;
+  }
+  .value-blush {
+    color: $blush;
+  }
+  .value-gray {
+    color: $t-gray-dark;
+  }
+  .value-gray-light {
+    color: #b4b4b4;
+  }
+}

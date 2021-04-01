@@ -1,0 +1,295 @@
+<form #businessProfileForm="ngForm" (ngSubmit)="businessProfileForm.valid && updateBusinessProfile()"
+  class="prefeex-form prefeex-horizontal-form form-gray-dark mt-5">
+
+  <div class="form-group row">
+    <label for="" class="col-12 col-sm-2  col-md-2 col-lg-2 col-xl-2 col-form-label" style=" margin-top: 60px;">
+      Logo
+    </label>
+    <div class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2">
+      <div class="profile-img">
+        <img style="width:120px;height:120px"
+          [src]="primaryPhotoUrl ? primaryPhotoUrl : businessModel.primaryPhoto ? businessModel.primaryPhoto : '/assets/images/food-menu/food-item-dummy.png'"
+          class="object-fit-cover rounded-circle  mt-3">
+        <button type="button" class="profile-imag-pickbtn btn bg-transparent p-0 border-0"
+          (click)="primaryPhoto.click()">
+          <img width="22" height="22" src="/assets/images/icon/camera.svg" alt="">
+        </button>
+        <input style="visibility: hidden;" type="file" name="primaryPhoto" #primaryPhoto
+          (change)="fileProcess(primaryPhoto)">
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="businessName" class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2 col-form-label pf-required-icon">
+      Business Name
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <input type="text" class="form-control" name="name" [(ngModel)]="businessModel.name" #name="ngModel"
+        placeholder="Business Name" required>
+    </div>
+    <label for="businessType" class="col-12 col-sm-2  ccol-md-2 col-lg-2 col-xl-2 col-form-label pf-required-icon">
+      Business Type
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <p-dropdown styleClass="w-100 prefeex-ui-dropdown" [options]="businessTypeList"
+        (onChange)="setBusinessTypeId($event.value)" [(ngModel)]="businessType" name="businesstype"
+        #businesstype="ngModel" optionLabel="name" required="true" placeholder="Select Business Type"></p-dropdown>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="businessClass" class="col-12 col-sm-2  ccol-md-2 col-lg-2 col-xl-2 col-form-label pf-required-icon">
+      Business Class
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <p-dropdown styleClass="w-100 prefeex-ui-dropdown" [options]="businessClassifications"
+        (onChange)="setBusinessClassificationId($event.value)" [(ngModel)]="businessClass" name="businessclass"
+        #businessclass="ngModel" optionLabel="name" required="true" placeholder="Select Business Class"></p-dropdown>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="location" class="col-12 col-sm-2  col-md-2 col-lg-2 col-xl-2 col-form-label">Tags</label>
+    <div class="col-12 col-sm-10 col-md-10 col-lg-10 col-xl-10">
+
+      <button *ngFor="let item of tags" type="button" class="btn pf-chips mr-3 mb-2"
+        [ngClass]="{'btn-prefeex-primary': item.isActive }" (click)="chipsAdd(item)">{{item.name}}</button>
+
+      <!-- content-loader -->
+      <app-content-loader *ngIf="isLoadingTags" [theadcount]="7" [rowlength]="2"></app-content-loader>
+      <!-- content-loader -->
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="location" class="col-12 col-sm-2  col-md-2 col-lg-2 col-xl-2 col-form-label">Facilities</label>
+    <div class="col-12 col-sm-10 col-md-10 col-lg-10 col-xl-10">
+      <button *ngFor="let item of facilities" type="button" class="btn pf-chips mr-3 mb-2"
+        [ngClass]="{'btn-prefeex-primary': item.isActive }" (click)="facilitiesChipsAdd(item)">
+        <span class=""> {{item.name}} </span>
+      </button>
+      <!-- content-loader -->
+      <app-content-loader *ngIf="isLoadingFacilities" [theadcount]="8" [rowlength]="1"></app-content-loader>
+      <!-- content-loader -->
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="Address" class="col-12 col-sm-2  col-md-2 col-lg-2 col-xl-2 col-form-label pf-required-icon">
+      Email
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <div class="input-group">
+        <input type="text" class="form-control" name="email" [(ngModel)]="email" #emails="ngModel" placeholder="Email"
+          (change)="addEmailAddress()" [required]="businessModel.emails.length ? false : true">
+        <div class="input-group-append">
+          <button type="button" class="btn btn-prefeex-primary rounded-0" (click)="addEmailAddress()">+</button>
+        </div>
+      </div>
+      <ul class="nav justify-content-center" *ngIf="businessModel.emails.length">
+        <li class="nav-item mr-3 mt-2" *ngFor="let email of businessModel.emails; let i = index">
+          {{email}}
+          <i (click)="removeEmailAddress(email)" class="fa fa-times cursor-pointer text-blush" aria-hidden="true"></i>
+        </li>
+      </ul>
+    </div>
+    <label for="Capacity" class="col-12 col-sm-2  col-md-2 col-lg-2 col-xl-2 col-form-label pf-required-icon">
+      Mobile
+    </label>
+
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <div class="input-group">
+        <input type="text" class="form-control" name="phone" [(ngModel)]="phone" #phones="ngModel" (change)="addPhone()"
+          placeholder="Ex. 880xxxxxxxxxx" max="13" pattern="[0-9]*"
+          [required]="businessModel.phones.length ? false : true">
+        <div class="input-group-append">
+          <button type="button" class="btn btn-prefeex-primary rounded-0" (click)="addPhone()">+</button>
+        </div>
+      </div>
+      <ul class="nav justify-content-center" *ngIf="businessModel.phones.length">
+        <li class="nav-item mr-3 mt-2" *ngFor="let phone of businessModel.phones; let i = index">
+          {{phone}}
+          <i (click)="removePhone(phone)" class="fa fa-times cursor-pointer text-blush" aria-hidden="true"></i>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="Address" class="col-12 col-sm-2  col-md-2 col-lg-2 col-xl-2 col-form-label pf-required-icon">
+      Address
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <input type="text" class="form-control" name="address" [(ngModel)]="businessModel.address" #address="ngModel"
+        placeholder="Address" required>
+    </div>
+    <label for="Capacity" class="col-12 col-sm-2  col-md-2 col-lg-2 col-xl-2 col-form-label pf-required-icon">
+      Capacity
+    </label>
+    <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+      <input type="text" class="form-control" name="capacity" [(ngModel)]="businessModel.capacity" #capacity="ngModel"
+        placeholder="Capacity" required>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="latitude" class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2 col-form-label pf-required-icon">
+      Latitude
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <input type="text" class="form-control" name="latitude" [(ngModel)]="businessModel.latitude" #latitude="ngModel"
+        placeholder="Latitude" required />
+    </div>
+    <label for="longitude" class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2 col-form-label pf-required-icon">
+      Longitude
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <input type="text" class="form-control" name="longitude" [(ngModel)]="businessModel.longitude"
+        #longitude="ngModel" placeholder="Longitude" required />
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="Address" class="col-12 col-sm-2  col-md-2 col-lg-2 col-xl-2 col-form-label pf-required-icon">
+      Location
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <input type="text" class="form-control" name="location" [(ngModel)]="businessModel.location" #location="ngModel"
+        placeholder="Location" required>
+    </div>
+
+    <label for="prefeexSharedPercentage"
+      class="col-12 col-sm-2  col-md-2 col-lg-2 col-xl-2 col-form-label pf-required-icon">
+      Prefeex Shared Percentage
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text rounded-0">%</span>
+        </div>
+        <input [ngClass]="{'min-max-invalid': isMinMaxValue}" type="number" maxlength="100" minlength="0"
+          class="form-control" name="prefeexSharedPercentage" [(ngModel)]="businessModel.prefeexSharedPercentage"
+          #prefeexSharedPercentage="ngModel" placeholder="Prefeex Shared Percentage"
+          (change)="validateMaxAndMinLength($event.target.value)" required>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="vatPercentage" class="col-12 col-sm-2  col-md-2 col-lg-2 col-xl-2 col-form-label pf-required-icon">
+      Vat
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text rounded-0">%</span>
+        </div>
+        <input type="text" class="form-control" name="vatPercentage" [(ngModel)]="businessModel.vatPercentage"
+          #vatPercentage="ngModel" placeholder="Vat Percentage" pattern="[0-9]+(.[0-9]{0,2})?" required>
+      </div>
+    </div>
+
+    <label for="prefeexSharedPercentage"
+      class="col-12 col-sm-2  col-md-2 col-lg-2 col-xl-2 col-form-label pf-required-icon">
+      Service Charge Percentage
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text rounded-0">%</span>
+        </div>
+        <input type="text" class="form-control" name="serviceChargePercentage"
+          [(ngModel)]="businessModel.serviceChargePercentage" #serviceChargePercentage="ngModel"
+          placeholder="Service Charge" pattern="[0-9]+(.[0-9]{0,2})?" required>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="Address" class="col-12 col-sm-2  col-md-2 col-lg-2 col-xl-2 col-form-label pf-required-icon">
+      Open Time
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <p-calendar [(ngModel)]="businessModel.defaultOpeningTime" [required]="true" dataType="string" [hourFormat]="24"
+        [showSeconds]="true" [timeOnly]="true" name="defaultOpeningTime" #defaultOpeningTime="ngModel"
+        placeholder="Ex. 10:00:00" inputStyleClass="form-control">
+      </p-calendar>
+    </div>
+    <label for="Capacity" class="col-12 col-sm-2  col-md-2 col-lg-2 col-xl-2 col-form-label pf-required-icon">
+      Close Time
+    </label>
+    <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+      <p-calendar [(ngModel)]="businessModel.defaultClosingTime" [required]="true" dataType="string" [hourFormat]="24"
+        [showSeconds]="true" [timeOnly]="true" name="defaultClosingTime" #defaultClosingTime="ngModel"
+        placeholder="Ex. 22:00:00" inputStyleClass="form-control">
+      </p-calendar>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="latitude" class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2 col-form-label">
+      Price Range
+    </label>
+    <div *ngIf="priceRangeValues.length" class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <p-slider [(ngModel)]="priceRangeValues" (onChange)="setPriceRangeOnModelChanges($event)" name="range" [min]="100"
+        [max]="5000" [step]="100" [range]="true"></p-slider>
+    </div>
+    <div *ngIf="priceRangeValues.length && businessModel.priceRangeLower"
+      class="col-12 col-sm-2  col-md-2 col-lg-2 col-xl-2">
+      <span>৳ {{businessModel.priceRangeLower | number}} - ৳ {{businessModel.priceRangeUpper | number}}</span>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="aboutBusiness" class="col-12 col-sm-2  col-md-2 col-lg-2 col-xl-2 col-form-label pf-required-icon">
+      Details
+    </label>
+    <div class="col-12 col-sm-10 col-md-10 col-lg-10 col-xl-10">
+      <textarea class="form-control" name="details" rows="5" placeholder="About business"
+        [(ngModel)]="businessModel.details" #details="ngModel" required maxlength="500"></textarea>
+      <small class="form-text text-muted text-right">Max 500 words</small>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="imageUpload" class="col-12 col-sm-2  col-md-2 col-lg-2 col-xl-2 col-form-label">
+      Photos
+    </label>
+    <div class="col-12 col-sm-10 col-md-10 col-lg-10 col-xl-10">
+      <div class="form-group">
+        <div class="upload-image">
+          <div #image class="image-wrapper">
+            <ul class="m-0 p-0">
+              <li *ngFor="let photoItem of imageUrls; let i = index">
+                <img class="product-image" [src]="photoItem.photo" alt="">
+                <button (click)="deleteThisImage(i)" class="btn close-btn delete-btn rounded-0">
+                  <img class="object-fit-cover " src="/assets/images/icon/unverified-email.svg"
+                    style="width:20px;height:20px">
+                </button>
+              </li>
+            </ul>
+          </div>
+          <div class="browse-btn">
+            <input type="file" name="photos" #photos id="cameraImg" (change)="onSelectedFiles(photos)" multiple />
+            <div class="browse-image">
+              <img class=" object-fit-contain" src="/assets/images/icon/plus-icon.svg" width="60px" />
+              <p>Add an image</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group row" style="margin-top: 50px">
+    <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-right">
+      <button type="submit" class="btn btn-prefeex-primary text-center rounded-0 btn-big-padding">
+        <span [hidden]="isApiSubmit"> Submit </span>
+        <span [hidden]="!isApiSubmit">
+          <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+        </span>
+      </button>
+    </div>
+  </div>
+</form>

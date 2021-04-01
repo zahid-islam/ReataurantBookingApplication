@@ -1,0 +1,17 @@
+<!-- <div class="contextmenu" [ngStyle]="{'left.px': x, 'top.px': y}">
+    <section>
+        <div>Upcomming Reservation</div>
+        <div>History Reservation</div>
+    </section>
+</div> -->
+
+<div class="contextmenu popover" [ngClass]="{'fade bs-popover-right show': context}" role="tooltip"
+    [ngStyle]="{'left.px': xCoordinate, 'top.px': yCoordinate}">
+    <div class="arrow"></div>
+    <div class="popover-body">
+        <section>
+            <button class="btn pf-btn-primary mb-2 w-100" (click)="pendingReservation()">Upcomming Reservation</button>
+            <button class="btn pf-btn-primary w-100" (click)="previousReservation()">History Reservation</button>
+        </section>
+    </div>
+</div>

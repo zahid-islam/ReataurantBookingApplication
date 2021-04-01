@@ -1,0 +1,9 @@
+<iframe *ngIf="urlName" [src]="urlName | safe: 'resourceUrl'" width="100%" [height]="windowsHeight" scrolling="auto"
+  frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen>
+</iframe>
+<ng-container *ngIf="notAvailable">
+  <h1>Analytics not available!</h1>
+</ng-container>
+<div class="text-center" style="display: block">
+  <app-spin-loader [hidden]="!isLoading"></app-spin-loader>
+</div>

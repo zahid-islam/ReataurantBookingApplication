@@ -1,0 +1,44 @@
+@import "../variable.scss";
+
+.layout-view {
+  background-color: $top-menu-bg;
+  border: 1px solid $top-menu-bg;
+
+  .header-panal {
+    .left-box {
+      background-color: #ffffff;
+      height: 31px;
+      padding-left: 30px;
+      padding-right: 30px;
+    }
+
+
+    .left-arrow,
+    .right-arrow {
+      span {
+        font-size: 20px;
+        line-height: 18px;
+        color: #B8423E;
+      }
+
+    }
+
+    .floor-text {
+      font-style: normal;
+      font-weight: normal;
+      font-size: 18px;
+      line-height: 30px;
+      text-align: center;
+      color: #A1A1A1;
+    }
+
+
+
+  }
+}
+
+.layout-create {
+  .border-1{
+    border: 1px solid #9F9F9F;
+  }
+}

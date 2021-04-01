@@ -1,0 +1,145 @@
+@import "../variable.scss";
+
+.restaurant-header {
+  height: 120px;
+  padding: 10px 15px;
+  background: $blush;
+}
+
+.restaurant-profile-img {
+  width: 100px;
+  height: 110px;
+  overflow: hidden;
+  float: left;
+  margin-right: 15px;
+}
+
+.restaurant-title {
+  .restaurant-name {
+    font-style: $f-s-normal;
+    font-weight: $f-w-bold;
+    font-size: $f-s-rem-46;
+    line-height: 54px;
+  }
+
+  .restaurant-tag {
+    font-style: $f-s-normal;
+    font-weight: $f-w-normal;
+    font-size: $f-s-rem-18;
+    line-height: 21px;
+  }
+}
+
+.restaurant-address {
+  font-style: $f-s-normal;
+  font-weight: $f-w-normal;
+  font-size: $f-s-rem-18;
+  line-height: 21px;
+}
+
+.edit-setting {
+  padding-top: 10px;
+}
+
+.restaurant-facility-list {
+  padding-top: 12px;
+
+
+  button {
+    margin-right: 10px;
+    font-style: $f-s-normal;
+    font-weight: $f-w-normal;
+    font-size: $f-s-rem-16;
+  }
+
+  button:last-child {
+    margin-right: 0px;
+  }
+
+
+}
+
+.restaurant-facility-list {
+  button {
+    border-color: $prefeex-border;
+  }
+
+  button {
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+    }
+  }
+
+  button.restaurant-facility-btn {
+    background: $blush;
+    color: #fff;
+
+  }
+}
+
+.restaurant-description {
+
+  padding-top: 30px;
+  padding-left: 21px;
+  margin-bottom: 30px;
+
+
+  .restaurant-about {
+    font-weight: $f-w-bold;
+  }
+
+  .restaurant-capacity,
+  p {
+    font-weight: $f-w-normal;
+  }
+
+  .restaurant-capacity,
+  .restaurant-about,
+  p {
+    font-style: $f-s-normal;
+    font-size: $f-s-rem-16;
+    line-height: 22px;
+    text-align: justify;
+  }
+
+  .restaurant-capacity {
+    color: $blush;
+  }
+
+  .restaurant-about,
+  p {
+    color: $t-gray-dark;
+  }
+}
+
+.sub-header-reservation-details {
+
+  .label,
+  .label-info,
+  .btn-add-seat {
+    font-style: normal;
+    font-size: 14px;
+    line-height: 16px;
+
+  }
+
+  .label,
+  .label-info {
+    color: #5D5D5D;
+  }
+
+  .label,
+  .btn-add-seat {
+    font-weight: normal;
+  }
+
+  .label-info {
+    font-weight: bold;
+  }
+
+  .btn-add-seat {
+    text-decoration-line: underline;
+    color: #008142;
+  }
+}

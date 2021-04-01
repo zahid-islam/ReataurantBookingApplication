@@ -1,0 +1,74 @@
+<form #emailTemplateForm="ngForm" (ngSubmit)="emailTemplateForm.valid && submitEmailTemplate(emailTemplateForm)"
+  class="prefeex-form prefeex-horizontal-form form-gray-dark user-profile mt-3">
+
+  <div class="form-group row">
+    <label for="emailSubject" class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2 col-form-label">
+      Email Subject
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <input type="text" class="form-control" name="emailSubject" [(ngModel)]="emailTemplatesModel.emailSubject"
+        placeholder="Email Subject" required />
+    </div>
+    <label for="templateType" class="col-12 col-sm-2  ccol-md-2 col-lg-2 col-xl-2 col-form-label">
+      Template Type
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <select [disabled]="emailTemplateId" [(ngModel)]="emailTemplatesModel.templateType" name="templateType" class="form-control" required>
+        <option *ngFor="let templateType of templateTypes" [ngValue]="templateType.name">
+          {{templateType.name}}
+        </option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="templateVariableIds" class="col-12 col-sm-2  col-md-2 col-lg-2 col-xl-2 col-form-label">
+      Template Variables
+    </label>
+    <div class="col-12 col-sm-8 col-md-8 col-lg-8 col-xl-8">
+      <button
+      *ngFor="let templateVariable of templateVariables"
+      type="button"
+      class="btn pf-chips mr-3 mb-2"
+      [ngClass]="{'btn-prefeex-primary': templateVariable.isActive }"
+      (click)="templateVariableAdd(templateVariable, emailBody)">{{templateVariable.name}}</button>
+    </div>
+  </div>
+
+  <!-- <h2>Cursor Position : {{cursor}}</h2> -->
+
+  <div class="form-group row">
+
+    <div class="col-12 col-sm-6  col-md-6 col-lg-6 col-xl-6">
+      <textarea
+      class="form-control"
+      #emailBody
+      [(ngModel)]="emailTemplatesModel.emailBody"
+      (click)="getCursorPosition(emailBody)"
+      name="emailBody"
+      rows="30"
+      (keyup)="getCursorPosition(emailBody)"
+      (blur)="getCursorPosition(emailBody)"
+      required
+      ></textarea>
+    </div>
+    <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+      <div [innerHTML]="convertedHtml | safe: 'html'" class="col-12 col-sm-6  col-md-6 col-lg-6 col-xl-6">
+      </div>
+    </div>
+  </div>
+  <div class="form-group row" style="margin-top: 100px">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center">
+      <button  type="button" class="btn btn-prefeex-primary text-center rounded-0 btn-big-padding mr-4"
+        (click)="convertInsertedEmail()">
+        Preview
+      </button>
+      <button type="submit" [disabled]="!emailTemplateForm.valid" class="btn btn-prefeex-primary text-center rounded-0 btn-big-padding">
+        <span [hidden]="isApiSubmit"> Save </span>
+        <span [hidden]="!isApiSubmit">
+          <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+          <!-- Inprogress... -->
+        </span>
+      </button>
+    </div>
+  </div>
+</form>

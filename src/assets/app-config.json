@@ -1,0 +1,12 @@
+{
+  "environment": {
+    "admin": {
+      "userType": "INTERNAL",
+      "status": true
+    },
+    "business": {
+      "userType": "BUSINESS",
+      "status": false
+    }
+  }
+}

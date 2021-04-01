@@ -1,0 +1,531 @@
+@import "./variable.scss";
+
+.prefeex-form {
+  .btn-prefeex-primary {
+    font-style: $f-s-normal;
+    font-weight: $f-w-bold;
+    font-size: $f-s-rem-18 !important;
+    line-height: 21px;
+    text-align: center;
+  }
+
+  .btn-big-padding {
+    padding: 0.8rem 2rem;
+  }
+
+  .btn {
+    font-style: $f-s-normal;
+    font-weight: $f-w-normal;
+    font-size: $f-s-rem-16;
+    line-height: 16px;
+  }
+
+  .pf-required-icon {
+    position: relative;
+
+    &::after {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 3px;
+      right: 5px;
+      background: url(/assets/images/icon/star-icon.svg);
+      width: 10px;
+      height: 10px;
+      background-repeat: no-repeat;
+    }
+  }
+
+  .pf-calendar-icon {
+    position: relative;
+
+    &::after {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 1px;
+      right: 0px;
+      background: url(/assets/images/icon/calendar.svg);
+      width: 18px;
+      height: 18px;
+      background-repeat: no-repeat;
+    }
+  }
+
+  .form-control {
+    border-radius: 0px;
+  }
+
+  .star-icon {
+    margin-top: -8px;
+  }
+
+  .form-group {
+    margin-bottom: 2rem;
+  }
+
+  .pf-chips {
+    background-color: $pf-chips-bg;
+    font-style: $f-s-normal;
+    font-weight: $f-w-normal;
+    font-size: $f-s-rem-16;
+    line-height: 16px;
+    color: $pf-chips-t;
+  }
+
+  .custom-file-label::after {
+    content: "Choose File";
+  }
+
+  .prefeex-ui-dropdown {
+    .ui-dropdown-label {
+      padding-right: 1.6rem !important;
+    }
+  }
+
+  .ui-inputtext {
+    padding: 0.5rem;
+  }
+
+  .ui-corner-all {
+    border-radius: 0px;
+  }
+
+  .db-title {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 21px;
+    color: $t-text-color;
+  }
+
+  .pf-calendar-input {
+    float: left;
+    width: 63%;
+    height: 20px;
+    margin-left: 4%;
+  }
+
+  .pf-calender-label {
+    display: inline-block;
+    width: 33%;
+    padding-top: 3px;
+  }
+
+  .ui-calendar {
+    position: relative;
+    display: block;
+    // z-index: 1000 !important;
+  }
+
+  .payment {
+    .lable {
+      font-style: normal;
+      font-weight: bold;
+      font-size: 18px;
+      line-height: 21px;
+      color: #5d5d5d;
+    }
+
+    .value {
+      font-style: normal;
+      font-weight: bold;
+      font-size: 18px;
+      line-height: 21px;
+      color: #a02e2b;
+    }
+  }
+}
+
+.prefeex-form-view label span {
+  font-weight: $f-w-bold;
+  font-size: 14px;
+  line-height: 16px;
+  color: #5d5d5d;
+}
+
+.user-profile {
+  input[type="file"] {
+    visibility: hidden;
+  }
+
+  .profile-img {
+    @extend .profile-img;
+  }
+
+  .email-varify {
+    .input-group-append {
+      .btn {
+        background-color: #fff;
+        border-top: 1px solid #ababab;
+        border-right: 1px solid #ababab;
+        border-bottom: 1px solid #ababab;
+        border-radius: 0px;
+      }
+    }
+
+    .email-verify-success {
+      padding: 0.375rem 0.75rem;
+      border-top: 1px solid #ababab;
+      border-right: 1px solid #ababab;
+      border-bottom: 1px solid #ababab;
+    }
+  }
+}
+
+.profile-img {
+  position: relative;
+  width: 120px;
+  overflow: hidden;
+
+  .profile-imag-pickbtn {
+    @extend .profile-imag-pickbtn;
+  }
+}
+
+.profile-imag-pickbtn {
+  position: absolute;
+  bottom: 30px;
+  left: 8px;
+  width: 106px;
+  height: 40px;
+  background: #d9160f61 !important;
+  border-radius: 0px;
+  border-bottom-right-radius: 70px;
+  border-bottom-left-radius: 70px;
+}
+
+.full-contain-img {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+
+  input[type="file"] {
+    visibility: hidden;
+    display: none;
+  }
+
+  .full-img-pickbtn {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    height: 40px;
+  }
+}
+
+/* -------------Single Input Field Search  **************/
+.single-input-search {
+  .btn-outline-secondary {
+    border-color: #ced4da;
+    &:hover {
+      color: #6c757d;
+      background-color: #fff;
+    }
+  }
+  .btn-outline-secondary:not(:disabled):not(.disabled).active:focus,
+  .btn-outline-secondary:not(:disabled):not(.disabled):active:focus,
+  .show > .btn-outline-secondary.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0;
+  }
+  .btn-outline-secondary:not(:disabled):not(.disabled).active,
+  .btn-outline-secondary:not(:disabled):not(.disabled):active,
+  .show > .btn-outline-secondary.dropdown-toggle {
+    color: #6c757d;
+    background-color: #fff;
+    border-color: #ced4da;
+  }
+}
+
+/* --------------Theme section -------------*/
+.prefeex-form {
+  .btn-prefeex-primary {
+    color: $white;
+    background-color: $blush;
+    border-color: $blush;
+  }
+
+  .form-control {
+    border: 0.5px solid $form-control-border;
+  }
+}
+
+.form-blush .col-form-label {
+  color: $blush;
+}
+
+.form-gray-dark .col-form-label,
+.form-gray-dark .ui-inputtext {
+  color: $t-text-color;
+}
+
+.form-blush .form-control,
+.form-gray-dark .form-control {
+  color: $t-text-color;
+}
+
+.prefeex-form-view label span {
+  color: $t-gray-dark;
+}
+
+.prefeex-form-view label span.password-info {
+  color: $blush;
+}
+
+/* ------------------prefeex-horizontal-form ----------- */
+
+.prefeex-horizontal-form .col-form-label,
+.prefeex-horizontal-form .form-control,
+.prefeex-horizontal-form .ui-inputtext {
+  font-style: $f-s-normal;
+  font-weight: $f-w-normal;
+  font-size: $f-s-rem-16 !important;
+  line-height: 16px;
+}
+
+.prefeex-horizontal-form .col-form-label {
+  text-align: right;
+}
+
+// -------------------- search componet---------------------
+.pf-search-component {
+  label {
+    font-style: normal;
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 16px;
+    color: #5d5d5d;
+  }
+
+  input {
+    border-radius: 0px;
+  }
+
+  .custom-control-label {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 20px;
+    color: #5d5d5d;
+  }
+
+  .pf-btn-primary {
+    background: #f16553;
+    border: 1px solid #f16553;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 21px;
+    color: #ffffff;
+    border-radius: 0px;
+    margin-left: 20px;
+  }
+}
+.pf-pay-btn {
+  &:hover {
+    color: #fff;
+  }
+}
+
+//---------------- p-dropdown----------------------
+body
+  .ui-dropdown-panel
+  .ui-dropdown-items
+  .ui-dropdown-item:not(.ui-state-highlight):not(.ui-state-disabled):hover,
+body
+  .ui-dropdown-panel
+  .ui-dropdown-items
+  .ui-dropdown-item-group:not(.ui-state-highlight):not(.ui-state-disabled):hover {
+  color: #fff;
+  background-color: $blush;
+}
+
+body .ui-dropdown-panel .ui-dropdown-items .ui-dropdown-item.ui-state-highlight,
+body
+  .ui-dropdown-panel
+  .ui-dropdown-items
+  .ui-dropdown-item-group.ui-state-highlight {
+  color: #ffffff;
+  background-color: $blush;
+}
+
+select.decorated option:hover {
+  box-shadow: 0 0 10px 100px #1882a8 inset;
+  color: #ffffff;
+  background-color: $blush;
+}
+/* ------------------ autoComplete -----------------*/
+.auto-complete {
+  .btn-outline-secondary {
+    border-color: #ced4da;
+    &:hover {
+      color: #6c757d;
+      background-color: #fff;
+    }
+  }
+  .btn-outline-secondary:not(:disabled):not(.disabled).active:focus,
+  .btn-outline-secondary:not(:disabled):not(.disabled):active:focus,
+  .show > .btn-outline-secondary.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0;
+  }
+  .btn-outline-secondary:not(:disabled):not(.disabled).active,
+  .btn-outline-secondary:not(:disabled):not(.disabled):active,
+  .show > .btn-outline-secondary.dropdown-toggle {
+    color: #6c757d;
+    background-color: #fff;
+    border-color: #ced4da;
+  }
+}
+
+body .auto-complete .ui-corner-all {
+  border-radius: 0px;
+}
+
+body .auto-complete .ui-inputtext {
+  border: 1px solid #ced4da;
+}
+
+/***** Costome *********/
+input.min-max-invalid {
+  border: 2px solid lightcoral !important;
+}
+
+.ui-slider .ui-slider-handle {
+  height: 1.143em;
+  width: 1.143em;
+  background-color: $blush !important;
+  border: 2px solid $blush !important;
+  border-radius: 5px !important;
+  transition: border-color 0.2s;
+}
+.ui-slider .ui-slider-range {
+  background-color: $blush !important;
+}
+.ui-slider.ui-slider-horizontal {
+  margin-top: 11px !important;
+}
+
+/*added by zahid for create business form*/
+.form-control:invalid {
+  border: 1px solid $blush !important;
+}
+
+.help-tip {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  text-align: center;
+  background-color: #91d7f9;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  font-size: 14px;
+  line-height: 26px;
+  cursor: default;
+  z-index: 100;
+}
+
+.help-tip:before {
+  content: "?";
+  font-weight: bold;
+  color: #fff;
+}
+
+.help-tip:hover p {
+  display: block;
+  transform-origin: 100% 0%;
+  -webkit-animation: fadeIn 0.3s ease-in-out;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.help-tip p {
+  /* The tooltip */
+  display: none;
+  text-align: left;
+  background-color: #8b1e1b;
+  padding: 12px;
+  width: 335px;
+  position: absolute;
+  border-radius: 3px;
+  right: -4px;
+  color: #fffdfd;
+  font-size: 14px;
+  line-height: 1;
+}
+
+.help-tip p:before {
+  /* The pointer of the tooltip */
+  position: absolute;
+  content: "";
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-bottom-color: #ebebeb;
+  right: 10px;
+  top: -12px;
+}
+
+.help-tip p:after {
+  /* Prevents the tooltip from being hidden */
+  width: 100%;
+  height: 40px;
+  content: "";
+  position: absolute;
+  top: -40px;
+  left: 0;
+}
+/*added by zahid for create business form end*/
+
+/*
+* ------------------- Error -----------------
+*/
+
+input.ng-invalid.ng-touched {
+  border: 2px solid lightcoral;
+}
+
+input.ng-valid.ng-dirty {
+  border: 2px solid #ababab;
+}
+
+textarea.ng-invalid.ng-touched {
+  border: 2px solid lightcoral;
+}
+
+textarea.ng-valid.ng-dirty {
+  border: 2px solid lightgreen;
+}
+
+.ng-invalid.ng-touched.ui-inputwrapper-filled .ui-dropdown {
+  border: 2px solid lightcoral;
+}
+
+.ng-valid.ng-dirty.ui-inputwrapper-filled .ui-dropdown {
+  border: 2px solid #ababab;
+}
+
+p-calendar.ng-invalid.ng-touched {
+  input {
+    border: 2px solid lightcoral;
+  }
+}
+
+/*************************************/
+/*                                   */
+/*        Riccardo Andreatta         */
+/*                                   */
+/*   CUSTOM CROSS BROWSER DROPDOWN   */
+/*                                   */
+/*************************************/
+
+/*** appearance rules are used to remove default arrows on HTML tag select  - Chrome, Safari, Mozilla, Opera ***/
+select.form-control,
+select.status-filter {
+  display: inline-block;
+  width: 100%;
+  vertical-align: middle;
+  background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeD0iMTJweCIgeT0iMHB4IiB3aWR0aD0iMjRweCIgaGVpZ2h0PSIzcHgiIHZpZXdCb3g9IjAgMCA2IDMiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDYgMyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHBvbHlnb24gcG9pbnRzPSI1Ljk5MiwwIDIuOTkyLDMgLTAuMDA4LDAgIi8+PC9zdmc+")
+    no-repeat right 0.75rem center/8px 10px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}

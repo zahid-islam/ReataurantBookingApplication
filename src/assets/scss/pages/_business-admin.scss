@@ -1,0 +1,90 @@
+/** *********** Business dashboard  ******/
+
+@import "../variable.scss";
+
+.db-title {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 21px;
+  color: $t-text-color;
+}
+
+.db-sub-title {
+  font-style: normal;
+  font-weight: bold;
+  font-size: 36px;
+  line-height: 44px;
+  color: #B8423E;
+}
+
+.ad-chartFilter {
+  color: #A1A1A1 !important;
+  width: auto;
+  border: 0px !important;
+}
+
+.ad-tableFilter {
+  border: 0px;
+  width: auto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 20px;
+  line-height: 23px;
+  color: #5D5D5D !important;
+}
+
+.dashboard-dialog-list li {
+  padding-left: 0px;
+  padding-right: 0px;
+  border: 0px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #959595;
+  padding-bottom: 18px;
+
+
+  .user-name h5 {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 22px;
+    line-height: 28px;
+    padding-top: 10px;
+    color: #B8423E;
+  }
+
+  h6 .reservation-number {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 28px;
+    text-align: center;
+    color: #959595;
+  }
+
+  h6 .reservation-text {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    text-align: center;
+    color: #959595;
+  }
+
+  .menu-list {
+    .menu-name {
+      font-style: normal;
+      font-weight: bold;
+      font-size: 14px;
+      line-height: 100%;
+      color: #5D5D5D;
+    }
+  }
+}
+
+
+.db-line-chart {}

@@ -1,0 +1,128 @@
+.customer-header {
+  .customer-name {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 28px;
+    color: $blush;
+
+    .customer-capacity {
+      margin-left: 28px;
+      font-size: 14px;
+      line-height: 16px;
+    }
+  }
+
+  h6 .customer-number {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 24px;
+    line-height: 28px;
+    text-align: center;
+    color: #959595;
+  }
+
+  h6 .customer-text {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    text-align: center;
+    color: #959595;
+  }
+
+  .customer-phone {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 21px;
+    line-height: 25px;
+    color: $blush;
+  }
+}
+
+.customer-tag {
+  button.btn-customer-tag {
+    background: #ebebeb;
+    border: 1px solid $blush;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    text-align: center;
+    color: $blush;
+    margin-right: 15px;
+    border-radius: 0px !important;
+  }
+}
+
+.customer-address {
+  margin-top: 35px;
+  margin-bottom: 35px;
+
+  .customer-addr-label {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 21px;
+    color: #959595;
+  }
+
+  .customer-addr-details {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 21px;
+    color: #959595;
+    span {
+      border: 1px solid #e1acb3;
+      padding: 0px 4px;
+      border-radius: 20px;
+    }
+  }
+}
+
+.business-menu {
+  a.btn-menu-pimery,
+  a.btn {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 21px;
+    color: #ffffff;
+    margin-left: 15px !important;
+    border-radius: 0px !important;
+    cursor: pointer;
+    &:hover {
+      color: #ffffff;
+    }
+  }
+
+  a.btn-menu-pimery {
+    background: $blush !important;
+    border: 1px solid $blush !important;
+  }
+
+  a.btn {
+    background: #a1a1a1;
+    border: 1px solid #939598;
+  }
+}
+
+.customer-about {
+  .about-title {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 16px;
+    color: #939598;
+  }
+
+  .about-description {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    color: #939598;
+  }
+}

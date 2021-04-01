@@ -1,0 +1,521 @@
+<!-- Header section -->
+<header class="tickent-details-header mb-4">
+  <div class="row">
+    <div class="col-3">
+      <div class="d-flex justify-content-between">
+        <div class="text-truncate">
+          <span class="label-name">
+            Ticket ID:
+          </span>
+          <span class="label-value">
+            {{ticketRefId}}
+          </span>
+        </div>
+        <div class="text-truncate">
+          <span class="label-name">
+            RefID:
+          </span>
+          <span class="label-value" *ngIf="!orderDetails.refId">
+            NA
+          </span>
+          <span class="label-value" *ngIf="orderDetails.refId">
+            {{orderDetails.refId}}
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="col-9">
+      <div class="d-flex justify-content-between">
+        <div class="text-truncate">
+          <span class="label-name">
+            Ticket Type:
+          </span>
+          <span [title]="ticketDetails?.ticketType.name" class="label-value">
+            {{ticketDetails?.ticketType.name}}
+          </span>
+        </div>
+        <div class="text-left text-truncate">
+          <span class="label-name">
+            Status:
+          </span>
+          <span [title]="currentTicketStatus" class="label-value">
+            {{currentTicketStatus}}
+          </span>
+        </div>
+        <!-- order approved -->
+        <div *ngIf="hideButtonIfNotValidToShow()" style="margin-right: 15px;">
+          <button type="button" class="btn pf-btn-primary mr-1" (click)="markSupprotTicketAsResolved()">Resolve</button>
+          <button *ngIf="currentTicketStatus === 'SUPPORT_CONVERSATION_IN_PROGRESS'" type="button"
+            class="btn pf-btn-primary" (click)="leaveAssignedTicket()">Leave</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+<!-- Header section -->
+
+<section>
+  <div class="row">
+    <!-- Left side panel -->
+    <div class="col-12 col-sm-12 col-md-4 col-lg-3 col-xl-3"
+      *ngIf="ticketDetails?.ticketType.name == 'ORDER' || ticketDetails?.ticketType.name == 'B2C_ORDER_SUPPORT'">
+      <div class="card rounded-0 border-0">
+        <div class="card-body order-details-callcenter">
+          <!-- user information -->
+          <div class="profile-con" style="cursor: pointer;"
+            [routerLink]="['/admin/customer/'+orderDetails.customer.id]">
+            <!-- <div class="profile-img float-left">
+              <img style="width:60px;height:60px"
+                [src]="orderDetails.customer.photo ? orderDetails.customer.photo : '/assets/images/user/user-placeholder.png'"
+                class="object-fit-cover rounded-circle">
+            </div> -->
+            <div>
+              <h2 class="name mb-1 text-truncate">
+                {{orderDetails.customer.firstName}}
+                {{orderDetails.customer.lastName}}
+              </h2>
+              <p class="sub text-truncate">
+                {{orderDetails.customer.email}}
+              </p>
+              <p class="phone text-truncate mb-0">
+                {{orderDetails.customer.mobile}}
+              </p>
+            </div>
+          </div>
+          <div class="profile-info">
+            <p class="mb-1">
+              Person Count: {{orderDetails.personCount}}
+            </p>
+            <p>Place At: {{orderDetails.createdAt | date:'MMM d, y h:mm a'}}</p>
+          </div>
+
+          <!-- Business information -->
+          <div class="profile-con" style="cursor: pointer;"
+            [routerLink]="['/admin/business/manage-business/'+orderDetails.business.id]">
+            <!-- <div class="profile-img float-left">
+              <img style="width:60px;height:60px"
+                [src]="orderDetails.business.primaryPhoto? orderDetails.business.primaryPhoto :'/assets/images/food-menu/food-item-dummy.png'"
+                class="object-fit-cover rounded-circle">
+            </div> -->
+            <div>
+              <h2 class="name mb-1 text-truncate"> {{orderDetails.business.name}} </h2>
+              <p class="sub text-truncate">
+                <span *ngFor="let item of orderDetails.business.emails.slice(0, 2)">
+                  <span class="each-email">{{item.email}} </span>
+                  <br>
+                </span>
+              </p>
+              <p class="phone mb-0 text-truncate"> <span *ngFor="let item of orderDetails.business.phones.slice(0, 2)">
+                  <span class="each-phone">{{item.phone}} </span>
+                  <br>
+                </span>
+              </p>
+            </div>
+          </div>
+          <div class="profile-info">
+            <p class="mb-1">Booking Time: {{orderDetails.scheduledAt | date:'MMM d, y h:mm a'}}</p>
+            <p class="sr-only">Seat Number: #2345</p>
+          </div>
+          <!-- Order Invoce  -->
+          <div class="table-responsive">
+            <table class="table order-details-table bg-white">
+              <thead class="header">
+                <tr (click)="isInvoiceCollapse = !isInvoiceCollapse">
+                  <th class="" scope="col" style="cursor: pointer">
+                    <img style="width:25px;height:20px" src="/assets/images/ticket/ticket-invoice.svg"
+                      class="object-fit-cover">
+                    <span class="ml-1">Invoice</span>
+                  </th>
+                  <th scope="col" style="cursor: pointer">
+                    <img *ngIf="!isInvoiceCollapse" style="width:7px;height:11px"
+                      src="/assets/images/ticket/downarrow-bluar.svg" class="object-fit-cover" style="color: black">
+                    <img *ngIf="isInvoiceCollapse" style="width:7px;height:11px"
+                      src="/assets/images/ticket/right-arrow-bluar.svg" class="object-fit-cover" style="color: black">
+                  </th>
+                </tr>
+              </thead>
+              <tbody [hidden]="!isInvoiceCollapse">
+                <tr *ngFor="let item of orderDetails.foodOrders; index as i">
+                  <td colspan="2">
+                    <div class="d-flex justify-content-between"
+                      style="font-style: normal; font-weight: bold; font-size: 14px; line-height: 16px; color: #5E5E5E; margin-bottom: 10px;">
+                      <span>{{i+1}}. {{item.foodMenu.itemName}}</span>
+                      <span>{{item.excludingVatTotalPrice | currency:' ৳'}}</span>
+                    </div>
+                    <div class="d-flex justify-content-between" *ngFor="let addons of item.foodOrderAddons; index as i"
+                      style="font-style: normal; font-weight: normal; font-size: 12px; line-height: 19px; color: #959595;">
+                      <span class="pl-1"> {{addons.optionName}}{{(addons.excludingVatUnitPrice)| currency:' ৳'}} *
+                        {{addons.unitCount}} </span>
+                      <span>{{addons.excludingVatTotalPrice | currency:' ৳'}}</span>
+                    </div>
+                    <div class="d-flex justify-content-between"
+                      style="padding-left:5px;padding-right:5px ;margin-top: 8px; font-style: normal; font-weight: normal; font-size: 12px; line-height: 22px; color: #5D5D5D; background-color: #EBEBEB; height: 22px;">
+                      <span>
+                        Quantity
+                        <span style="font-weight: bold; color: #5D5D5D;">{{item.unitCount}}</span>
+                      </span>
+                      <span style="font-weight: bold; color: #5D5D5D;">
+                        {{eachUnitPriceTotalWithAddons[i]}}
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+                <!-- invoice sub total -->
+                <tr style="border-bottom: 1px solid #A3A3A3;">
+                  <td colspan="2">
+                    <div class="d-flex justify-content-between"
+                      style="font-style: normal; font-weight: normal; font-size: 14px; line-height: 16px; color: #5D5D5D; ">
+                      <span> Total</span>
+                      <span style="font-weight: bold;">{{subTotal | currency:'৳'}}</span>
+                    </div>
+                  </td>
+                </tr>
+                <!-- invoice sub total -->
+                <!-- using promo code -->
+                <tr *ngIf="checkValueIsNumberAndPositive(orderDetails?.orderPromotion?.discountAmount)">
+                  <td colspan="2">
+                    <div class="d-flex justify-content-between"
+                      style="font-style: normal; font-weight: bold; font-size: 12px; line-height: 14px; color: #C66865;">
+                      <span> Using Promo code </span>
+                      <span style="font-weight: normal;">- ৳{{orderDetails?.orderPromotion?.discountAmount}}</span>
+                    </div>
+                  </td>
+                </tr>
+                <!-- using promo code -->
+                <!-- vat -->
+                <tr *ngIf="checkValueIsNumberAndPositive(orderDetails.vatAmount)">
+                  <td colspan="2">
+                    <div class="d-flex justify-content-between"
+                      style="font-style: normal; font-weight: normal; font-size: 12px; line-height: 14px; color: #959595;">
+                      <span> VAT ({{orderDetails.businessVatPercentage}}%) </span>
+                      <span style="font-weight: normal;">৳{{orderDetails.vatAmount}}</span>
+                    </div>
+                  </td>
+                </tr>
+                <!-- vat -->
+                <!-- Service -->
+                <tr *ngIf="checkValueIsNumberAndPositive(orderDetails.serviceChargeAmount)">
+                  <td colspan="2">
+                    <div class="d-flex justify-content-between"
+                      style="font-style: normal; font-weight: normal; font-size: 12px; line-height: 14px; color: #959595;">
+                      <span> Service Charge ({{orderDetails.businessServiceChargePercentage}}%) </span>
+                      <span style="font-weight: normal;">৳{{orderDetails.serviceChargeAmount}}</span>
+                    </div>
+                  </td>
+                </tr>
+                <!-- Service -->
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td>Total</td>
+                  <td> {{subTotal|currency:'৳'}}</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+          <!-- Order Invoce end -->
+        </div>
+      </div>
+    </div>
+    <!-- Right side panel -->
+    <div class="col-12 col-sm-12 col-md-8 col-lg-9 col-xl-9">
+      <div class="row">
+        <!-- Activity log section -->
+        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+          <div class="card rounded-0"
+            style="height: 704px; overflow-y: auto;background: #F7F7F7;box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);">
+            <div class="card-header text-white" style="background: #A7A9AC; font-size: 18px;">
+              Activities
+            </div>
+            <div class="card-body ">
+              <section class="customer-care-info table-responsive">
+                <table class="table customer-care-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 100px;">
+                        <p class="mb-0" style="width: 100px;">
+                          Time
+                        </p>
+                      </th>
+                      <th style="text-align: left">
+                        Activities
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of allActivities">
+                      <td style="width: 100px;">
+                        <p class="mb-0" style="width: 100px;">
+                          {{item.createdAt | date:'MMM d, y h:mm a'}}
+                        </p>
+
+                      </td>
+                      <td class="" style="text-align: left;" [innerHTML]="item.message"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </section>
+            </div>
+          </div>
+
+        </div>
+        <!-- Support Messess section -->
+        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+          <div class="card rounded-0 support-messages-panal">
+            <div class="card-header">
+              {{ticketDetails?.supportConversationSubject}}
+            </div>
+
+            <div class="card-body support-messages" name="conversationContainer" #messageScrollContainer infiniteScroll
+              [infiniteScrollDistance]="0" [scrollWindow]="false" [infiniteScrollUpDistance]="0"
+              [infiniteScrollThrottle]="1000" (scrolled)="onScrollDown()" (scrolledUp)="onScrollUp()">
+              <div *ngIf="isConversationLoading" class="spinner-border text-danger" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+              <ul class="list-unstyled">
+                <li *ngFor="let conversation of conversationEntries.slice().reverse()">
+                  <!-- End User message  -->
+                  <div class="media send" *ngIf="conversation?.sender?.userType.name == 'END_USER'">
+                    <img style="width:40px; height:40px; cursor: pointer;" (click)="getCustomerById(conversation)"
+                      [src]="conversation?.sender.photo ? conversation?.sender.photo :'/assets/images/user/user-placeholder.png'"
+                      class="align-self-center rounded-circle mr-3" alt="End User">
+                    <div class="media-body">
+                      <p class="mb-2 mess-body">
+                        {{conversation?.body.text}}
+                      </p>
+                      <div class="row mb-3 position-relative" *ngIf="conversation?.body?.images?.length">
+                        <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 pl-1 pr-1"
+                          *ngFor="let link of conversation?.body?.images.slice(0, 3)">
+                          <div class="card" style="height:100px">
+                            <img height="100px" style="image-orientation: from-image;"
+                              (click)="showIsGatterThanThreeImages(conversation?.body?.images)"
+                              class="card-img-top cursor-pointer object-fit-cover" [src]="link" alt="">
+                          </div>
+                        </div>
+                        <button class="seeMore" (click)="showIsGatterThanThreeImages(conversation?.body?.images)"
+                          *ngIf="conversation?.body?.images?.length > 3">
+                          <span class="number-of-item mr-1">
+                            {{ conversation?.body?.images?.length - 2 }}
+                          </span>
+                          <br>
+                          <span class="plus">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                          </span>
+                        </button>
+                      </div>
+                      <p class="mb-0 mess-date">
+                        {{conversation?.createdAt | date:'MMM d, y h:mm a' }}
+                      </p>
+                    </div>
+                  </div>
+                  <!-- Prefeex Message -->
+                  <div class="media replies my-4" *ngIf="conversation?.sender?.userType.name != 'END_USER'">
+                    <div class="media-body text-right">
+                      <p class="mb-2 mess-body">
+                        {{conversation?.body.text}}
+                      </p>
+                      <div class="row mb-3 flex-row-reverse position-relative"
+                        *ngIf="conversation?.body?.images?.length">
+                        <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 pl-1 pr-1"
+                          *ngFor="let link of conversation?.body?.images.slice(0, 3)">
+                          <div class="card" style="height:100px">
+                            <img height="100px" style="image-orientation: from-image;"
+                              (click)="showIsGatterThanThreeImages(conversation?.body?.images)"
+                              class="card-img-top cursor-pointer object-fit-cover" [src]="link" alt="">
+                          </div>
+                        </div>
+                        <button class="seeMore" (click)="showIsGatterThanThreeImages(conversation?.body?.images)"
+                          *ngIf="conversation?.body?.images?.length > 3">
+                          <span class="number-of-item mr-1">
+                            {{ conversation?.body?.images?.length - 2 }}
+                          </span>
+                          <br>
+                          <span class="plus">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                          </span>
+                        </button>
+                      </div>
+                      <p class="mb-0 mess-date">
+                        {{conversation?.createdAt | date:'MMM d, y h:mm a' }}
+                      </p>
+                    </div>
+                    <img style="width:40px;height:40px" src="/assets/images/icon/support-prefeex.svg"
+                      class="align-self-center rounded-circle ml-3" alt="...">
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <div class="card-footer support-message-footer" *ngIf="hideButtonIfNotValidToShow()">
+              <form #messageForm="ngForm" (ngSubmit)="submitMessage()">
+                <!-- image view box -->
+                <div class="form-group upload-image" *ngIf="imageUrls.length">
+                  <div #image class="image-wrapper">
+                    <ul class="m-0 p-0">
+                      <li *ngFor="let photoItem of imageUrls; let i = index">
+                        <img class="product-image" [src]="photoItem.photo" alt="">
+                        <button type="button" (click)="deleteThisImage(i)" class="btn close-btn delete-btn rounded-0">
+                          <img class="object-fit-cover " src="/assets/images/icon/unverified-email.svg"
+                            style="width:20px;height:20px">
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+                <!-- image view box -->
+                <div class=" form-group row mb-0">
+                  <div class="col-2">
+                    <div class=" mb-0  mb-0 mt-2 cursor-pointer">
+                      <input type="file" name="photos" #photos id="cameraImg" (change)="onSelectedFiles(photos)"
+                        multiple />
+                      <div class="browse-image">
+                        <img class=" object-fit-contain" src="/assets/images/icon/message-add-image.svg"
+                          style="width: 26px; height: 24px;" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="pl-0 col-10">
+                    <div class="form-group mb-0">
+                      <div class="input-group ">
+                        <input type="text" name="text" [(ngModel)]="messageObject.text" #text="ngModel"
+                          autocomplete="off" class="form-control rounded-0" placeholder="Leave your message">
+                        <div class="input-group-append">
+                          <button class="btn" type="submit">
+                            <img class=" object-fit-contain" src="/assets/images/icon/message-send.svg"
+                              style="width: 26px; height: 24px;" />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Support Modal -->
+<div class="modal fade bd-example-modal-lg" role="dialog" #supportParticularImages>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content pf-modal-withdraw">
+      <div class="modal-header">
+        <h5 class="modal-title">Images </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <div class="card mb-3 rounded-0">
+              <div class="card-block card-body rounded-0">
+                <div class="restaurant-img-gallery mt-3">
+                  <div id="carouselExampleControls" *ngIf="showSupportMessageImageList.length > 0"
+                    class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">
+                      <div [ngClass]="{'active': isfirst}" class="carousel-item object-fit-none text-center" style="
+                      min-height: 600px;" *ngFor="let img of showSupportMessageImageList; index as i;first as isfirst">
+                        <img [hidden]="isImgLoading" style="image-orientation: from-image;" (load)="onLoad()"
+                          [src]="img" class="img-fluid" alt="Responsive image">
+                      </div>
+                    </div>
+                    <a [hidden]="!(showSupportMessageImageList.length > 1)" class="carousel-control-prev"
+                      href="#carouselExampleControls" role="button" data-slide="prev">
+                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                      <span class="sr-only">Previous</span>
+                    </a>
+                    <a [hidden]="!(showSupportMessageImageList.length > 1)" class="carousel-control-next"
+                      href="#carouselExampleControls" role="button" data-slide="next">
+                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                      <span class="sr-only">Next</span>
+                    </a>
+                  </div>
+                  <div *ngIf="isImgLoading" class="spinner-border text-danger" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Support Modal -->
+
+<!-- Profile Modal -->
+<div class="modal fade bd-example-modal-lg" role="dialog" #userProfileModal>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content pf-modal-withdraw">
+      <div class="modal-header">
+        <h5 class="modal-title">User Profile</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row customer-header">
+          <div class="col-md-2 text-center">
+            <img style="width:120px;height:120px"
+              [src]="customerDetails.photo? customerDetails.photo : '/assets/images/user/user-placeholder.png'"
+              class="object-fit-cover rounded-circle" width="82" height="82">
+          </div>
+          <div class="col-md-3">
+            <h5 class="customer-name">
+              {{customerDetails.firstName}} {{customerDetails.lastName}}
+            </h5>
+            <h4 class="customer-phone">{{customerDetails.mobile}}</h4>
+          </div>
+        </div>
+
+        <div class="row ">
+          <div class="col-md-10 offset-md-2">
+            <div class="btn-group customer-tag" role="group" aria-label="Basic example">
+            </div>
+          </div>
+        </div>
+
+        <div class=" customer-address">
+          <div class="row">
+
+            <div class="col-md-2">
+              <p class="customer-addr-label">Address</p>
+            </div>
+            <div class="col-md-5">
+              <p class="customer-addr-details">{{customerDetails.address}}</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2">
+              <p class="customer-addr-label">Age:</p>
+            </div>
+            <div class="col-md-3">
+              <p class="customer-addr-details">{{age}}</p>
+            </div>
+            <div class="col-md-2">
+              <p class="customer-addr-label">Nationality:</p>
+            </div>
+            <div class="col-md-5">
+              <p class="customer-addr-details">{{customerDetails.country}}</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2">
+              <p class="customer-addr-label">Birth date:</p>
+            </div>
+            <div class="col-md-3">
+              <p class="customer-addr-details">{{customerDetails.dob | date: 'dd/MM/yyyy'}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Profile Modal -->

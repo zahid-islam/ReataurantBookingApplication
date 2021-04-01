@@ -1,0 +1,197 @@
+<div class="custom-control custom-switch custom-switch-lg mb-4 text-center">
+  <input [disabled]="promotionID" type="checkbox" [(ngModel)]="togglePersonalPublicPromotion"
+    class="custom-control-input" id="promoCodeType">
+  <label class="custom-control-label" for="promoCodeType">
+    <b>Toggle for create Selected Or Public promotion by the default Selected promotion. </b>
+  </label>
+</div>
+<h3 class="text-center">
+  <span *ngIf="togglePersonalPublicPromotion">Public promotion</span>
+  <span *ngIf="!togglePersonalPublicPromotion">Selected promotion </span>
+</h3>
+
+
+<form #publicPromotionForm="ngForm" (ngSubmit)="publicPromotionForm.valid && submitPublicPromotion(publicPromotionForm)"
+  class="prefeex-form prefeex-horizontal-form form-gray-dark mt-5">
+  <div class="form-group row">
+    <label for="promoCode" class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2 col-form-label pf-required-icon">
+      Promo Code
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <input type="text" class="form-control" name="promoCode" [(ngModel)]="promotion.promoCode" placeholder="PromoCode"
+        required />
+    </div>
+    <label for="title" class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2 col-form-label pf-required-icon">
+      Title
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <input type="text" class="form-control" name="title" [(ngModel)]="promotion.title" placeholder="Title" required />
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="description" class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2 col-form-label pf-required-icon">
+      Description
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <input type="text" class="form-control" name="description" [(ngModel)]="promotion.description"
+        placeholder="Description" required />
+    </div>
+    <label for="numberOfUsagePerUser"
+      class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2 col-form-label pf-required-icon">
+      Number of Usage
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <input type="number" class="form-control" [disabled]="isUpdateMode" [disabled]="isUpdateMode"
+        name="numberOfUsagePerUser" [(ngModel)]="promotion.numberOfUsagePerUser" placeholder="Number Of Usage"
+        required />
+    </div>
+  </div>
+  <div class="form-group row" *ngIf="!isUpdateMode">
+    <label for="shouldStartFromNow" class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2 col-form-label pf-required-icon">
+      Should Start From Now
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <div class="custom-control custom-radio custom-control-inline">
+        <input type="radio" (click)='shouldStartFromNowRadioChange(true)' id="shouldStartFromNowYes" value="true"
+          [ngModel]='promotion.shouldStartFromNow' name="shouldStartFromNow" class="custom-control-input" required>
+        <label class="custom-control-label" for="shouldStartFromNowYes">Yes</label>
+      </div>
+      <div class="custom-control custom-radio custom-control-inline">
+        <input type="radio" (click)='shouldStartFromNowRadioChange(false)' id="shouldStartFromNowNo" value="false"
+          [ngModel]='promotion.shouldStartFromNow' name="shouldStartFromNow" class="custom-control-input" required>
+        <label class="custom-control-label" for="shouldStartFromNowNo">No</label>
+      </div>
+    </div>
+    <div class="col-12 col-sm-6  col-md-6 col-lg-6 col-xl-6">
+      <div class="form-group row mb-0">
+        <label for="autoActive" class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 col-form-label pf-required-icon">
+          Promo Code Apply
+        </label>
+        <div class="col-12 col-sm-8  col-md-8 col-lg-8 col-xl-8">
+          <fieldset [disabled]="isUpdateMode === true">
+            <div class="custom-control custom-radio custom-control-inline">
+              <input type="radio" id="autoActiveYes" value="true" [ngModel]='promotion.autoActive' name="autoActive"
+                class="custom-control-input" required>
+              <label class="custom-control-label" for="autoActiveYes">Auto Apply</label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline">
+              <input type="radio" id="autoActiveNo" value="false" [ngModel]='promotion.autoActive' name="autoActive"
+                class="custom-control-input" required>
+              <label class="custom-control-label" for="autoActiveNo">Manual Applay</label>
+            </div>
+          </fieldset>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="activeFrom" class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2 col-form-label pf-required-icon">
+      Start Date
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <p-calendar inputStyleClass="form-control" [monthNavigator]="true" [yearNavigator]="true" yearRange="2019:2070"
+        placeholder="Start Date" [minDate]="activeFromMinDate" name="activeFrom" [style]="{'z-index': '9999'}"
+        [(ngModel)]="promotion.activeFrom" (onSelect)="checkActiveFrom(promotion.activeFrom)" dateFormat="dd-mm-yy"
+        [showTime]="true" hideOnDateTimeSelect="true" [required]="true" [disabled]="isUpdateMode || isStartFromNow">
+      </p-calendar>
+    </div>
+    <label for="title" class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2 col-form-label pf-required-icon">
+      Expire Date
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <p-calendar inputStyleClass="form-control" [monthNavigator]="true" [yearNavigator]="true" yearRange="2019:2070"
+        placeholder="Expire Date" [minDate]="expiredAtMinDate" name="expiredAt" [style]="{'z-index': '9999'}"
+        [(ngModel)]="promotion.expiredAt" dateFormat="dd-mm-yy" [showTime]="true" hideOnDateTimeSelect="true"
+        [required]="true" [disabled]="isUpdateMode">
+      </p-calendar>
+    </div>
+  </div>
+
+
+
+  <div class="form-group row">
+    <label for="isPercentage" class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2 col-form-label pf-required-icon">
+      Amount
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <fieldset [disabled]="isUpdateMode === true">
+        <div class="custom-control custom-radio custom-control-inline">
+          <input type="radio" (click)='onRadioChange(true)' id="PercentageAmount" value="true"
+            [ngModel]='promotion.isPercentage' name="isPercentage" class="custom-control-input" required>
+          <label class="custom-control-label" for="PercentageAmount"> Discount in %</label>
+        </div>
+        <div class="custom-control custom-radio custom-control-inline">
+          <input type="radio" (click)='onRadioChange(false)' id="FlatAmount" value="false"
+            [ngModel]='promotion.isPercentage' name="isPercentage" class="custom-control-input" required>
+          <label class="custom-control-label" for="FlatAmount">Flat Discount</label>
+        </div>
+      </fieldset>
+    </div>
+  </div>
+  <div class="form-group row" *ngIf="isPercentageContain">
+    <label for="percentage" class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2 col-form-label pf-required-icon">
+      Discount
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text rounded-0">%</div>
+        </div>
+        <input type="number" name="percentage" [disabled]="isUpdateMode" [(ngModel)]="promotion.percentage"
+          class="form-control" placeholder="Discount" required>
+      </div>
+    </div>
+    <label for="percentageAmountCap" class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2 col-form-label pf-required-icon">
+      Up to
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text rounded-0">৳</div>
+        </div>
+        <input type="text" class="form-control" [disabled]="isUpdateMode" name="percentageAmountCap"
+          [(ngModel)]="promotion.percentageAmountCap" placeholder="Up To" required />
+      </div>
+    </div>
+  </div>
+  <div class="form-group row" *ngIf="!isPercentageContain">
+    <label for="flatAmount" class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2 col-form-label pf-required-icon">
+      Discount
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text rounded-0">৳</div>
+        </div>
+        <input type="number" class="form-control" [disabled]="isUpdateMode" name="flatAmount"
+          [(ngModel)]="promotion.flatAmount" placeholder="Discount" required />
+      </div>
+    </div>
+    <label for="flatAmountMinThresholdAmount"
+      class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2 col-form-label pf-required-icon">
+      Min Threshold Amount
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text rounded-0">৳</div>
+        </div>
+        <input type="number" class="form-control" [disabled]="isUpdateMode" name="flatAmountMinThresholdAmount"
+          [(ngModel)]="promotion.flatAmountMinThresholdAmount" placeholder="Min Threshold Amount" required />
+      </div>
+    </div>
+  </div>
+  <div class="form-group row" style="margin-top: 50px">
+    <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-right">
+      <button type="submit" [disabled]="!publicPromotionForm.valid"
+        class="btn btn-prefeex-primary text-center rounded-0 btn-big-padding">
+        <span [hidden]="isApiSubmit"> Submit </span>
+        <span [hidden]="!isApiSubmit">
+          <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+
+        </span>
+      </button>
+    </div>
+  </div>
+</form>

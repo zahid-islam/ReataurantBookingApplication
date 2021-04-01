@@ -1,0 +1,68 @@
+<header class="mb-5 text-right pb-5">
+  <img width="282" height="92" src="/assets//images/prefee-log-gray.svg">
+</header>
+<form #bankInfoForm="ngForm" (ngSubmit)="bankInfoForm.valid && submitBankInfo(bankInfoForm.value)"
+  class="prefeex-form prefeex-horizontal-form form-gray-dark">
+  <div class="form-group row">
+    <label for="bankName" class="col-12 col-sm-2  col-md-2 col-lg-2 col-xl-2 col-form-label pf-required-icon">
+      Bank Name
+    </label>
+
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <input type="text" class="form-control" name="bankName" [(ngModel)]="bankInfoModel.bankName"
+        #bankName="ngModel" placeholder="Branch Name" placeholder="Type Bank Name"/>
+    </div>
+    <label for="branchName" class="col-12 col-sm-2  ccol-md-2 col-lg-2 col-xl-2 col-form-label">
+      Branch Name
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <input type="text" class="form-control" name="branchName" [(ngModel)]="bankInfoModel.branchName"
+        #branchName="ngModel" placeholder="Branch Name" />
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="accountHolderName" class="col-12 col-sm-2  col-md-2 col-lg-2 col-xl-2 col-form-label pf-required-icon">
+      Account Holder Name
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <input type="text" class="form-control" name="accountHolderName" [(ngModel)]="bankInfoModel.accountHolderName"
+        #accountHolderName="ngModel" placeholder="Account Holder Name"/>
+    </div>
+    <label for="accountNumber" class="col-12 col-sm-2  col-md-2 col-lg-2 col-xl-2 col-form-label pf-required-icon">
+      Account Number
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <input type="text" class="form-control" name="accountNumber" [(ngModel)]="bankInfoModel.accountNumber"
+        #accountNumber="ngModel" placeholder="Account Number"/>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="routingNumber" class="col-12 col-sm-2  col-md-2 col-lg-2 col-xl-2 col-form-label">
+      Routing Number
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <input type="text" class="form-control" name="routingNumber" [(ngModel)]="bankInfoModel.routingNumber"
+        #routingNumber="ngModel" placeholder="Routing Number" />
+    </div>
+    <label for="branchAddress" class="col-12 col-sm-2  col-md-2 col-lg-2 col-xl-2 col-form-label">
+      Branch Address
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <input type="text" class="form-control" name="branchAddress" [(ngModel)]="bankInfoModel.branchAddress"
+        #branchAddress="ngModel" placeholder="Branch Address" />
+    </div>
+  </div>
+
+  <div class="form-group row" style="margin-top: 100px">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center">
+      <button type="submit" [disabled]="!bankInfoForm.valid" class="btn-prefeex-primary btn  text-center rounded-0 btn-big-padding">
+
+        <span [hidden]="isApiSubmit"> Save </span>
+        <span [hidden]="!isApiSubmit">
+          <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+          <!-- Inprogress... -->
+        </span>
+      </button>
+    </div>
+  </div>
+</form>

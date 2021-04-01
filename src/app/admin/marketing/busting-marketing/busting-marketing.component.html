@@ -1,0 +1,96 @@
+<!-- Notification section -->
+<section>
+  <div style="min-height: 35px;" class="d-flex justify-content-end  mb-4">
+    <p style="font-style: normal; font-weight: normal; font-size: 14px; line-height: 35px; color: #5D5D5D;"
+      class="mb-0">{{notification.userIds.length}} People selected</p>
+  </div>
+
+  <form #notificationForm="ngForm" class="prefeex-form prefeex-horizontal-form form-gray-dark">
+    <div class="row py-4 px-2" style="background-color: #F7F7F7 ">
+      <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+        <div class="form-group row">
+          <label class="col-12 col-sm-2 col-md-2 col-lg-3 col-xl-3 col-form-label" for=""> Title </label>
+          <div class="col-12 col-sm-12 col-md-9 col-lg-9 col-xl-9">
+            <input type="text" class="form-control" name="title" [(ngModel)]="notification.title" #title="ngModel"
+              placeholder="Title" required>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-12 col-sm-2 col-md-3 col-lg-3 col-xl-3 col-form-label" for=""> The Summary </label>
+          <div class="col-12 col-sm-12 col-md-9 col-lg-9 col-xl-9">
+            <input type="text" class="form-control" name="body" [(ngModel)]="notification.body" #body="ngModel"
+              placeholder="The Summary" required>
+          </div>
+        </div>
+        <div class="form-group row mb-0">
+          <label class="col-12 col-sm-2 col-md-3 col-lg-3 col-xl-3 col-form-label" for=""> Message </label>
+          <div class="col-12 col-sm-12 col-md-9 col-lg-9 col-xl-9">
+            <textarea class="form-control" name="body" rows="6" placeholder="Message" [(ngModel)]="description"
+              #body="ngModel" required></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+        <div class="form-group row mb-0">
+          <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <div class="full-contain-img">
+              <img  style="width:100%;height:232px"  [src]="imgURL ? imgURL :'/assets/images/noimage.png'"
+                class="object-fit-contain">
+              <button type="button" class="full-img-pickbtn btn bg-transparent p-0 border-0" (click)="photo.click()">
+                <img style="width:38px;height:34px" src="/assets/images/icon/camera.svg" alt="">
+              </button>
+              <input type="file" name="photo" #photo (change)="fileProcess(photo)">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-12  offset-md-4 col-md-4 offset-lg-4 col-lg-4 col-xl-4  offset-xl-4 "
+        *ngIf="notificationID">
+        <div class="form-group row text-center" style="margin-top: 2rem;">
+          <div class="col-12">
+            <p style="font-style: normal; font-weight: bold; font-size: 18px; line-height: 21px; color: #B8423E;">
+              Scheduled <i class="fa fa-calendar" aria-hidden="true"></i>
+              {{notification.scheduledAt | date:'MMM d, y h:mm a'}} </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group row mt-5">
+      <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center">
+        <button [disabled]="!notificationForm.valid || notificationID" type="button"
+          (click)="createMarketingPushNotification()"
+          class="btn btn-prefeex-primary text-center rounded-0 btn-big-padding mr-3 ">
+          <span [hidden]="isApiSubmit"> Send Now </span>
+          <span [hidden]="!isApiSubmit">
+            <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+            <!-- Inprogress... -->
+          </span>
+        </button>
+        <button [disabled]="!notificationForm.valid" type="button" (click)="showDialogueForSubmitPushNotification()"
+          class="btn btn-prefeex-primary text-center rounded-0 btn-big-padding mr-3">
+
+          <span [hidden]="isApiSubmitSchedule"> Schedule At </span>
+          <span [hidden]="!isApiSubmitSchedule">
+            <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+            <!-- Inprogress... -->
+          </span>
+        </button>
+      </div>
+    </div>
+  </form>
+</section>
+<!-- Notification section -->
+
+
+<p-dialog header="Select Date" [(visible)]="isVisibleScheduleAtModal" [modal]="true" [style]="{width: '40%'}"
+  [focusOnShow]="false" [responsive]="true" (onHide)="hideCalendarSelector()" [resizable]="true" [baseZIndex]="100">
+  <span>Date: </span>
+  <p-calendar #myCalendar inputStyleClass="form-control" [monthNavigator]="true" [yearNavigator]="true"
+    [style]="{width: '92%', height: '500px'}" yearRange="2019:2070" placeholder="Select Date" [minDate]="minDate"
+    name="dateForm" [(ngModel)]="scheduledAt" dateFormat="yy-mm-dd" [showTime]="true">
+  </p-calendar>
+  <p-footer>
+    <button type="button" (click)="createMarketingPushNotification()"
+      class="btn pf-btn-primary text-center rounded-0 btn-big-padding mr-3">Submit</button>
+  </p-footer>
+</p-dialog>

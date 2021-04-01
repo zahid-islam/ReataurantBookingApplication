@@ -1,0 +1,28 @@
+<!-- <iframe
+*ngIf="urlName"
+[src]="urlName | safe"
+width="100%"
+[height]="windowsHeight"
+scrolling="auto"
+frameborder="0"
+    webkitallowfullscreen mozallowfullscreen allowfullscreen>
+</iframe> -->
+<!-- <iframe
+width="100%"
+[height]="windowsHeight"
+scrolling="auto"
+frameborder="0"
+    webkitallowfullscreen mozallowfullscreen allowfullscreen>
+</iframe> -->
+
+<div class="embed-responsive embed-responsive-16by9">
+  <iframe class="embed-responsive-item"  allowfullscreen></iframe>
+</div>
+
+<!-- <ng-container *ngIf="notAvailable">
+    <h1>Analytics not available!</h1>
+</ng-container> -->
+
+<div class="text-center" style="display: block">
+  <app-spin-loader [hidden]="!isLoading"></app-spin-loader>
+</div>

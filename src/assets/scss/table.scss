@@ -1,0 +1,516 @@
+/* ------------  table component --------------*/
+@import "./variable.scss";
+
+body .prefeex-data-table {
+  font-family: "Roboto", sans-serif;
+  font-size: 14px;
+}
+
+.prefeex-data-table {
+  .table {
+    th {
+      padding: 0rem;
+      vertical-align: middle;
+
+      .status-filter {
+        border: 0px;
+        font-weight: $f-w-700;
+        color: $white;
+        line-height: 13px;
+        text-align: center;
+        text-align-last: center;
+        /* webkit*/
+        &:focus  {
+          outline: none !important;
+        }
+        option {
+          color: #5c5c5c;
+          text-align: left;
+          /* reset to left*/
+        }
+      }
+    }
+
+    th,
+    td {
+      font-family: $f-f-roboto;
+      font-style: $f-s-normal;
+      font-weight: $f-w-300;
+      font-size: $f-s-rem-14;
+      line-height: 14px;
+      text-align: center;
+    }
+
+    td {
+      padding: 0.75rem !important;
+      vertical-align: middle;
+    }
+
+    td.td-bold,
+    td.td-bold a {
+      font-style: normal;
+      font-weight: bold;
+      font-size: 12px;
+      line-height: 14px;
+      color: #5c5c5c;
+    }
+
+    td.td-rad {
+      color: $blush !important;
+    }
+    td.td-scheduled {
+      color: #d38725 !important;
+    }
+
+    td .text-status {
+      background-color: #f1f1f1;
+      padding: 1px 4px;
+      border-radius: 20px;
+    }
+
+    td.addons-list {
+      font-style: normal;
+      font-weight: normal;
+      font-size: 12px;
+      line-height: 19px;
+      color: #444a1f;
+
+      div {
+        &:first-child span {
+          font-style: normal;
+          font-weight: bold;
+          font-size: 14px;
+          line-height: 16px;
+          color: #5e5e5e;
+        }
+      }
+    }
+
+
+
+     //  status bg and color
+     td .completed,
+     td .declined,
+     td .canceled,
+     td .confirmed,
+     td .pending,
+     td .approved,
+     td .default {
+       padding: 5px 10px;
+       border-radius: 5px;
+       text-decoration: underline;
+     }
+
+     td .declined {
+       background-color: #AAAAAA;
+       color: #ffffff;
+     }
+
+     td .default {
+       background-color: rgb(145, 155, 180);
+       color: #ffffff;
+     }
+
+     td .canceled {
+       background-color: #CAC9C9;
+       color: #ffffff;
+     }
+
+     td .confirmed {
+       background-color: #EEB403;
+       color: #ffffff;
+     }
+
+     td .pending {
+       background-color: #E47634;
+       color: #fff;
+     }
+
+     td .approved {
+       background-color: #009688;
+       color: #ffffff;
+     }
+
+     td .completed {
+       background-color: #69AB1D;
+       color: #fff;
+     }
+
+    td .assignee-email ,
+    td .assignee-phone {
+      padding: 1px 4px;
+      border-radius: 20px;
+      line-height: 25px;
+      margin-right: 4px;
+    }
+    td .assignee-email {
+      border: 1px solid #c1bebe;
+    }
+    td .assignee-phone {
+      border: 1px solid $blush;
+
+    }
+
+    tbody {
+      td select {
+        padding: 0px;
+        height: 16px;
+        border: 0px;
+        font-family: $f-f-roboto;
+        font-style: $f-s-normal;
+        font-weight: bold;
+        font-size: $f-s-rem-14;
+        line-height: 14px;
+        width: 100%;
+        text-align: center;
+        text-align-last: center;
+        option {
+          text-align: left;
+        }
+      }
+
+      td button.pf-tab-primary-btn {
+        background: $blush;
+        color: #fff;
+        border-radius: 0px;
+      }
+
+      td button.pf-refund-btn,
+      td button.pf-receive-btn,
+      td button.pf-receive-policy-btn {
+        border-radius: 0px;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 16px;
+        color: #ffffff;
+      }
+
+      td button.pf-viewdetails-btn {
+        font-style: normal;
+        font-weight: bold;
+        font-size: 14px;
+        line-height: 16px;
+        text-align: center;
+        text-decoration-line: underline;
+        color: #69ab1d;
+      }
+
+      td button.pf-receive-btn {
+        background-color: #69ab1d;
+        box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+      }
+
+      td button.pf-refund-btn {
+        background-color: $blush;
+        box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+      }
+
+      td button.pf-receive-policy-btn {
+        background: #bea341;
+        box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+      }
+
+      td button.pf-tab-show-id {
+        font-style: normal;
+        font-weight: bold;
+        font-size: 14px;
+        line-height: 16px;
+        text-decoration-line: underline;
+        color: #5d5d5d;
+      }
+
+      td button.pf-tab-show-menu {
+        font-style: normal;
+        font-weight: 300;
+        font-size: 14px;
+        line-height: 16px;
+        text-decoration-line: underline;
+        color: $blush;
+      }
+
+      td button.pf-tab-seat-edit {
+        position: relative;
+
+        &::after {
+          content: "";
+          display: block;
+          position: absolute;
+          top: -6px;
+          right: 0px;
+          background: url(/assets/images/icon/edit.svg);
+          width: 16px;
+          height: 18px;
+          background-repeat: no-repeat;
+        }
+      }
+
+      td span.pf-tab-price {
+        font-style: normal;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 16px;
+        color: #5d5d5d;
+      }
+
+      .create-user {
+        font-family: $f-f-roboto;
+        font-style: $f-s-normal;
+        font-weight: $f-w-300;
+        font-size: $f-s-rem-14;
+        line-height: 14px;
+        border-radius: 0px;
+      }
+
+      .create-user {
+        height: 20px;
+        padding-top: 3px;
+        padding-bottom: 3px;
+        border: 0px;
+      }
+
+      td {
+        .btn-group {
+          .btn {
+            color: #5d5d5d;
+            padding-top: 0px;
+            padding-bottom: 0px;
+          }
+          .btn.focus,
+          .btn:focus {
+            outline: 0;
+            box-shadow: 0 0 0 0;
+          }
+        }
+      }
+    }
+  }
+
+  .table.prefeex-thead-blush {
+    td {
+      border-top: 0;
+      border-bottom: 1px solid $prefeex-table-border;
+      &:focus {
+        outline: none !important;
+      }
+    }
+
+    th {
+      color: $white;
+      background-color: $blush;
+      border-color: $blush;
+    }
+
+    td {
+      color: $t-text-color;
+    }
+
+    tbody {
+      td select {
+        color: $t-text-color;
+      }
+
+      td select.form-control:focus {
+        outline: 0;
+        box-shadow: 0 0 0 0rem;
+      }
+
+      .create-user {
+        color: $white;
+        background-color: $blush;
+      }
+    }
+  }
+
+  .prefeex-thead-blush.reservation-details {
+    tr:last-child td {
+      border-bottom: 0px;
+      border: 0px;
+    }
+  }
+
+  .prefeex-thead-blush.reservation-details .ui-table-tfoot {
+    background-color: #008000;
+
+    td span.total,
+    td span.total-price,
+    td span.promo-code,
+    td span.vat,
+    td span.payble {
+      font-style: normal;
+      font-size: 14px;
+      line-height: 16px;
+    }
+
+    td span.total {
+      font-weight: bold;
+      color: $blush;
+    }
+
+    td span.total-price,
+    td span.payble {
+      font-weight: bold;
+      color: #5d5d5d;
+    }
+
+    td span.promo-code {
+      font-weight: normal;
+      color: #7a5928;
+    }
+
+    td span.vat {
+      font-weight: normal;
+      color: #008142;
+    }
+
+    td span.net-total {
+      font-style: normal;
+      font-weight: bold;
+      font-size: 18px;
+      line-height: 21px;
+      color: $blush;
+    }
+  }
+
+  td {
+    .custom-control-input:checked ~ .custom-control-label:before {
+      color: #fff;
+      border-color: $blush;
+      background-color: $blush;
+    }
+
+    .custom-checkbox .custom-control-label::before {
+      border-radius: 0rem;
+    }
+  }
+}
+
+.markating-list-teble {
+  .table {
+    th,
+    td {
+      font-family: $f-f-roboto;
+      font-style: $f-s-normal;
+      font-weight: $f-w-300;
+      font-size: $f-s-rem-14;
+      line-height: 14px;
+      text-align: left !important;
+    }
+  }
+}
+
+/**
+Fixed pagination
+*/
+.table-header-fixed {
+  text-align: left;
+  position: relative;
+  border-collapse: collapse;
+  thead {
+    th {
+      background: $blush;
+      position: -webkit-sticky;
+      position: sticky;
+      top: 116px;
+      z-index: 1;
+      border: 0px !important;
+      box-shadow: 0 0px 2px -1px rgba(0, 0, 0, 0.4);
+    }
+  }
+}
+
+/* --------------------- primeng table costom desing ----------------*/
+body .ui-table .ui-table-tbody > tr > td {
+  background-color: inherit;
+  border: 0;
+}
+
+body .ui-table .ui-table-tbody > tr:nth-child(even) {
+  background-color: transparent;
+}
+
+body .ui-table .reservation-details .ui-table-tfoot > tr > td {
+  background: #fff;
+  border-bottom: 0px;
+}
+
+body .ui-table .reservation-details .ui-table-tfoot > tr {
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.2);
+}
+body .ui-table .reservation-details .ui-table-tfoot > tr > td {
+  border: 0px solid #c8c8c8;
+}
+
+//  Fixed Header Scrolling Table
+/*
+*
+* ==========================================
+* CUSTOM UTIL CLASSES
+* ==========================================
+*
+*/
+/*
+*
+* ==========================================
+* CUSTOM UTIL CLASSES
+* ==========================================
+*
+*/
+.table-fixed.table-responsive {
+  height: 500px;
+  overflow-y: scroll;
+}
+
+.table-fixed thead tr:nth-child(1) th {
+  background: white;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+body .table-fixed .ui-table .ui-table-thead > tr > th {
+  border: 0px solid #000000;
+}
+
+/* Reservation pending tr */
+
+body .ui-table .ui-table-tbody > tr.pending {
+  background-color: rgba(255, 231, 231, 1) !important;
+  // background-color: #ffcf10 !important;
+  height: 63px;
+}
+
+body .ui-table .ui-table-tbody > tr.height-63 {
+  height: 63px;
+}
+
+body .ui-table .ui-table-tbody > tr.wait-time-expired {
+  background-color: #fb8989;
+  position: relative;
+  -webkit-animation-name: wait-time-expired-animation; /* Safari 4.0 - 8.0 */
+  -webkit-animation-duration: 2s; /* Safari 4.0 - 8.0 */
+  -webkit-animation-iteration-count: infinite; /* Safari 4.0 - 8.0 */
+  animation-name: wait-time-expired-animation;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+}
+
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes wait-time-expired-animation {
+  from {
+    background-color: #fb8989;
+  }
+  to {
+    background-color: #f7f7f7;
+  }
+}
+
+/* Standard syntax */
+@keyframes wait-time-expired-animation {
+  from {
+    background-color: #fb8989;
+  }
+  to {
+    background-color: #f7f7f7;
+  }
+}

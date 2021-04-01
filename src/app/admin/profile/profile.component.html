@@ -1,0 +1,160 @@
+<h4 class=" text-center text-blush">
+  <span *ngIf="user.firstName">{{user.firstName}} </span>
+  <span *ngIf="user.lastName">{{user.lastName}}</span>
+</h4>
+
+<form #profileForm="ngForm" (ngSubmit)="profileForm.valid && submitProfile(profileForm)"
+  class="prefeex-form prefeex-horizontal-form form-gray-dark user-profile">
+  <div class="form-group row">
+    <label for="" class="col-12 col-sm-2  col-md-2 col-lg-2 col-xl-2 col-form-label" style=" margin-top: 60px;">
+      Photo
+    </label>
+    <div class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2">
+      <div class="profile-img">
+        <img style="width:120px;height:120px" [hidden]="isImgLoading" (load)="onLoad()"
+          [src]="imgURL ? imgURL : user.photo ? user.photo : '/assets/images/user/user-placeholder.png'"
+          class="object-fit-cover rounded-circle mt-3">
+        <button type="button" class="profile-imag-pickbtn btn bg-transparent p-0 border-0" (click)="photo.click()">
+          <img width="22" height="22" src="/assets/images/icon/camera.svg" alt="">
+        </button>
+        <input type="file" name="photo" #photo (change)="fileProcess(photo)">
+      </div>
+      <div *ngIf="isImgLoading" class="spinner-border text-danger" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+
+    <label for="" class="col-12 col-sm-2 ccol-md-2 col-lg-2 col-xl-2 col-form-label" style=" margin-top: 60px;">
+      Password
+    </label>
+    <div class="col-12 col-sm-3  col-md-3 col-lg-3 col-xl-3" style=" margin-top: 60px;">
+      <input type="password" class="form-control" name="" readonly placeholder="**********" />
+    </div>
+    <div class="col-12 col-sm-2  col-md-2 col-lg-2 col-xl-2 text-left" style=" margin-top: 67px;">
+      <span class="" style="color: #B4B4B4;"> <strong style="cursor: pointer;" (click)="updatePassword()">
+          Change Password <img width="20" height="20" src="/assets/images/icon/icon-exclamatory.svg" alt="">
+        </strong> </span>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="" class="col-12 col-sm-2  col-md-2 col-lg-2 col-xl-2 col-form-label">
+      First Name
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <input type="text" class="form-control" #firstName="ngModel" name="firstName" [(ngModel)]="user.firstName"
+        placeholder="First Name" />
+    </div>
+    <label for="" class="col-12 col-sm-2  ccol-md-2 col-lg-2 col-xl-2 col-form-label">
+      Last Name
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <input type="text" class="form-control" name="lastName" [(ngModel)]="user.lastName" placeholder="Last Name" />
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="" class="col-12 col-sm-2  col-md-2 col-lg-2 col-xl-2 col-form-label">
+      Email
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <div class="input-group email-varify">
+        <input readonly type="email" class="form-control" name="email" [(ngModel)]="emaill" placeholder="Email" />
+        <div class="input-group-append" *ngIf="isEmailVerifiedHide">
+          <button class="btn" type="button" (click)="requestForSendVerificationEmail()">
+            <img style="width:20px;height:20px" src="/assets/images/icon/unverified-email.svg" class="object-fit-cover">
+            <span class="ml-1">Unverified</span>
+          </button>
+        </div>
+        <div class="input-group-append email-verify-success" *ngIf="isEmailVerifiedShow">
+          <img style="width:20px;height:20px" src="/assets/images/icon/verify-email-success.svg"
+            class="object-fit-cover">
+          <span class="ml-1">Verified</span>
+        </div>
+      </div>
+    </div>
+    <!-- <label for="" class="col-12 col-sm-2  col-md-2 col-lg-2 col-xl-2 col-form-label">
+      Mobile
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <input type="text" class="form-control" #phone="ngModel" name="phone" [(ngModel)]="user.phone"
+        placeholder="Mobile" />
+    </div> -->
+    <label for="" class="col-12 col-sm-2  col-md-2 col-lg-2 col-xl-2 col-form-label">
+      Country
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <input type="text" class="form-control" #country="ngModel" name="country" [(ngModel)]="user.country"
+        placeholder="Country">
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="" class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2 col-form-label">
+      Address
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <input type="text" class="form-control" name="address" #address="ngModel" [(ngModel)]="user.address"
+        placeholder="Address" />
+    </div>
+    <label for="" class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2 col-form-label">
+      Date of Birth
+    </label>
+    <div class="col-12 col-sm-4  col-md-4 col-lg-4 col-xl-4">
+      <p-calendar inputStyleClass="form-control" [monthNavigator]="true" [yearNavigator]="true" yearRange="1950:2050"
+        name="dateForm" [(ngModel)]="user.dob" dateFormat="yy-mm-dd">
+      </p-calendar>
+    </div>
+
+  </div>
+  <div class="form-group row" style="margin-top: 100px">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center">
+      <button type="submit" class="btn btn-prefeex-primary text-center rounded-0 btn-big-padding">
+        <span [hidden]="isApiSubmit"> Update </span>
+        <span [hidden]="!isApiSubmit">
+          <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+          <!-- Inprogress... -->
+        </span>
+      </button>
+    </div>
+  </div>
+</form>
+
+
+<p-dialog [style]="{minWidth: '45%'}" header="Change Password" [baseZIndex]="1000" [autoZIndex]="true"
+  [(visible)]="isVisiblePasswordModal" [modal]="true" [responsive]="true">
+  <div>
+    <app-change-password (closeModal)="closePasswordModal()"></app-change-password>
+  </div>
+</p-dialog>
+
+<!-- Modal for pay to Money -->
+
+<div class="modal fade" #CheckYourInboxModal tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content pf-modal-withdraw">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          Verify Email Address
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="d-flex justify-content-center">
+          <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center forget-password ">
+            <img class="object-fit-contain mb-4 pb-2 mt-5" style="width: 73px; height: 77px;"
+              src="/assets/images/icon/forgot-password/check-email.svg" alt="">
+            <h2 class="title mb-3 pb-1"> Check Your inbox </h2>
+            <p class="sub-title mb-4 pb-2">
+              We just send a link to your email address.
+            </p>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn pf-btn-primary" data-dismiss="modal">Close</button>
+      </div> -->
+    </div>
+  </div>
+</div>

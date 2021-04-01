@@ -1,0 +1,213 @@
+<div class="row" *ngIf="reservationDetails.dineOption">
+  <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-lx-4 mr-auto ml-auto">
+    <div class="alert alert-primary font-weight-bold text-center" role="alert">
+      {{reservationDetails.dineOption.name}}
+    </div>
+  </div>
+</div>
+
+<!-- Reservation/Order details  header section -->
+
+<header class="order-details-header mb-3" style="background-color: #F2F2F2">
+  <div class="row">
+    <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-lx-6">
+      <div class=" p-1" style="height: 100px; background-color: #ffffff">
+        <div class="profile-img">
+          <img style="width:90px;height:90px"
+            [src]="reservationDetails.customer?.photo ? reservationDetails.customer.photo :'/assets/images/user/user-placeholder.png'"
+            class="object-fit-cover rounded-circle">
+        </div>
+        <div>
+          <h2 class="name">
+            {{reservationDetails.customer.firstName}}
+            {{reservationDetails.customer.lastName}}
+          </h2>
+          <p class="sub">
+            {{reservationDetails.customer.email}}
+          </p>
+          <p class="phone text-truncate">
+            {{reservationDetails.customer?.mobile}}
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-lx-6">
+      <div class=" p-1" style="height: 100px; background-color: #ffffff">
+        <div class="profile-img">
+          <img style="width:90px;height:90px"
+            [src]="reservationDetails.business.primaryPhoto ? reservationDetails.business.primaryPhoto :'/assets/images/food-menu/food-item-dummy.png'"
+            class="object-fit-cover rounded-circle">
+        </div>
+        <div>
+          <h2 class="name">
+            {{reservationDetails.business.name}}
+          </h2>
+          <p class="sub text-truncate">
+            {{reservationDetails.business.address}}
+          </p>
+          <p class="phone text-truncate">
+            <span *ngFor="let item of reservationDetails.business.phones.slice(0, 2)">
+              <span class="each-phone">{{item.phone}} </span>
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+<section class="sub-header-reservation-details px-3 py-2 mb-3" style="background-color:  #F7F7F7;">
+  <div class="row">
+    <div class="col-12 col-sm-6 col-md-6 col-lg-2 col-xl-2">
+      <p class="mb-0">
+        <span class="label">Reservation ID: </span>
+        <span class="label-info">{{reservationDetails.refId}}</span>
+      </p>
+    </div>
+    <div class="col-12 col-sm-6 col-md-6 col-lg-2 col-xl-1">
+      <p class="mb-0">
+        <span class="label">Count: </span>
+        <span class="label-info">{{reservationDetails.personCount}}</span>
+      </p>
+    </div>
+    <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+      <p class="mb-0">
+        <span class="label">Placed At: </span>
+        <span class="label-info">{{reservationDetails.createdAt | date:'MMM d, y h:mm a'}}</span>
+      </p>
+    </div>
+    <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3">
+      <p class="mb-0">
+        <span class="label">Booking:</span>
+        <span class="label-info"> {{reservationDetails.scheduledAt | date:'MMM d, y h:mm a'}}</span>
+      </p>
+    </div>
+    <div *ngIf="reservationDetails.serveTimeAfterScheduledAt" class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+      <p  class="mb-0 float-left">
+        <span class="label">Serve Time: </span>
+        <span class="label-info ml-1">
+          {{ servedAt(reservationDetails.scheduledAt, reservationDetails.serveTimeAfterScheduledAt) | date:'MMM d, y h:mm a'}}</span>
+      </p>
+    </div>
+  </div>
+  <!-- Creator Note -->
+  <div class="row mt-3">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+      <p *ngIf="reservationDetails.creatorNote" class="mb-0 float-left">
+        <span class="label">Reservation Note: </span>
+        <span class="label-info ml-1"> {{reservationDetails.creatorNote}}</span>
+      </p>
+    </div>
+  </div>
+  <!-- Canceler Note -->
+  <div class="row mt-3" *ngIf="reservationDetails.orderStatus?.name === 'CANCELED'">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+      <p *ngIf="reservationDetails.cancelerNote" class="mb-0 float-left">
+        <span class="label">Cancel Note: </span>
+        <span class="label-info ml-1"> {{reservationDetails.cancelerNote}}</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 text-right">
+      <button type="button" (click)="generateReservationInvoicePDF()" class="btn pf-btn-primary"> Reservation PDF</button>
+    </div>
+  </div>
+</section>
+
+<!-- Reservation/Order lists data grid section -->
+<div class="row">
+  <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+    <p-table [value]="foodItemList" styleClass="prefeex-data-table"
+      tableStyleClass="table prefeex-thead-blush reservation-details">
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 10px;">SN</th>
+          <th>Item Name</th>
+          <th>Price</th>
+          <th>Unit Price</th>
+          <th>Unit Count</th>
+          <th class=" text-right">Total Price</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-i="rowIndex" let-reservation>
+        <tr>
+          <td class="td-bold" style="width: 10px;">{{i+1}}</td>
+          <td class="addons-list">
+            <div *ngFor="let item of reservation.itemName">
+              <span>{{item}}</span>
+            </div>
+          </td>
+          <td class="addons-list">
+            <div *ngFor="let item of reservation.price">
+              <span>{{item | currency:'৳ '}}</span>
+            </div>
+          </td>
+          <td class="td-bold">{{reservation.unitPrice | currency:'৳ '}}</td>
+          <td class="td-bold">{{reservation.unitCount}}</td>
+          <td class="td-bold text-right">{{reservation.totalPrice | currency:'৳ '}}</td>
+        </tr>
+      </ng-template>
+      <ng-template  pTemplate="footer">
+        <tr>
+          <td colspan="6" class="text-right" style="border-top: 1px solid #c8c8c8;">
+            <span class="total pr-1 " style="color: #7E7E7E;"> Total = </span>
+            <span class="total-price "> {{netTotal | currency:'৳ '}}</span>
+          </td>
+        </tr>
+        <tr *ngIf="checkValueIsNumberAndPositive(reservationDetails?.orderPromotion?.discountAmount)">
+          <td colspan="6" class="text-right">
+            <span class="promo-code">- Discount Amount ৳ {{reservationDetails?.orderPromotion?.discountAmount}}
+            </span>
+          </td>
+        </tr>
+        <tr *ngIf="checkValueIsNumberAndPositive(reservationDetails.vatAmount)">
+          <td colspan="6" class="text-right">
+            <span class="vat">+ VAT
+              {{reservationDetails.vatAmount | currency:'৳ '}}
+            </span>
+          </td>
+        </tr>
+        <tr *ngIf="checkValueIsNumberAndPositive(reservationDetails.serviceChargeAmount)">
+          <td colspan="6" class="text-right">
+            <span class="vat">+ Service
+              Charge {{reservationDetails.serviceChargeAmount | currency:'৳ '}}
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="6" class="text-right" style="background: #F2F2F2; box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.25);">
+            <span class="payble pr-2">Payable</span>
+            <span class="net-total"> {{totalAmount | currency:'৳ '}}</span>
+          </td>
+        </tr>
+      </ng-template>
+      <!-- <ng-template pTemplate="footer">
+        <tr>
+          <td class="text-left" colspan="5">
+            <span class="total pr-1"> Total = </span>
+            <span class="total-price  pr-2"> {{netTotal | currency:'৳ '}}</span>
+
+            <span *ngIf="checkValueIsNumberAndPositive(reservationDetails?.orderPromotion?.discountAmount)"
+              class="promo-code pr-4">- Discount Amount ৳ {{reservationDetails?.orderPromotion?.discountAmount}}
+            </span>
+            <span *ngIf="checkValueIsNumberAndPositive(reservationDetails.vatAmount)" class="vat">+ VAT
+              {{reservationDetails.vatAmount | currency:'৳ '}}
+            </span>
+            <span *ngIf="checkValueIsNumberAndPositive(reservationDetails.serviceChargeAmount)" class="vat">+ Service
+              Charge {{reservationDetails.serviceChargeAmount | currency:'৳ '}}
+            </span>
+          </td>
+          <td>
+            <span class="payble pr-2">Payable</span>
+            <span class="net-total"> {{totalAmount | currency:'৳ '}}</span>
+          </td>
+        </tr>
+      </ng-template> -->
+    </p-table>
+  </div>
+</div>
+
+<!-- content-loader -->
+<app-content-loader *ngIf="isLoading" [theadcount]="6" [rowlength]="6"></app-content-loader>
+<!-- content-loader -->

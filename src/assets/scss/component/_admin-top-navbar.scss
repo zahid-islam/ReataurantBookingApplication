@@ -1,0 +1,197 @@
+@import "../../scss/variable.scss";
+
+/* ------------- Prefeex B2B top menu bar -----------*/
+.prefeex-nav {
+  height: $height-75;
+  background-color: $top-menu-bg;
+
+  .navbar-brand {
+    background-color: $blush;
+    margin-right: 0px;
+    padding: 13px 0px;
+    width: 217px;
+    -webkit-transition: 0.4s ease;
+    -moz-transition: 0.4s ease;
+    transition: 0.4s ease;
+    overflow: hidden;
+
+    .logo-img-small {
+      display: none;
+      visibility: hidden;
+      width: 0px;
+      height: 0px;
+    }
+
+    .logo-img-large {
+      padding-left: 13px;
+    }
+  }
+
+  .left-bar-toggle {
+    margin-left: 19px !important;
+    width: 25px;
+    height: 25px;
+    padding: 0px;
+    font-size: 24px;
+    color: $blush;
+    margin-top: -10px;
+
+    &:focus {
+      outline: 0;
+      box-shadow: 0 0 0 0;
+    }
+  }
+
+  .top-left-ul {
+    .nav-brand-text {
+      display: inline-block;
+      font-style: $f-s-normal;
+      font-weight: $f-w-normal;
+      font-size: $f-s-rem-24;
+      line-height: 28px;
+      color: $blush;
+      padding-left: 23px;
+      padding-top: 23px;
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  .top-right-ul {
+    .list-date-time {
+      padding-top: 27px !important;
+      padding-right: 21px !important;
+
+      span {
+        font-style: $f-s-normal;
+        font-weight: $f-w-normal;
+        font-size: $f-s-rem-18;
+        line-height: 21px;
+        color: $t-text-color;
+      }
+    }
+
+    .pf-users-profile {
+      padding-top: 10px;
+
+      a .user-auth-img {
+        height: 43px;
+        width: 43px;
+        vertical-align: middle;
+      }
+
+      .user-profile-dropdown {
+        .dropdown-item:active {
+          color: inherit;
+          text-decoration: none;
+          background-color: #f8f9fa;
+        }
+
+        width: 15.625rem;
+        border-radius: 0px;
+
+        .user-name {
+          font-weight: $f-w-500;
+          font-size: $f-s-rem-24;
+          line-height: 28px;
+        }
+
+        .user-name,
+        .logout {
+          color: $blush;
+        }
+
+        .user-email,
+        .user-change-password,
+        .user-customize-profile,
+        .logout {
+          font-weight: $f-w-500;
+          font-size: $f-s-rem-16;
+          line-height: 19px;
+        }
+
+        .user-email {
+          color: $pf-chips-t;
+        }
+
+        .user-change-password,
+        .user-customize-profile {
+          color: $change-password;
+        }
+
+        .dropdown-item {
+          padding: 1rem 1.5rem;
+        }
+      }
+    }
+
+    .user-name-type {
+      .name {
+        font-weight: bold;
+        font-size: 1rem;
+      }
+      .user-type {
+        font-weight: 400;
+        font-size: 1rem;
+        color: $blush;
+      }
+    }
+  }
+}
+
+//  Add Toggle class --------------------
+.slide-nav-toggle {
+  .prefeex-nav {
+    .navbar-brand {
+      width: 43px;
+
+      .logo-img-small {
+        display: block;
+        visibility: visible;
+        padding-left: 3px;
+        width: 40px;
+        height: auto;
+      }
+
+      .logo-img-large {
+        display: none;
+        visibility: hidden;
+        padding-left: 0px;
+      }
+    }
+
+    .top-left-ul {
+      .nav-brand-text {
+        opacity: 0;
+        visibility: hidden;
+      }
+    }
+  }
+}
+
+// Add sidebar-hover --------------------------
+.sidebar-hover.slide-nav-toggle {
+  .navbar-brand {
+    width: 217px;
+
+    .logo-img-small {
+      display: none;
+      visibility: hidden;
+      width: 0px;
+      height: 0px;
+    }
+
+    .logo-img-large {
+      padding-left: 13px;
+      display: block;
+      visibility: visible;
+    }
+  }
+}
+
+.dropdown-menu {
+  border-radius: 2px;
+  border: none;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.175);
+}
+

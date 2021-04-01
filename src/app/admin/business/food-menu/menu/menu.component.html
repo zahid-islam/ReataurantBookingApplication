@@ -1,0 +1,129 @@
+<!-- Create Menu -->
+<div class="row" [appHideIfUnauthorized]="'create'" [actionRoot]="'businessMenu'">
+  <div class="col-12">
+    <div class="prefeex-add-btn text-center mb-3">
+      <a class="text-decoration-none"
+        [routerLink]="['/admin/business/manage-business/'+ businessId +'/food-menu/create']">
+        <img width="65px" height="56px" src="/assets/images/icon/create-menu-icon.png" alt="add-icon">
+        <span> Create Menu </span>
+      </a>
+    </div>
+  </div>
+</div>
+<!-- Create Menu -->
+
+<!-- Search customer -->
+<div class="row">
+  <div class="col-12">
+    <form #searchMenuForm="ngForm" (ngSubmit)="searchCustomer(searchMenuForm.value)" class="pf-search-component">
+      <div class="form-row">
+        <div class="form-group col-12 col-sm-8  col-md-4 col-lg-4 col-xl-4">
+          <label for="name" class="col-form-label">Menu Name</label>
+          <input type="text" name="name" [(ngModel)]="menuSearch.name" #name="ngModel" class="form-control"
+            placeholder="Menu Name">
+        </div>
+        <div
+          class="form-group col-12 col-sm-4  col-md-6 col-lg-6 col-xl-6  mt-sm-2 pt-sm-4 mt-lg-2   mt-md-2 pt-md-4 mt-lg-2 pt-lg-4 mt-xl-2 pt-xl-4">
+          <button type="button" (click)="resetSearch(searchMenuForm)" class="btn pf-btn-primary">Reset</button>
+          <button type="submit" class="btn pf-btn-primary">
+            <span [hidden]="isApiSubmit"> Search </span>
+            <span [hidden]="!isApiSubmit">
+              <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+
+            </span>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- Search Customer -->
+
+<!-- Menu pagination section -->
+<div class="row pf-pagination-container" [addOrRemoveClassToFixedTableHeader]="'250'">
+  <div class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2 pr-0">
+    <h5 class="total-data mb-0 mt-2">Total: {{totalCount}}</h5>
+  </div>
+  <div class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2 pr-0 bg-white">
+    <button *ngIf="totalCount > 0" class="btn pf-btn-primary" (click)="convert()"> Download Sheet </button>
+  </div>
+  <div class="col-12 col-sm-8 col-md-8 col-lg-8 col-xl-8 pl-0">
+    <p-paginator #paginator styleClass="prefeex-pagination" [rows]="itemPerPage" (onPageChange)="paginate($event)"
+      [totalRecords]="totalCount" pageLinkSize="5" [rowsPerPageOptions]="[10, 50, 100]"></p-paginator>
+  </div>
+</div>
+<!-- Menu pagination section -->
+
+<!-- Menu data view section -->
+<div class="row">
+  <div class="col-12">
+    <p-table [value]="allFoodMenus" styleClass="prefeex-data-table" tableStyleClass="table prefeex-thead-blush">
+      <ng-template pTemplate="header">
+        <tr>
+          <th> Photo </th>
+          <th> Menu Category </th>
+          <th> Menu Name </th>
+          <th> Price </th>
+          <th> About Item </th>
+          <th> Vat Status </th>
+          <th>
+            <select class="status-filter" (change)="filterFoodMenuOnStatusChange(statusForFilter)"
+              [(ngModel)]="statusForFilter" placeholder="Select status">
+              <option selected [ngValue]="0"> All </option>
+              <option *ngFor="let stat of foodMenuStatuses" [ngValue]="stat.id">
+                {{stat.name}}
+              </option>
+            </select>
+          </th>
+          <th style=" width: 100px;"> Addons </th>
+          <th style=" width: 70px;"> Action </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-menuItem>
+        <tr>
+          <td>
+            <img [src]="menuItem.primaryPhoto ? menuItem.primaryPhoto : '/assets/images/food-menu/food-item-dummy.png'"
+              style=" width:20px;height:20px " class="object-fit-cover rounded-circle" [alt]="menuItem.primaryPhoto">
+          </td>
+          <td class=" text-truncate">{{menuItem.foodType.name}}</td>
+          <td class=" text-truncate">{{menuItem.itemName}}</td>
+          <td class="td-rad td-bold">{{menuItem.price | currency:'৳ '}}</td>
+          <td class=" text-truncate">{{menuItem.itemDescription}}</td>
+          <td>{{menuItem.vatStatus?.name}}</td>
+          <td>
+            <select [appHideIfUnauthorized]="'status'" [actionRoot]="'businessMenu'"
+              (change)="updateOnStatusChanges(menuItem.foodMenuStatus.id, menuItem)"
+              [(ngModel)]="menuItem.foodMenuStatus.id">
+              <option *ngFor="let foodStatus of foodMenuStatuses" [ngValue]="foodStatus.id">
+                {{foodStatus.name}}
+              </option>
+            </select>
+          </td>
+          <td>
+            <a role="button" [appHideIfUnauthorized]="'addons'" [actionRoot]="'businessMenu'"
+              style="width: 70px; cursor: pointer;" class="btn create-user" queryParamsHandling="merge"
+              [routerLink]="['/admin/business/manage-business/'+ businessId+ '/food-menu/'+ menuItem.id]"
+              routerLinkActive="router-link-active"> Addons </a>
+          </td>
+          <td>
+            <a role="button" [appHideIfUnauthorized]="'edit'" [actionRoot]="'businessMenu'" class="btn create-user"
+              style="cursor: pointer" (click)="editMenu(menuItem.id)"> Edit </a>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+<!-- Menu data view section -->
+
+<!-- content-loader -->
+<app-content-loader *ngIf="isLoading" [theadcount]="8" [rowlength]="4"></app-content-loader>
+<!-- content-loader -->
+
+<!-- Modal for edit menu item -->
+<p-dialog header="Food Menu" [(visible)]="isVisibleMenuModal" [modal]="true" [focusOnShow]="false" [responsive]="true"
+  [resizable]="true" [style]="{minWidth: '70%'}" [baseZIndex]="100" (onHide)="closeMenuModal()">
+  <div class="mt-4">
+    <app-menu-form [menuId]="menuId" *ngIf="menuId" (closeModal)="closeMenuModal()"></app-menu-form>
+  </div>
+</p-dialog>

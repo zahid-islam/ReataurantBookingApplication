@@ -1,0 +1,7 @@
+<ng-template #shapeTemplate>
+    <svg:path attr.id="{{ shape.shapeProperties.name }}" attr.d="{{ value }}" class="draggable"
+        attr.transform="translate({{shape.originX}}, {{shape.originY}}) scale({{formFields[2].value}})"
+        [ngStyle]="setStyles()">
+        <title>{{ shape.shapeProperties.name }}</title>
+    </svg:path>
+</ng-template>

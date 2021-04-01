@@ -1,0 +1,48 @@
+<div class="row">
+  <div class="col-12">
+    <div class="prefeex-add-btn text-center" style="margin-bottom: 34px">
+      <a class="text-decoration-none" (click)="goToFloorCreatePage('edit')" style="cursor: pointer;">
+        <img width="65px" height="56px" src="/assets/images/icon/layout-create-floor.svg" alt="add-icon">
+        <span> Create Floor </span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="row" [addOrRemoveClassToFixedTableHeader]="'150'">
+  <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+    <p-table [value]="floorPlans" styleClass="prefeex-data-table" tableStyleClass="table prefeex-thead-blush">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Id</th>
+          <th>Floor Name</th>
+          <th style="width: 150px">Status</th>
+          <th>Action</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-floor>
+        <tr>
+          <td>{{floor.id}}</td>
+          <td> {{floor.floorName}} </td>
+          <td style="width: 150px">
+            <select (change)="statusChangesAction(floor.businessFloorPlanStatus.id, floor)"
+              [(ngModel)]="floor.businessFloorPlanStatus.id">
+              <option *ngFor="let status of floorStatuses" [ngValue]="status.id">
+                {{status.name}}
+              </option>
+            </select>
+          </td>
+          <td>
+            <a role="button" class="btn create-user mr-3" style="cursor: pointer"
+              (click)="goToFloorUpdatePage('edit', floor.id)"> Edit
+            </a>
+            <a role="button" class="btn create-user mr-3" style="cursor: pointer"
+              (click)="goToFloorUpdatePage('delete', floor.id)">
+              Delete
+            </a>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

@@ -1,0 +1,114 @@
+@import "../variable.scss";
+
+// primeng pagination costom desing
+.pf-pagination-container {
+  .prefeex-pagination {
+    background-color: transparent;
+    border: 0px;
+    margin: 0;
+    margin-bottom: 12px;
+    text-align: right;
+  }
+
+  .total-data {
+    font-style: $f-s-normal;
+    font-weight: $f-w-normal;
+    font-size: $f-s-rem-16;
+    line-height: 19px;
+  }
+  .total-data {
+    color: $t-gray-dark;
+  }
+
+  .custom-control-input:checked ~ .custom-control-label:before {
+    color: #fff;
+    border-color: $blush;
+    background-color: $blush;
+  }
+
+  .custom-checkbox .custom-control-label::before {
+    border-radius: 0rem;
+  }
+}
+
+.custom-control-input:checked ~ .custom-control-label:before {
+  color: #fff;
+  border-color: $blush;
+  background-color: $blush;
+}
+
+.custom-checkbox .custom-control-label::before {
+  border-radius: 0rem;
+}
+
+.pf-pagination-container {
+  .prefeex-pagination {
+    .ui-paginator .ui-dropdown {
+      border: 1px solid $blush;
+    }
+  }
+}
+
+body .ui-paginator {
+  background-color: transparent;
+  border: 0px;
+  margin: 0;
+  text-align: right;
+  margin-bottom: 14px;
+}
+
+body .ui-paginator .ui-paginator-first,
+body .ui-paginator .ui-paginator-prev,
+body .ui-paginator .ui-paginator-next,
+body .ui-paginator .ui-paginator-last {
+  color: $blush;
+}
+
+body .ui-paginator .ui-paginator-pages .ui-paginator-page.ui-state-active {
+  background-color: $blush;
+  color: $white;
+}
+
+body .ui-paginator .ui-paginator-pages .ui-paginator-page:not(.ui-state-active):hover {
+  background-color: #e0e0e0;
+  color: #333333;
+}
+
+body .ui-paginator .ui-dropdown .ui-dropdown-trigger,
+body .ui-paginator .ui-dropdown .ui-dropdown-label {
+  color: #848484;
+  height: 28px;
+  border-radius: 0px !important;
+}
+
+/**
+Fixed pagination
+*/
+.pagination-fixed {
+  display: flex;
+  position: fixed;
+  top: 60px;
+  left: 218px;
+  right: 0px;
+  padding-right: 30px;
+  padding: 15px 30px;
+  z-index: 3;
+
+  .total-data,
+  .prefeex-pagination {
+    background-color: #ffffff;
+  }
+
+  .total-data {
+    margin-top: 0px !important;
+    line-height: 32px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 5px;
+  }
+  .prefeex-pagination {
+    margin-bottom: 0px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+}
